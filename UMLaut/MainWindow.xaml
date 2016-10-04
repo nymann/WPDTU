@@ -4,22 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UMLaut"
-        xmlns:userControls="clr-namespace:UMLaut.View.UserControls"
+        xmlns:sidebar="clr-namespace:UMLaut.View.Sidebar"
+        xmlns:ribbon="clr-namespace:UMLaut.View.Ribbon"
+        xmlns:umlCanvas="clr-namespace:UMLaut.View.UmlCanvas"
+
         mc:Ignorable="d"
         Title="MainWindow"
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
         >
 
     <Grid x:Name="Main" Background="DarkSlateGray">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <userControls:SideBar Grid.Row="1" Grid.Column="0"/>
+        <ribbon:Ribbon Grid.Row="0"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <sidebar:Sidebar Grid.Column="0"/>
+            <umlCanvas:UmlCanvas Grid.Column="1"/> 
+        </Grid>
     </Grid>
 </Window>

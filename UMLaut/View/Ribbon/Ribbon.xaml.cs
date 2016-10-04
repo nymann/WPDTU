@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UMLaut.View.UserControls
+namespace UMLaut.View.Ribbon
 {
     /// <summary>
-    /// Interaction logic for Sidebar.xaml
+    /// Interaction logic for Ribbon.xaml
     /// </summary>
-    public partial class SideBar : UserControl
+    public partial class Ribbon : UserControl
     {
-        public SideBar()
+        public Ribbon()
         {
             InitializeComponent();
         }

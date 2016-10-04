@@ -13,12 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UMLaut.View.UserControls
+namespace UMLaut.View.Sidebar.Toolbox
 {
     /// <summary>
     /// Interaction logic for Toolbox.xaml
     /// </summary>
-    public partial class Toolbox : Page
+    public partial class Toolbox : UserControl
     {
         public Toolbox()
         {
