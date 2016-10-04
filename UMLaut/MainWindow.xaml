@@ -4,9 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UMLaut"
+        xmlns:userControls="clr-namespace:UMLaut.View.UserControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="MainWindow"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        >
+
+    <Grid x:Name="Main" Background="DarkSlateGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <userControls:SideBar Grid.Row="1" Grid.Column="0"/>
     </Grid>
 </Window>
