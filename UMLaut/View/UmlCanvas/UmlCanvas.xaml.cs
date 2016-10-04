@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UMLaut.View.UserControls
+namespace UMLaut.View.UmlCanvas
 {
     /// <summary>
-    /// Interaction logic for Properties.xaml
+    /// Interaction logic for UmlCanvas.xaml
     /// </summary>
-    public partial class Properties : Page
+    public partial class UmlCanvas : UserControl
     {
-        public Properties()
+        public UmlCanvas()
         {
             InitializeComponent();
         }

@@ -55,14 +55,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="View\UserControls\Properties.xaml.cs">
+    <Compile Include="View\Ribbon\Ribbon.xaml.cs">
+      <DependentUpon>Ribbon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sidebar\Properties\Properties.xaml.cs">
       <DependentUpon>Properties.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserControls\Sidebar.xaml.cs">
+    <Compile Include="View\Sidebar\Sidebar.xaml.cs">
       <DependentUpon>Sidebar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\UserControls\Toolbox.xaml.cs">
+    <Compile Include="View\Sidebar\Toolbox\Toolbox.xaml.cs">
       <DependentUpon>Toolbox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UmlCanvas\UmlCanvas.xaml.cs">
+      <DependentUpon>UmlCanvas.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -76,15 +82,23 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\UserControls\Properties.xaml">
+    <Page Include="View\Ribbon\Ribbon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\Sidebar.xaml">
+    <Page Include="View\Sidebar\Properties\Properties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\Toolbox.xaml">
+    <Page Include="View\Sidebar\Sidebar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sidebar\Toolbox\Toolbox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UmlCanvas\UmlCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
