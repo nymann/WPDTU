@@ -5,10 +5,51 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UMLaut.View.Ribbon"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="DarkGreen">
-            <TextBlock>
-                Ribbon
-            </TextBlock>
+             d:DesignHeight="140" d:DesignWidth="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Ribbon Grid.Row="0"
+            Grid.Column="0">
+
+            <RibbonTab Header="Hjem">
+                <RibbonGroup Header="Fil">
+                    <RibbonButton Label="Ny"
+                      LargeImageSource="/Resources/Images/new-64.png"
+                      SmallImageSource="/Resources/Images/new-16.png" />
+                    <RibbonButton Label="Gem"
+                      LargeImageSource="/Resources/Images/save-64.png"  
+                      SmallImageSource="/Resources/Images/save-16.png" />
+                    <RibbonButton Label="Åbn"
+                      LargeImageSource="/Resources/Images/open-64.png"
+                      SmallImageSource="/Resources/Images/open-16.png" />
+
+                </RibbonGroup>
+                
+               <RibbonGroup Header="Udklipsholder">
+                    <RibbonButton Label="Sæt ind" 
+                     SmallImageSource="/Resources/Images/paste-16.png" />
+                    <RibbonButton Label="Kopier" 
+                     SmallImageSource="/Resources/Images/copy-16.png" />
+                    <RibbonButton Label="Klip" 
+                     SmallImageSource="/Resources/Images/cut-16.png"/>
+                </RibbonGroup>
+
+                <RibbonGroup Header="Zoom">
+                    <RibbonButton Label="Zoom ind"
+                      LargeImageSource="/Resources/Images/zoomin-32.png"
+                      SmallImageSource="/Resources/Images/zoomin-16.png" />
+                    <RibbonButton Label="Zoom ud"
+                      LargeImageSource="/Resources/Images/zoomout-32.png"
+                      SmallImageSource="/Resources/Images/zoomout-16.png" />
+
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
     </Grid>
 </UserControl>

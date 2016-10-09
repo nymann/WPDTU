@@ -16,7 +16,7 @@
     <Grid x:Name="Main" Background="DarkSlateGray">
         
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ribbon:Ribbon Grid.Row="0"/>
