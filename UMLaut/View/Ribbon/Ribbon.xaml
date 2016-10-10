@@ -40,6 +40,27 @@
                      SmallImageSource="/Resources/Images/cut-16.png"/>
                 </RibbonGroup>
 
+                <RibbonGroup Header="Funktioner">
+                    <RibbonButton Label="Fortryd"
+                      SmallImageSource="/Resources/Images/undo-16.png" />
+                    <RibbonButton Label="Genskab"
+                      SmallImageSource="/Resources/Images/redo-16.png" />
+
+                    <RibbonButton Label="Dupliker figur"
+                      LargeImageSource="/Resources/Images/copy-32.png"
+                      SmallImageSource="/Resources/Images/copy-16.png" />
+                    <RibbonButton Label="Slet"
+                      LargeImageSource="/Resources/Images/delete-32.png"
+                      SmallImageSource="/Resources/Images/delete-16.png" />
+                    <RibbonButton Label="Tekst i figur"
+                      LargeImageSource="/Resources/Images/comment-24.png"
+                      SmallImageSource="/Resources/Images/comment-16.png" />
+
+
+
+
+                </RibbonGroup>
+
                 <RibbonGroup Header="Zoom">
                     <RibbonButton Label="Zoom ind"
                       LargeImageSource="/Resources/Images/zoomin-32.png"
@@ -47,6 +68,10 @@
                     <RibbonButton Label="Zoom ud"
                       LargeImageSource="/Resources/Images/zoomout-32.png"
                       SmallImageSource="/Resources/Images/zoomout-16.png" />
+                    
+                    <RibbonButton Label="Tilpas zoom"
+                      LargeImageSource="/Resources/Images/zoomtofit-32.png"
+                      SmallImageSource="/Resources/Images/zoomtofit-16.png" />
 
                 </RibbonGroup>
             </RibbonTab>

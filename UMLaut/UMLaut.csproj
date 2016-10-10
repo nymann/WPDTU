@@ -131,7 +131,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\open-16.png" />
+    <Resource Include="Resources\Images\open-32.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\save-32.png" />
   </ItemGroup>
@@ -141,6 +144,59 @@
   <ItemGroup>
     <Resource Include="Resources\Images\new-16.png" />
     <Resource Include="Resources\Images\new-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\open-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\new-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\save-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\paste-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\cut-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\copy-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\zoomout-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\zoomout-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\zoomin-16.png" />
+    <Resource Include="Resources\Images\zoomin-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\undo-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\redo-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\delete-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\delete-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\comment-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\comment-16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\copy-32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\zoomtofit-16.png" />
+    <Resource Include="Resources\Images\zoomtofit-32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
