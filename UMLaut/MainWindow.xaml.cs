@@ -24,5 +24,10 @@ namespace UMLaut
         {
             InitializeComponent();
         }
+
+        private void UmlCanvas_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

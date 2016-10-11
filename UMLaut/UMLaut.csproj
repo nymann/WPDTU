@@ -56,6 +56,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command\NewDiagramCommand.cs" />
+    <Compile Include="Model\Enum\EShape.cs" />
+    <Compile Include="Model\Interface\IShape.cs" />
+    <Compile Include="Model\Implementation\Shape.cs" />
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
       <DependentUpon>Ribbon.xaml</DependentUpon>
     </Compile>
@@ -198,6 +202,7 @@
     <Resource Include="Resources\Images\zoomtofit-16.png" />
     <Resource Include="Resources\Images\zoomtofit-32.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
