@@ -142,12 +142,6 @@
     <Resource Include="Pic\initial-node.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pic\merge-node.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Pic\action.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Pic\fork-join-hori.png" />
   </ItemGroup>
   <ItemGroup>
@@ -159,7 +153,19 @@
   <ItemGroup>
     <Resource Include="Pic\receive-signal-state.png" />
     <Resource Include="Pic\send-signal-state.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\merge-node.png" />
     <Resource Include="Pic\time-event.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\action.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\time-event1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\action1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

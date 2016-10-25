@@ -10,7 +10,7 @@
         <!--<Image x:Key="MyImg" Source="UMLaut/Pic/icon.PNG"/>-->
     </UserControl.Resources>
 
-    <Grid Background="Cornsilk">
+    <Grid Background="WhiteSmoke">
         
         
         
@@ -90,7 +90,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/action.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/action1.PNG"/>
                         </Button>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="0">
@@ -142,7 +142,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/time-event.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/time-event1.PNG"/>
                         </Button>
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="0">
