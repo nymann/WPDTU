@@ -80,7 +80,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\Enum\EShape.cs" />
     <Compile Include="Model\Interface\IShape.cs" />
-    <Compile Include="Model\Implementation\Shape.cs" />
+    <Compile Include="Model\Implementation\UMLShape.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\Drawable\Line.xaml.cs">

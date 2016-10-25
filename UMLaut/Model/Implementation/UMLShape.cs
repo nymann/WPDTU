@@ -7,7 +7,7 @@ using UMLaut.Model.Enum;
 
 namespace UMLaut.Model
 {
-    class Shape : IShape
+    class UMLShape : IShape
     {
         public double X { get; }
         public double Y { get; }
