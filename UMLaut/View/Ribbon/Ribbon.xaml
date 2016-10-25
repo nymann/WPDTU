@@ -2,10 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:UMLaut.View.Ribbon"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignHeight="140" d:DesignWidth="1200">
+    
+      
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -21,13 +22,16 @@
                 <RibbonGroup Header="Fil">
                     <RibbonButton Label="Ny"
                       LargeImageSource="/Resources/Images/new-64.png"
-                      SmallImageSource="/Resources/Images/new-16.png" />
-                    <RibbonButton Label="Gem"
-                      LargeImageSource="/Resources/Images/save-64.png"  
-                      SmallImageSource="/Resources/Images/save-16.png" />
+                      SmallImageSource="/Resources/Images/new-16.png" 
+                      Command="{Binding LaunchNewInstance}"/>
                     <RibbonButton Label="Åbn"
                       LargeImageSource="/Resources/Images/open-64.png"
-                      SmallImageSource="/Resources/Images/open-16.png" />
+                      SmallImageSource="/Resources/Images/open-16.png"
+                      Command="{Binding OpenFile}"/>
+                    <RibbonButton Label="Gem"
+                      LargeImageSource="/Resources/Images/save-64.png"  
+                      SmallImageSource="/Resources/Images/save-16.png" 
+                      Command="{Binding TestDrawLine}"/>
 
                 </RibbonGroup>
                 
@@ -45,7 +49,6 @@
                       SmallImageSource="/Resources/Images/undo-16.png" />
                     <RibbonButton Label="Genskab"
                       SmallImageSource="/Resources/Images/redo-16.png" />
-
                     <RibbonButton Label="Dupliker figur"
                       LargeImageSource="/Resources/Images/copy-32.png"
                       SmallImageSource="/Resources/Images/copy-16.png" />
@@ -55,10 +58,6 @@
                     <RibbonButton Label="Tekst i figur"
                       LargeImageSource="/Resources/Images/comment-24.png"
                       SmallImageSource="/Resources/Images/comment-16.png" />
-
-
-
-
                 </RibbonGroup>
 
                 <RibbonGroup Header="Zoom">
@@ -68,11 +67,9 @@
                     <RibbonButton Label="Zoom ud"
                       LargeImageSource="/Resources/Images/zoomout-32.png"
                       SmallImageSource="/Resources/Images/zoomout-16.png" />
-                    
                     <RibbonButton Label="Tilpas zoom"
                       LargeImageSource="/Resources/Images/zoomtofit-32.png"
                       SmallImageSource="/Resources/Images/zoomtofit-16.png" />
-
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>

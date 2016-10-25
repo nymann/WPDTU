@@ -7,14 +7,24 @@
         xmlns:sidebar="clr-namespace:UMLaut.View.Sidebar"
         xmlns:ribbon="clr-namespace:UMLaut.View.Ribbon"
         xmlns:umlCanvas="clr-namespace:UMLaut.View.UmlCanvas"
+        xmlns:vm="clr-namespace:UMLaut.ViewModel"
 
         mc:Ignorable="d"
         Title="MainWindow"
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
-         d:DesignHeight="600" d:DesignWidth="800">
+         d:DesignHeight="600" d:DesignWidth="800"
+        Icon="Resources/Images/application-icon.png">
+    
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding LaunchNewInstance}" Modifiers="Ctrl" Key="N"/>
+        <KeyBinding Command="{Binding OpenFile}" Modifiers="Ctrl" Key="O"/>
+    </Window.InputBindings>
 
     <Grid x:Name="Main" Background="DarkSlateGray">
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
@@ -26,7 +36,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <sidebar:Sidebar Grid.Column="0"/>
-            <umlCanvas:UmlCanvas Grid.Column="1" Loaded="UmlCanvas_Loaded"/> 
+            <umlCanvas:UmlCanvas Grid.Column="1"/> 
         </Grid>
     </Grid>
 </Window>
