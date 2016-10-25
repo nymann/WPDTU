@@ -79,6 +79,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\Enum\EShape.cs" />
+    <Compile Include="Model\Implementation\UMLDesign.cs" />
     <Compile Include="Model\Interface\IShape.cs" />
     <Compile Include="Model\Implementation\UMLShape.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />

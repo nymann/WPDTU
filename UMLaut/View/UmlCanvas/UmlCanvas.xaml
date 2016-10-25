@@ -6,11 +6,23 @@
              xmlns:local="clr-namespace:UMLaut.View.UmlCanvas"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
-    <Canvas Name="cnvs" Background="WhiteSmoke">
-        <TextBlock>
-            Canvas
-        </TextBlock>
-        
-        
-    </Canvas>
+
+    <ItemsControl ItemsSource="{Binding Path=Shapes}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <Canvas/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemContainerStyle>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
+                <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
+            </Style>
+        </ItemsControl.ItemContainerStyle>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Label Content="{Binding Path=Content}" />
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
 </UserControl>
