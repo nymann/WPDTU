@@ -11,12 +11,12 @@
         mc:Ignorable="d"
         Title="MainWindow"
         WindowStartupLocation="CenterScreen" WindowState="Maximized"
-        >
+         d:DesignHeight="600" d:DesignWidth="800">
 
     <Grid x:Name="Main" Background="DarkSlateGray">
         
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ribbon:Ribbon Grid.Row="0"/>
@@ -26,7 +26,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <sidebar:Sidebar Grid.Column="0"/>
-            <umlCanvas:UmlCanvas Grid.Column="1"/> 
+            <umlCanvas:UmlCanvas Grid.Column="1" Loaded="UmlCanvas_Loaded"/> 
         </Grid>
     </Grid>
 </Window>
