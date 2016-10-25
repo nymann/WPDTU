@@ -7,12 +7,13 @@ using UMLaut.Model.Enum;
 
 namespace UMLaut.Model
 {
-    class Shape : IShape
+    class UMLShape : IShape
     {
-        public double X { get; }
-        public double Y { get; }
+        public double X { get; set; }
+        public double Y { get; set; }
         public EShape Type { get; }
         public double Height { get; set; }
-        public double Width { get; }
+        public double Width { get; set; }
+        public string Content { get; set; }
     }
 }

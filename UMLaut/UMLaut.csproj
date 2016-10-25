@@ -56,10 +56,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Command\NewDiagramCommand.cs" />
     <Compile Include="Model\Enum\EShape.cs" />
+    <Compile Include="Model\Implementation\BaseShape.cs" />
     <Compile Include="Model\Interface\IShape.cs" />
-    <Compile Include="Model\Implementation\Shape.cs" />
+    <Compile Include="Model\Implementation\UMLShape.cs" />
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
       <DependentUpon>Ribbon.xaml</DependentUpon>
     </Compile>
