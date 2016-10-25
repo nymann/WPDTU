@@ -10,6 +10,5 @@ namespace UMLaut.Model
         EShape Type { get; }
         double Height { get; set; }
         double Width { get; }
-        string Content { get; set; }
     }
 }
