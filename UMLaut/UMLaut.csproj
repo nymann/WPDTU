@@ -130,6 +130,37 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\final-node.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\initial-node.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\merge-node.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\action.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\fork-join-hori.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\fork-join-vert.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\edge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pic\receive-signal-state.png" />
+    <Resource Include="Pic\send-signal-state.png" />
+    <Resource Include="Pic\time-event.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
