@@ -11,7 +11,7 @@
     <ItemsControl ItemsSource="{Binding Path=Shapes}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <Canvas/>
+                <Canvas Background="LightBlue"/>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemContainerStyle>

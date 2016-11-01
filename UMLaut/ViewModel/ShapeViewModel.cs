@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UMLaut.ViewModel
 {
-    public class LineViewModel : BaseViewModel
+    public class ShapeViewModel : BaseViewModel
     {
     }
 }
