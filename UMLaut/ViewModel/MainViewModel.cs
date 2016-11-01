@@ -4,6 +4,7 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Forms;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
@@ -27,6 +28,8 @@ namespace UMLaut.ViewModel
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
 
+        public CompositeCollection ComCollection { get; set; }
+
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -35,6 +38,7 @@ namespace UMLaut.ViewModel
         {
             Lines = new ObservableCollection<LineViewModel>();
             Shapes = new ObservableCollection<ShapeViewModel>();
+            ComCollection = new CompositeCollection(){Shapes, Lines};
 
             this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
             this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
