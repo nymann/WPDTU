@@ -82,10 +82,11 @@
     <Compile Include="Model\Implementation\UMLDesign.cs" />
     <Compile Include="Model\Interface\IShape.cs" />
     <Compile Include="Model\Implementation\UMLShape.cs" />
+    <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\Drawable\Line.xaml.cs">
-      <DependentUpon>Line.xaml</DependentUpon>
+    <Compile Include="View\Drawable\LineUserControl.xaml.cs">
+      <DependentUpon>LineUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
       <DependentUpon>Ribbon.xaml</DependentUpon>
@@ -114,7 +115,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\Drawable\Line.xaml">
+    <Page Include="View\Drawable\LineUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

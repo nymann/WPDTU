@@ -18,9 +18,9 @@ namespace UMLaut.View.Drawable
     /// <summary>
     /// Interaction logic for Line.xaml
     /// </summary>
-    public partial class Line : UserControl
+    public partial class LineUserControl : UserControl
     {
-        public Line()
+        public LineUserControl()
         {
             InitializeComponent();
         }
