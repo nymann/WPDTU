@@ -13,7 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UMLaut.Model;
-using UMLaut.Model.Implementation;
 
 namespace UMLaut
 {
@@ -25,11 +24,6 @@ namespace UMLaut
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void UmlCanvas_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

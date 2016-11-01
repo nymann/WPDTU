@@ -20,41 +20,40 @@ namespace UMLaut.ViewModel
     /// See http://www.galasoft.ch/mvvm
     /// </para>
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : BaseViewModel
     {
-
-
         public ObservableCollection<LineViewModel> Lines {get; set;}
+        public ObservableCollection<ShapeViewModel> Shapes { get; set; }
 
 
-    /// <summary>
-    /// Initializes a new instance of the MainViewModel class.
-    /// </summary>
-    public MainViewModel()
+        /// <summary>
+        /// Initializes a new instance of the MainViewModel class.
+        /// </summary>
+        public MainViewModel()
         {
             Lines = new ObservableCollection<LineViewModel>();
+            Shapes = new ObservableCollection<ShapeViewModel>();
 
             this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
             this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
-            this.TestDrawLine = new RelayCommand<object>(this.PerformTestDrawLine);
-
-
-            //if (IsInDesignMode)
-            //{
-            //    // Code runs in Blend --> create design time data.
-            //}
-            //else
-            //{
-            //    // Code runs "for real"
-            //}
+            this.SaveFile = new RelayCommand<object>(this.PerformSaveFile);
+            this.DuplicateShape = new RelayCommand<object>(this.PerformDuplicateShape);
+            this.DeleteShape = new RelayCommand<object>(this.PerformDeleteShape);
+            this.TextToShape = new RelayCommand<object>(this.PerformTextToShape);
+            this.ZoomIn = new RelayCommand<object>(this.PerformZoomIn);
+            this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
+            this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
         }
-
- 
 
         public ICommand LaunchNewInstance { get; set; }
         public ICommand OpenFile { get; set; }
-        public ICommand TestDrawLine { get; set; }
-
+        public ICommand SaveFile { get; set; }
+        public ICommand DuplicateShape { get; set; }
+        public ICommand DeleteShape { get; set; }
+        public ICommand TextToShape { get; set; }
+        public ICommand ZoomIn { get; set; }
+        public ICommand ZoomOut { get; set; }
+        public ICommand ZoomToFit { get; set; }
 
         private void PerformLaunchNewInstance(object obj)
         {
@@ -71,11 +70,39 @@ namespace UMLaut.ViewModel
             }
         }
 
-        private void PerformTestDrawLine(object obj)
+        private void PerformSaveFile(object obj)
         {
-            Lines.Add(new LineViewModel());
+            throw new NotImplementedException();
         }
 
+        private void PerformDuplicateShape(object obj)
+        {
+            throw new NotImplementedException();
+        }
 
+        private void PerformDeleteShape(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PerformTextToShape(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PerformZoomIn(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PerformZoomOut(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void PerformZoomToFit(object obj)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -22,6 +22,19 @@
     <Window.InputBindings>
         <KeyBinding Command="{Binding LaunchNewInstance}" Modifiers="Ctrl" Key="N"/>
         <KeyBinding Command="{Binding OpenFile}" Modifiers="Ctrl" Key="O"/>
+        <KeyBinding Command="{Binding SaveFile}" Modifiers="Ctrl" Key="S"/>
+        <KeyBinding Command="{Binding Copy}" Modifiers="Ctrl" Key="C"/>
+        <KeyBinding Command="{Binding Paste}" Modifiers="Ctrl" Key="V"/>
+        <KeyBinding Command="{Binding Cut}" Modifiers="Ctrl" Key="X"/>
+        <KeyBinding Command="{Binding Undo}" Modifiers="Ctrl" Key="Z"/>
+        <KeyBinding Command="{Binding Redo}" Modifiers="Ctrl+Shift" Key="Z"/>
+        <KeyBinding Command="{Binding Redo}" Modifiers="Ctrl" Key="Y"/>
+        <KeyBinding Command="{Binding DuplicateShape}" Modifiers="Ctrl" Key="D"/>
+        <KeyBinding Command="{Binding TextToShape}" Key="T"/>
+        <KeyBinding Command="{Binding TextToShape}" Modifiers="Ctrl" Key="T"/>
+        <KeyBinding Command="{Binding DeleteShape}" Key="Delete"/>
+        <KeyBinding Command="{Binding ZoomIn}" Modifiers="Ctrl" Key="OemPlus"/>
+        <KeyBinding Command="{Binding ZoomOut}" Modifiers="Ctrl" Key="OemMinus"/>
     </Window.InputBindings>
 
     <Grid x:Name="Main" Background="DarkSlateGray">
@@ -32,7 +45,7 @@
         <ribbon:Ribbon Grid.Row="0"/>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="300" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <sidebar:Sidebar Grid.Column="0"/>
