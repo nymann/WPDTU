@@ -78,7 +78,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Enum\ELine.cs" />
     <Compile Include="Model\Enum\EShape.cs" />
+    <Compile Include="Model\Implementation\UMLLine.cs" />
+    <Compile Include="Model\Interface\ILine.cs" />
     <Compile Include="Model\Interface\IShape.cs" />
     <Compile Include="Model\Implementation\UMLShape.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
@@ -238,6 +241,29 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\application-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\action.png" />
+    <Resource Include="Resources\Images\action0.png" />
+    <Resource Include="Resources\Images\action1.png" />
+    <Resource Include="Resources\Images\activity-requestaccepttimeevent.png" />
+    <Resource Include="Resources\Images\edge.png" />
+    <Resource Include="Resources\Images\edge0.png" />
+    <Resource Include="Resources\Images\final-node.png" />
+    <Resource Include="Resources\Images\final-node0.png" />
+    <Resource Include="Resources\Images\fork-join-hori.png" />
+    <Resource Include="Resources\Images\fork-join-vert.png" />
+    <Resource Include="Resources\Images\icon.png" />
+    <Resource Include="Resources\Images\initial-node.png" />
+    <Resource Include="Resources\Images\initial-node0.png" />
+    <Resource Include="Resources\Images\merge-node.png" />
+    <Resource Include="Resources\Images\merge-node0.png" />
+    <Resource Include="Resources\Images\merge-node00.png" />
+    <Resource Include="Resources\Images\receive-signal-state.png" />
+    <Resource Include="Resources\Images\send-signal-state.png" />
+    <Resource Include="Resources\Images\time-event.png" />
+    <Resource Include="Resources\Images\time-event0.png" />
+    <Resource Include="Resources\Images\time-event1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
