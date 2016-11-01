@@ -32,6 +32,10 @@
                       LargeImageSource="/Resources/Images/save-64.png"  
                       SmallImageSource="/Resources/Images/save-16.png" 
                       Command="{Binding SaveFile}"/>
+                    <RibbonButton Label="Gem som"
+                      LargeImageSource="/Resources/Images/save-64.png"  
+                      SmallImageSource="/Resources/Images/save-16.png" 
+                      Command="{Binding SaveFileAs}"/>
 
                 </RibbonGroup>
                 

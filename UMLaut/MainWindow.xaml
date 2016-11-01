@@ -23,6 +23,7 @@
         <KeyBinding Command="{Binding LaunchNewInstance}" Modifiers="Ctrl" Key="N"/>
         <KeyBinding Command="{Binding OpenFile}" Modifiers="Ctrl" Key="O"/>
         <KeyBinding Command="{Binding SaveFile}" Modifiers="Ctrl" Key="S"/>
+        <KeyBinding Command="{Binding SaveFileAs}" Modifiers="Ctrl+Shift" Key="S"/>
         <KeyBinding Command="{Binding Copy}" Modifiers="Ctrl" Key="C"/>
         <KeyBinding Command="{Binding Paste}" Modifiers="Ctrl" Key="V"/>
         <KeyBinding Command="{Binding Cut}" Modifiers="Ctrl" Key="X"/>

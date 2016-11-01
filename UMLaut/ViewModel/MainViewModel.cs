@@ -4,7 +4,9 @@ using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Windows;
-using Microsoft.Win32;
+using System.Windows.Forms;
+using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
+using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace UMLaut.ViewModel
 {
@@ -37,6 +39,7 @@ namespace UMLaut.ViewModel
             this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
             this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
             this.SaveFile = new RelayCommand<object>(this.PerformSaveFile);
+            this.SaveFileAs = new RelayCommand<object>(this.PerformSaveFileAs);
             this.DuplicateShape = new RelayCommand<object>(this.PerformDuplicateShape);
             this.DeleteShape = new RelayCommand<object>(this.PerformDeleteShape);
             this.TextToShape = new RelayCommand<object>(this.PerformTextToShape);
@@ -48,6 +51,7 @@ namespace UMLaut.ViewModel
         public ICommand LaunchNewInstance { get; set; }
         public ICommand OpenFile { get; set; }
         public ICommand SaveFile { get; set; }
+        public ICommand SaveFileAs { get; set; }
         public ICommand DuplicateShape { get; set; }
         public ICommand DeleteShape { get; set; }
         public ICommand TextToShape { get; set; }
@@ -66,13 +70,36 @@ namespace UMLaut.ViewModel
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if(openFileDialog.ShowDialog() == true)
             {
-
+                //do something
             }
         }
 
         private void PerformSaveFile(object obj)
         {
-            throw new NotImplementedException();
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            //if(!filePathExists)
+            //{
+            //    if (saveFileDialog.ShowDialog() == true)
+            //    {
+            //        //do something
+            //    }
+            //}
+            //else
+            //{
+            //    // save diagram to existing path
+            //}
+ }
+        
+        private void PerformSaveFileAs(object obj)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                //do something
+            }
+
         }
 
         private void PerformDuplicateShape(object obj)
