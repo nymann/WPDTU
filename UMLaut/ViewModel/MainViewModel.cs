@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -23,12 +24,15 @@ namespace UMLaut.ViewModel
     {
 
 
-        
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
-        public MainViewModel()
+        public ObservableCollection<LineViewModel> Lines {get; set;}
+
+
+    /// <summary>
+    /// Initializes a new instance of the MainViewModel class.
+    /// </summary>
+    public MainViewModel()
         {
+            Lines = new ObservableCollection<LineViewModel>();
 
             this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
             this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
@@ -69,7 +73,7 @@ namespace UMLaut.ViewModel
 
         private void PerformTestDrawLine(object obj)
         {
-            
+            Lines.Add(new LineViewModel());
         }
 
 
