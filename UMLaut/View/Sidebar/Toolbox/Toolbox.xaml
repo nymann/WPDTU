@@ -5,10 +5,181 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UMLaut.View.Sidebar.Toolbox"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="Cornsilk">
-            <TextBlock>
-                Toolbox
-            </TextBlock>
+             d:DesignHeight="800" d:DesignWidth="250">
+    <UserControl.Resources>
+        <!--<Image x:Key="MyImg" Source="UMLaut/Pic/icon.PNG"/>-->
+    </UserControl.Resources>
+
+    <Grid Background="WhiteSmoke">
+        
+        
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="23"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            
+        <ToolBar x:Name="toolBar" HorizontalAlignment="Stretch" VerticalAlignment="top"  Height="23">
+                <TextBlock x:Name="textBlock" Height="18" TextWrapping="Wrap" Text="Toolbox" VerticalAlignment="Top"/>
+        </ToolBar>
+        </Grid>
+        <Grid Grid.Row="1">
+            
+            <ScrollViewer
+                Padding="10,10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="78"/>
+                        <RowDefinition Height="78"/>
+                        <RowDefinition Height="78"/>
+                        <RowDefinition Height="78"/>
+                        <RowDefinition Height="78"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="0" Grid.Column="0">
+                        <Button x:Name="tbInitialNode" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/initial-node.PNG"/>
+                            <Button.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Initial Node</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Initial Node</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="0" Grid.Column="1">
+                        <Button x:Name="tbFinalNode" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                            <Button.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Final Node</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Final Node</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/final-node.PNG"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Button x:Name="tbMerge" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                            <Button.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Merge Node</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Merge Node</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/merge-node.PNG"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Button x:Name="tbAction" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                            <Button.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Action</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Action</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/action1.PNG"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <Button x:Name="tbFJHori" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                            <Button.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Synchronization Bar</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Fork/Join Synchronization Bar</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/fork-join-hori.PNG"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="2" Grid.Column="1">
+                        <Button x:Name="tbFJVert" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                            <Button.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Synchronization Bar</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Fork/Join Synchronization Bar</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/fork-join-vert.PNG"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="3" Grid.Column="0">
+                        <Button x:Name="tbEdge" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                            <Button.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Edge</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Edge</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/edge.PNG"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <Button x:Name="tbTimeEvent" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                            <Button.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Time Event Action</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Time Event Action</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/time-event1.PNG"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="4" Grid.Column="0">
+                        <Button x:Name="tbSendSignal" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                            <Button.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Send Signal State</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Initial Node</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/send-signal-state.PNG"/>
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="4" Grid.Column="1">
+                        <Button x:Name="tbReceiveSignal" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+                            <Button.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Receive Signal State</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Receive Signal State</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/receive-signal-state.PNG"/>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+
+
+
+
+
+
     </Grid>
 </UserControl>
