@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace UMLaut.Model.Enum
 {
-    public enum EShape
+    public enum ELine
     {
-        Circle,
-        Square
+        Solid,
+        Dashed
     }
 }

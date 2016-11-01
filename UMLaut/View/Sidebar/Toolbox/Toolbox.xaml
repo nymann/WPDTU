@@ -43,7 +43,7 @@
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Row="0" Grid.Column="0">
                         <Button x:Name="tbInitialNode" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/initial-node.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/initial-node.png"/>
                             <Button.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -64,7 +64,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/final-node.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/final-node.png"/>
                         </Button>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0">
@@ -77,7 +77,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/merge-node.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/merge-node.png"/>
                         </Button>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1">
@@ -90,7 +90,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/action1.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/action1.png"/>
                         </Button>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="0">
@@ -103,7 +103,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/fork-join-hori.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Image/fork-join-hori.PNG"/>
                         </Button>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1">
@@ -116,7 +116,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/fork-join-vert.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Image/fork-join-vert.PNG"/>
                         </Button>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="0">
@@ -129,7 +129,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/edge.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Image/edge.PNG"/>
                         </Button>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="1">
@@ -142,7 +142,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/time-event1.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Image/time-event1.PNG"/>
                         </Button>
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="0">
@@ -155,7 +155,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/send-signal-state.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Image/send-signal-state.PNG"/>
                         </Button>
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="1">
@@ -168,7 +168,7 @@
                                     </StackPanel>
                                 </ToolTip>
                             </Button.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Pic/receive-signal-state.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Image/receive-signal-state.PNG"/>
                         </Button>
                     </Grid>
                 </Grid>

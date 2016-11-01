@@ -25,10 +25,6 @@ namespace UMLaut
         public MainWindow()
         {
             InitializeComponent();
-            UMLDesign _design = new UMLDesign("Test Design");
-            _design.addShape(new UMLShape() { Content="Test Shape!", X=20, Y=20 });
-            _design.addShape(new UMLShape() { Content = "Test Shape 2!", X = 200, Y = 200 });
-            this.DataContext = _design;
         }
 
         private void UmlCanvas_Loaded(object sender, RoutedEventArgs e)

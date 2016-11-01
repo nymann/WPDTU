@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UMLaut.Model.Enum;
 
 namespace UMLaut.Model
 {
     public interface IShape
     {
+        Guid Id { get; }
         double X { get; }
         double Y { get; }
-        EShape Type { get; }
         double Height { get; set; }
         double Width { get; }
+        string Label { get; }
+        EShape Type { get; }
     }
 }
