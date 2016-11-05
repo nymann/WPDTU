@@ -20,7 +20,7 @@ namespace UMLaut.View.Drawable
     /// </summary>
     public partial class LineUserControl : UserControl
     {
-        public LineUserControl()
+        public LineUserControl()    
         {
             InitializeComponent();
         }

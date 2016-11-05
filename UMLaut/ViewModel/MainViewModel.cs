@@ -27,8 +27,7 @@ namespace UMLaut.ViewModel
     {
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
-
-        public CompositeCollection ComCollection { get; set; }
+        public CompositeCollection Drawables { get; set; }
 
 
         /// <summary>
@@ -38,7 +37,7 @@ namespace UMLaut.ViewModel
         {
             Lines = new ObservableCollection<LineViewModel>();
             Shapes = new ObservableCollection<ShapeViewModel>();
-            ComCollection = new CompositeCollection(){Shapes, Lines};
+            Drawables = new CompositeCollection(){Shapes, Lines};
 
             this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
             this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
@@ -108,7 +107,9 @@ namespace UMLaut.ViewModel
 
         private void PerformDuplicateShape(object obj)
         {
-            throw new NotImplementedException();
+            //Lines.Add(new LineViewModel());
+
+            Drawables.Add(new LineViewModel());
         }
 
         private void PerformDeleteShape(object obj)

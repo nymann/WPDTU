@@ -8,23 +8,30 @@
              xmlns:drw="clr-namespace:UMLaut.View.Drawable"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
-    <ItemsControl ItemsSource="{Binding ComCollection}">
+    
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type vm:LineViewModel}">
+            <drw:LineUserControl/>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <ItemsControl ItemsSource="{Binding Drawables}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <Canvas Background="LightBlue"/>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemContainerStyle>
+      <ItemsControl.ItemContainerStyle>
             <Style TargetType="ContentPresenter">
                 <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
                 <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
             </Style>
         </ItemsControl.ItemContainerStyle>
-        <ItemsControl.ItemTemplate>
+    <!--   <ItemsControl.ItemTemplate>
             <DataTemplate>
                 <Label Content="{Binding Path=Content}" />
             </DataTemplate>
-        </ItemsControl.ItemTemplate>
+        </ItemsControl.ItemTemplate>-->
     </ItemsControl>
 </UserControl>
 

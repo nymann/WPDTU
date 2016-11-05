@@ -6,5 +6,5 @@
              xmlns:local="clr-namespace:UMLaut.View.Drawable"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-     <Line Stroke="Red" X1="0" Y1="0" X2="90" Y2="90" StrokeThickness="5"/>
+    <Line Stroke="Red" X1="0" Y1="0" X2="300" Y2="70" StrokeThickness="2" StrokeDashArray="3"/>
 </UserControl>
