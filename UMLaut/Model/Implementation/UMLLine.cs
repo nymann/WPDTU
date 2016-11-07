@@ -8,7 +8,7 @@ using UMLaut.Model.Interface;
 
 namespace UMLaut.Model.Implementation
 {
-    class UMLLine : ILine
+    public class UMLLine : ILine
     {
         /// <summary>
         /// Id of the starting shape

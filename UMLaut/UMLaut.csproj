@@ -80,10 +80,13 @@
     </ApplicationDefinition>
     <Compile Include="Model\Enum\ELine.cs" />
     <Compile Include="Model\Enum\EShape.cs" />
+    <Compile Include="Model\Implementation\Diagram.cs" />
     <Compile Include="Model\Implementation\UMLLine.cs" />
     <Compile Include="Model\Interface\ILine.cs" />
     <Compile Include="Model\Interface\IShape.cs" />
     <Compile Include="Model\Implementation\UMLShape.cs" />
+    <Compile Include="Serialization\Deserializer.cs" />
+    <Compile Include="Serialization\Serializer.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -91,6 +94,9 @@
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\Drawable\LineUserControl.xaml.cs">
       <DependentUpon>LineUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\ShapeUserControl.xaml.cs">
+      <DependentUpon>ShapeUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
       <DependentUpon>Ribbon.xaml</DependentUpon>
@@ -120,6 +126,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\Drawable\LineUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Drawable\ShapeUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

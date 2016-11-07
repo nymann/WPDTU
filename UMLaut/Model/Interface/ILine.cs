@@ -3,7 +3,7 @@ using UMLaut.Model.Enum;
 
 namespace UMLaut.Model.Interface
 {
-    interface ILine
+    public interface ILine
     {
         Guid FromId { get; }
         Guid ToId { get; }

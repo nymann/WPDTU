@@ -3,7 +3,7 @@ using UMLaut.Model.Enum;
 
 namespace UMLaut.Model
 {
-    class UMLShape : IShape
+    public class UMLShape : IShape
     {
         /// <summary>
         /// Id of the shape
