@@ -75,6 +75,8 @@ namespace UMLaut.ViewModel
             {
                 //do something
             }
+
+
         }
 
         private void PerformSaveFile(object obj)

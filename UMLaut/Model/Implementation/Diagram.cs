@@ -11,5 +11,6 @@ namespace UMLaut.Model.Implementation
     {
         public List<IShape> Shapes { get; set; }
         public List<ILine> Lines { get; set; }
+        public String filePath { get; set; }
     }
 }
