@@ -92,13 +92,28 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ShapeViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\Drawable\ActivityUserControl.xaml.cs">
-      <DependentUpon>ActivityUserControl.xaml</DependentUpon>
+    <Compile Include="View\Drawable\Line\DashedLineUserControl.xaml.cs">
+      <DependentUpon>DashedLineUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drawable\LineUserControl.xaml.cs">
+    <Compile Include="View\Drawable\Line\LineUserControl.xaml.cs">
       <DependentUpon>LineUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drawable\MergeUserControl.xaml.cs">
+    <Compile Include="View\Drawable\Shape\ActivityFinalUserControl.xaml.cs">
+      <DependentUpon>ActivityFinalUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\Shape\ActivityUserControl.xaml.cs">
+      <DependentUpon>ActivityUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\Shape\FlowFinalUserControl.xaml.cs">
+      <DependentUpon>FlowFinalUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\Shape\ForkUserControl.xaml.cs">
+      <DependentUpon>ForkUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\Shape\InitialUserControl.xaml.cs">
+      <DependentUpon>InitialUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\Shape\MergeUserControl.xaml.cs">
       <DependentUpon>MergeUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
@@ -128,17 +143,37 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\Drawable\ActivityUserControl.xaml">
+    <Page Include="View\Drawable\Line\DashedLineUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Drawable\LineUserControl.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="View\Drawable\Line\LineUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Drawable\MergeUserControl.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="View\Drawable\Shape\ActivityFinalUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Drawable\Shape\ActivityUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Drawable\Shape\FlowFinalUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Drawable\Shape\ForkUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Drawable\Shape\InitialUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Drawable\Shape\MergeUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Ribbon\Ribbon.xaml">
       <SubType>Designer</SubType>
