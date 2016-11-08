@@ -8,6 +8,6 @@
              d:DesignHeight="600" d:DesignWidth="600">
     <Border BorderThickness="1" Height="50" Width="100" Grid.Row="0" Grid.ColumnSpan="2"
         CornerRadius="10,10,10,10" BorderBrush="Black" Background="#CDF4FF">
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+        <TextBlock Name="activityLabel" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
     </Border>
 </UserControl>

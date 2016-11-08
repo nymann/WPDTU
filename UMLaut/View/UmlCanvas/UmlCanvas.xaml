@@ -9,11 +9,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
     
-    <UserControl.Resources>
+    <!--<UserControl.Resources>
         <DataTemplate DataType="{x:Type vm:LineViewModel}">
             <drw:LineUserControl/>
         </DataTemplate>
-    </UserControl.Resources>
+    </UserControl.Resources>-->
 
     <ItemsControl ItemsSource="{Binding Drawables}">
         <ItemsControl.ItemsPanel>

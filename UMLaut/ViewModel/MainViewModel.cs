@@ -8,6 +8,8 @@ using System.Windows.Data;
 using System.Windows.Forms;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using UMLaut.Model.Implementation;
+using UMLaut.Serialization;
 
 namespace UMLaut.ViewModel
 {
@@ -71,40 +73,44 @@ namespace UMLaut.ViewModel
         private void PerformOpenFile(object obj)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            Deserializer deserializer = new Deserializer();
+
             if(openFileDialog.ShowDialog() == true)
             {
-                //do something
+                var path = openFileDialog.FileName;
+                deserializer.DeserializeFromFile(path);
             }
-
-
         }
 
         private void PerformSaveFile(object obj)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            Serializer serializer = new Serializer();
 
-            //if(!filePathExists)
-            //{
-            //    if (saveFileDialog.ShowDialog() == true)
-            //    {
-            //        //do something
-            //    }
-            //}
-            //else
-            //{
-            //    // save diagram to existing path
-            //}
- }
+            if (Diagram.Instance.FilePath == null)
+            {
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    var path = saveFileDialog.FileName;
+                    serializer.Serialize(Diagram.Instance, path);
+                }
+            }
+            else
+            {
+                serializer.Serialize(Diagram.Instance, Diagram.Instance.FilePath);
+            }
+        }
         
         private void PerformSaveFileAs(object obj)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            Serializer serializer = new Serializer();
 
             if (saveFileDialog.ShowDialog() == true)
             {
-                //do something
+                var path = saveFileDialog.FileName;
+                serializer.Serialize(Diagram.Instance, path);
             }
-
         }
 
         private void PerformDuplicateShape(object obj)
