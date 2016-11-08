@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="UMLaut.View.Drawable.MergeUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UMLaut.View.Drawable"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="600">
+    <Path Data="M50,0L100,50 50,100 0,50z" Fill="#CDF4FF" Stretch="Fill" 
+          Stroke="Black" StrokeThickness="2" Margin="0"
+          Width="50" Height="50"/>
+</UserControl>

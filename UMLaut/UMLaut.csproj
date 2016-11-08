@@ -98,6 +98,9 @@
     <Compile Include="View\Drawable\LineUserControl.xaml.cs">
       <DependentUpon>LineUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Drawable\MergeUserControl.xaml.cs">
+      <DependentUpon>MergeUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
       <DependentUpon>Ribbon.xaml</DependentUpon>
     </Compile>
@@ -130,6 +133,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Drawable\LineUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Drawable\MergeUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
