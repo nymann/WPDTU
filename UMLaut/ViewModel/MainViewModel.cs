@@ -29,7 +29,10 @@ namespace UMLaut.ViewModel
     {
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
+
         public CompositeCollection Drawables { get; set; }
+
+        public Model.Enum.EShape toolboxValue;
 
 
         /// <summary>
@@ -51,7 +54,23 @@ namespace UMLaut.ViewModel
             this.ZoomIn = new RelayCommand<object>(this.PerformZoomIn);
             this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
             this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
+
+            /// <summary>
+            /// Toolbox buttons
+            /// </summary>
+
+            this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
+            this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
+            this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
+            this.IsAction = new RelayCommand<object>(this.PerformIsAction);
+            this.IsSyncBarHor = new RelayCommand<object>(this.PerformIsSyncBarHor);
+            this.IsSyncBarVert = new RelayCommand<object>(this.PerformIsSyncBarVert);
+            this.IsEdge = new RelayCommand<object>(this.PerformIsEdge);
+            this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
+            this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
+            this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
         }
+
 
         public ICommand LaunchNewInstance { get; set; }
         public ICommand OpenFile { get; set; }
@@ -63,6 +82,22 @@ namespace UMLaut.ViewModel
         public ICommand ZoomIn { get; set; }
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
+
+        /// <summary>
+        /// Toolbox buttons
+        /// </summary>
+
+        public ICommand IsInitialNode { get; set; }
+        public ICommand IsFinalNode { get; set; }
+        public ICommand IsMergeNode { get; set; }
+        public ICommand IsAction { get; set; }
+        public ICommand IsSyncBarHor { get; set; }
+        public ICommand IsSyncBarVert { get; set; }
+        public ICommand IsEdge { get; set; }
+        public ICommand IsTimeEvent { get; set; }
+        public ICommand IsSendSignal { get; set; }
+        public ICommand IsReceiveSignal { get; set; }
+
 
         private void PerformLaunchNewInstance(object obj)
         {
@@ -144,5 +179,62 @@ namespace UMLaut.ViewModel
         {
             throw new NotImplementedException();
         }
+
+        /// <summary>
+        /// Toolbox buttons
+        /// </summary>
+
+        public void PerformIsInitialNode(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.InitialNode;
+        }
+
+
+        private void PerformIsFinalNode(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.FinalNode;
+        }
+
+        private void PerformIsMergelNode(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.MergeNode;
+        }
+
+        private void PerformIsAction(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.Action;
+        }
+
+        private void PerformIsSyncBarHor(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.SyncBarHor;
+        }
+
+        private void PerformIsSyncBarVert(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.SyncBarVert;
+        }
+
+        private void PerformIsEdge(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.Edge;
+        }
+
+        private void PerformIsTimeEvent(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.TimeEvent;
+        }
+
+        private void PerformIsSendSignal(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.SendSignal;
+        }
+
+        private void PerformIsReceiveSignal(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.ReceiveSignal;
+
+        }
+
     }
 }
