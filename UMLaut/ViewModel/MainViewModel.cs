@@ -10,26 +10,25 @@ using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 using UMLaut.Model.Implementation;
 using UMLaut.Serialization;
+using UMLaut.Model;
 
 namespace UMLaut.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
+        public Model.Enum.EShape toolboxValue;
+
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
-        public CompositeCollection Drawables { get; set; }
         #endregion
-
+    
         #region Constructor
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
+
         public MainViewModel()
         {
             Lines = new ObservableCollection<LineViewModel>();
             Shapes = new ObservableCollection<ShapeViewModel>();
-            Drawables = new CompositeCollection(){Shapes, Lines};
 
             this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
             this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
@@ -41,11 +40,27 @@ namespace UMLaut.ViewModel
             this.ZoomIn = new RelayCommand<object>(this.PerformZoomIn);
             this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
             this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
+
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
+
+            this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
+            this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
+            this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
+            this.IsAction = new RelayCommand<object>(this.PerformIsAction);
+            this.IsSyncBarHor = new RelayCommand<object>(this.PerformIsSyncBarHor);
+            this.IsSyncBarVert = new RelayCommand<object>(this.PerformIsSyncBarVert);
+            this.IsEdge = new RelayCommand<object>(this.PerformIsEdge);
+            this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
+            this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
+            this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
+
         }
         #endregion
-        
+
         #region ICommands
+
+        #region Ribbon ICommands
+
 
         public ICommand LaunchNewInstance { get; set; }
         public ICommand OpenFile { get; set; }
@@ -58,9 +73,26 @@ namespace UMLaut.ViewModel
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
         public ICommand CanvasMouseDown { get; set; }
+        #endregion
+
+
+        #region Toolbox ICommands
+
+        public ICommand IsInitialNode { get; set; }
+        public ICommand IsFinalNode { get; set; }
+        public ICommand IsMergeNode { get; set; }
+        public ICommand IsAction { get; set; }
+        public ICommand IsSyncBarHor { get; set; }
+        public ICommand IsSyncBarVert { get; set; }
+        public ICommand IsEdge { get; set; }
+        public ICommand IsTimeEvent { get; set; }
+        public ICommand IsSendSignal { get; set; }
+        public ICommand IsReceiveSignal { get; set; }
+        #endregion
 
         #endregion
 
+        #region Commands
         #region Ribbon commands
 
         private void PerformLaunchNewInstance(object obj)
@@ -82,7 +114,7 @@ namespace UMLaut.ViewModel
                     deserializer.DeserializeFromFile(path);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 System.Windows.MessageBox.Show("Der opstod en fejl.");
             }
@@ -122,9 +154,7 @@ namespace UMLaut.ViewModel
 
         private void PerformDuplicateShape(object obj)
         {
-            //Lines.Add(new LineViewModel());
-
-            Drawables.Add(new LineViewModel());
+            throw new NotImplementedException();
         }
 
         private void PerformDeleteShape(object obj)
@@ -154,6 +184,58 @@ namespace UMLaut.ViewModel
         #endregion
 
         #region Toolbox commands
+
+        public void PerformIsInitialNode(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.Initial;
+        }
+
+
+        private void PerformIsFinalNode(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.ActivityFinal;
+        }
+
+        private void PerformIsMergelNode(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.Merge;
+        }
+
+        private void PerformIsAction(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.Action;
+        }
+
+        private void PerformIsSyncBarHor(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.SyncBarHor;
+        }
+
+        private void PerformIsSyncBarVert(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.SyncBarVert;
+        }
+
+        private void PerformIsEdge(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.Edge;
+        }
+
+        private void PerformIsTimeEvent(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.TimeEvent;
+        }
+
+        private void PerformIsSendSignal(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.SendSignal;
+        }
+
+        private void PerformIsReceiveSignal(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.ReceiveSignal;
+
+        }
         #endregion
 
         #region Properties commands
@@ -168,7 +250,10 @@ namespace UMLaut.ViewModel
             {
                 try
                 {
-                    var point = e.GetPosition((IInputElement)e.Source);
+                    if (toolboxValue != 0) {
+                        var point = e.GetPosition((IInputElement)e.Source);
+                        Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, Model.Enum.EShape.Action)));
+                    }
                 }
                 catch (Exception)
                 {
@@ -176,6 +261,8 @@ namespace UMLaut.ViewModel
                 }
             }
         }
+
+        #endregion
         #endregion
     }
 }

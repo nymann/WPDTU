@@ -10,17 +10,31 @@
              xmlns:drw="clr-namespace:UMLaut.View.Drawable"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
-    
-    <!--<UserControl.Resources>
+   
+    <UserControl.Resources>
         <DataTemplate DataType="{x:Type vm:LineViewModel}">
             <drw:LineUserControl/>
         </DataTemplate>
-    </UserControl.Resources>-->
+        <DataTemplate DataType="{x:Type vm:ShapeViewModel}">
+            <drw:ActivityUserControl/>
+        </DataTemplate>
+        
+        <CollectionViewSource x:Key="LinesViewSource" Source="{Binding Path=Lines}" />
+        <CollectionViewSource x:Key="ShapesViewSource" Source="{Binding Path=Shapes}" />
+    </UserControl.Resources>
 
-    <ItemsControl ItemsSource="{Binding Drawables}">
+    <ItemsControl>
+
+        <ItemsControl.ItemsSource>
+            <CompositeCollection>
+                <CollectionContainer Collection="{Binding Source={StaticResource LinesViewSource}}" />
+                <CollectionContainer Collection="{Binding Source={StaticResource ShapesViewSource}}" />
+            </CompositeCollection>
+        </ItemsControl.ItemsSource>
+
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <Canvas Background="LightBlue">
+                <Canvas Background="White">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown" >
                             <cmd:EventToCommand Command="{Binding CanvasMouseDown}"
@@ -30,13 +44,16 @@
                 </Canvas>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
-      <ItemsControl.ItemContainerStyle>
+
+        <ItemsControl.ItemContainerStyle>
             <Style TargetType="ContentPresenter">
                 <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
                 <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
             </Style>
+
         </ItemsControl.ItemContainerStyle>
-    <!--   <ItemsControl.ItemTemplate>
+
+        <!--   <ItemsControl.ItemTemplate>
             <DataTemplate>
                 <Label Content="{Binding Path=Content}" />
             </DataTemplate>
