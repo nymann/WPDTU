@@ -92,11 +92,11 @@
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ShapeViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\Drawable\ActivityUserControl.xaml.cs">
+      <DependentUpon>ActivityUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Drawable\LineUserControl.xaml.cs">
       <DependentUpon>LineUserControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Drawable\ShapeUserControl.xaml.cs">
-      <DependentUpon>ShapeUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
       <DependentUpon>Ribbon.xaml</DependentUpon>
@@ -125,11 +125,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\Drawable\LineUserControl.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="View\Drawable\ActivityUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Drawable\ShapeUserControl.xaml">
+    <Page Include="View\Drawable\LineUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

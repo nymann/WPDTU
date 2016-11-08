@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace UMLaut.View.Drawable
 {
     /// <summary>
-    /// Interaction logic for ShapeUserControl.xaml
+    /// Interaction logic for ActivityUserControl.xaml
     /// </summary>
-    public partial class ShapeUserControl : UserControl
+    public partial class ActivityUserControl : UserControl
     {
-        public ShapeUserControl()
+        public ActivityUserControl()
         {
             InitializeComponent();
         }
