@@ -13,7 +13,7 @@ namespace UMLaut.Serialization
     public class Serializer
     {
 
-        public void Serialize(Diagram diagram, string path)
+        public void SerializeToFile(Diagram diagram, string path)
         {
             using (FileStream stream = File.Create(path))
             {

@@ -8,7 +8,13 @@ namespace UMLaut.Model.Enum
 {
     public enum EShape
     {
-        Circle,
-        Square
+        Activity,
+        Initial,
+        FlowFinal,
+        ActivityFinal,
+        Decision,
+        Merge,
+        Fork,
+        Join
     }
 }

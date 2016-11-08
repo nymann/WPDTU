@@ -13,25 +13,15 @@ using UMLaut.Serialization;
 
 namespace UMLaut.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : BaseViewModel
     {
+        #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
         public CompositeCollection Drawables { get; set; }
+        #endregion
 
-
+        #region Constructor
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
@@ -51,7 +41,11 @@ namespace UMLaut.ViewModel
             this.ZoomIn = new RelayCommand<object>(this.PerformZoomIn);
             this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
             this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
+            this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
         }
+        #endregion
+        
+        #region ICommands
 
         public ICommand LaunchNewInstance { get; set; }
         public ICommand OpenFile { get; set; }
@@ -63,6 +57,11 @@ namespace UMLaut.ViewModel
         public ICommand ZoomIn { get; set; }
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
+        public ICommand CanvasMouseDown { get; set; }
+
+        #endregion
+
+        #region Ribbon commands
 
         private void PerformLaunchNewInstance(object obj)
         {
@@ -75,11 +74,19 @@ namespace UMLaut.ViewModel
             OpenFileDialog openFileDialog = new OpenFileDialog();
             Deserializer deserializer = new Deserializer();
 
-            if(openFileDialog.ShowDialog() == true)
+            try
             {
-                var path = openFileDialog.FileName;
-                deserializer.DeserializeFromFile(path);
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    var path = openFileDialog.FileName;
+                    deserializer.DeserializeFromFile(path);
+                }
             }
+            catch (Exception e)
+            {
+                System.Windows.MessageBox.Show("Der opstod en fejl.");
+            }
+
         }
 
         private void PerformSaveFile(object obj)
@@ -92,12 +99,12 @@ namespace UMLaut.ViewModel
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     var path = saveFileDialog.FileName;
-                    serializer.Serialize(Diagram.Instance, path);
+                    serializer.SerializeToFile(Diagram.Instance, path);
                 }
             }
             else
             {
-                serializer.Serialize(Diagram.Instance, Diagram.Instance.FilePath);
+                serializer.SerializeToFile(Diagram.Instance, Diagram.Instance.FilePath);
             }
         }
         
@@ -109,7 +116,7 @@ namespace UMLaut.ViewModel
             if (saveFileDialog.ShowDialog() == true)
             {
                 var path = saveFileDialog.FileName;
-                serializer.Serialize(Diagram.Instance, path);
+                serializer.SerializeToFile(Diagram.Instance, path);
             }
         }
 
@@ -144,5 +151,31 @@ namespace UMLaut.ViewModel
         {
             throw new NotImplementedException();
         }
+        #endregion
+
+        #region Toolbox commands
+        #endregion
+
+        #region Properties commands
+        #endregion
+
+        #region Canvas commands
+
+
+        private void PerformCanvasMouseDown(MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                try
+                {
+                    var point = e.GetPosition((IInputElement)e.Source);
+                }
+                catch (Exception)
+                {
+                    System.Windows.MessageBox.Show("Der opstod en fejl.");
+                }
+            }
+        }
+        #endregion
     }
 }

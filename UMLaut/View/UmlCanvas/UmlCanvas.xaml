@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UMLaut.View.UmlCanvas"
+             xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:vm="clr-namespace:UMLaut.ViewModel"
              xmlns:drw="clr-namespace:UMLaut.View.Drawable"
              mc:Ignorable="d" 
@@ -18,7 +20,14 @@
     <ItemsControl ItemsSource="{Binding Drawables}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <Canvas Background="LightBlue"/>
+                <Canvas Background="LightBlue">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDown" >
+                            <cmd:EventToCommand Command="{Binding CanvasMouseDown}"
+                                PassEventArgsToCommand="True" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Canvas>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
       <ItemsControl.ItemContainerStyle>
