@@ -18,6 +18,8 @@ namespace UMLaut.ViewModel
     {
         public Model.Enum.EShape toolboxValue;
 
+        private readonly Diagram _diagram = new Diagram();
+
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
@@ -123,33 +125,22 @@ namespace UMLaut.ViewModel
 
         private void PerformSaveFile(object obj)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
             Serializer serializer = new Serializer();
 
-            if (Diagram.Instance.FilePath == null)
+            if (String.IsNullOrEmpty(_diagram.FilePath))
             {
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    var path = saveFileDialog.FileName;
-                    serializer.SerializeToFile(Diagram.Instance, path);
-                }
+                ShowSaveDialogAndSetDiagramFilePath(_diagram);
             }
-            else
-            {
-                serializer.SerializeToFile(Diagram.Instance, Diagram.Instance.FilePath);
-            }
+
+           serializer.SerializeToFile(_diagram);
         }
-        
+
         private void PerformSaveFileAs(object obj)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
             Serializer serializer = new Serializer();
+            ShowSaveDialogAndSetDiagramFilePath(_diagram);
+            serializer.SerializeToFile(_diagram);
 
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                var path = saveFileDialog.FileName;
-                serializer.SerializeToFile(Diagram.Instance, path);
-            }
         }
 
         private void PerformDuplicateShape(object obj)
@@ -264,5 +255,18 @@ namespace UMLaut.ViewModel
 
         #endregion
         #endregion
+
+
+        private void ShowSaveDialogAndSetDiagramFilePath(Diagram diagram)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                diagram.FilePath = saveFileDialog.FileName;
+            }
+        }
     }
+
+
 }
