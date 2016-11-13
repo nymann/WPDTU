@@ -13,9 +13,9 @@ namespace UMLaut.Serialization
     public class Serializer
     {
 
-        public void Serialize(Diagram diagram, string path)
+        public void SerializeToFile(Diagram diagram)
         {
-            using (FileStream stream = File.Create(path))
+            using (FileStream stream = File.Create(diagram.FilePath))
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(Diagram));
                 serializer.Serialize(stream, diagram);

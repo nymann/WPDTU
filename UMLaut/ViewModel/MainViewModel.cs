@@ -10,39 +10,27 @@ using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 using UMLaut.Model.Implementation;
 using UMLaut.Serialization;
+using UMLaut.Model;
 
 namespace UMLaut.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
     public class MainViewModel : BaseViewModel
     {
-        public ObservableCollection<LineViewModel> Lines {get; set;}
-        public ObservableCollection<ShapeViewModel> Shapes { get; set; }
-
-        public CompositeCollection Drawables { get; set; }
-
         public Model.Enum.EShape toolboxValue;
 
+        private readonly Diagram _diagram = new Diagram();
 
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
+        #region Collections
+        public ObservableCollection<LineViewModel> Lines {get; set;}
+        public ObservableCollection<ShapeViewModel> Shapes { get; set; }
+        #endregion
+    
+        #region Constructor
+
         public MainViewModel()
         {
             Lines = new ObservableCollection<LineViewModel>();
             Shapes = new ObservableCollection<ShapeViewModel>();
-            Drawables = new CompositeCollection(){Shapes, Lines};
 
             this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
             this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
@@ -55,9 +43,7 @@ namespace UMLaut.ViewModel
             this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
             this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
 
-            /// <summary>
-            /// Toolbox buttons
-            /// </summary>
+            this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
 
             this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
             this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
@@ -69,7 +55,13 @@ namespace UMLaut.ViewModel
             this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
             this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
             this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
+
         }
+        #endregion
+
+        #region ICommands
+
+        #region Ribbon ICommands
 
 
         public ICommand LaunchNewInstance { get; set; }
@@ -82,10 +74,11 @@ namespace UMLaut.ViewModel
         public ICommand ZoomIn { get; set; }
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
+        public ICommand CanvasMouseDown { get; set; }
+        #endregion
 
-        /// <summary>
-        /// Toolbox buttons
-        /// </summary>
+
+        #region Toolbox ICommands
 
         public ICommand IsInitialNode { get; set; }
         public ICommand IsFinalNode { get; set; }
@@ -97,7 +90,12 @@ namespace UMLaut.ViewModel
         public ICommand IsTimeEvent { get; set; }
         public ICommand IsSendSignal { get; set; }
         public ICommand IsReceiveSignal { get; set; }
+        #endregion
 
+        #endregion
+
+        #region Commands
+        #region Ribbon commands
 
         private void PerformLaunchNewInstance(object obj)
         {
@@ -110,49 +108,44 @@ namespace UMLaut.ViewModel
             OpenFileDialog openFileDialog = new OpenFileDialog();
             Deserializer deserializer = new Deserializer();
 
-            if(openFileDialog.ShowDialog() == true)
+            try
             {
-                var path = openFileDialog.FileName;
-                deserializer.DeserializeFromFile(path);
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    var path = openFileDialog.FileName;
+                    deserializer.DeserializeFromFile(path);
+                }
             }
+            catch (Exception)
+            {
+                System.Windows.MessageBox.Show("Der opstod en fejl.");
+            }
+
         }
 
         private void PerformSaveFile(object obj)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
             Serializer serializer = new Serializer();
 
-            if (Diagram.Instance.FilePath == null)
+            if (String.IsNullOrEmpty(_diagram.FilePath))
             {
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    var path = saveFileDialog.FileName;
-                    serializer.Serialize(Diagram.Instance, path);
-                }
+                ShowSaveDialogAndSetDiagramFilePath(_diagram);
             }
-            else
-            {
-                serializer.Serialize(Diagram.Instance, Diagram.Instance.FilePath);
-            }
+
+           serializer.SerializeToFile(_diagram);
         }
-        
+
         private void PerformSaveFileAs(object obj)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
             Serializer serializer = new Serializer();
+            ShowSaveDialogAndSetDiagramFilePath(_diagram);
+            serializer.SerializeToFile(_diagram);
 
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                var path = saveFileDialog.FileName;
-                serializer.Serialize(Diagram.Instance, path);
-            }
         }
 
         private void PerformDuplicateShape(object obj)
         {
-            //Lines.Add(new LineViewModel());
-
-            Drawables.Add(new LineViewModel());
+            throw new NotImplementedException();
         }
 
         private void PerformDeleteShape(object obj)
@@ -179,25 +172,24 @@ namespace UMLaut.ViewModel
         {
             throw new NotImplementedException();
         }
+        #endregion
 
-        /// <summary>
-        /// Toolbox buttons
-        /// </summary>
+        #region Toolbox commands
 
         public void PerformIsInitialNode(object obj)
         {
-            toolboxValue = Model.Enum.EShape.InitialNode;
+            toolboxValue = Model.Enum.EShape.Initial;
         }
 
 
         private void PerformIsFinalNode(object obj)
         {
-            toolboxValue = Model.Enum.EShape.FinalNode;
+            toolboxValue = Model.Enum.EShape.ActivityFinal;
         }
 
         private void PerformIsMergelNode(object obj)
         {
-            toolboxValue = Model.Enum.EShape.MergeNode;
+            toolboxValue = Model.Enum.EShape.Merge;
         }
 
         private void PerformIsAction(object obj)
@@ -235,6 +227,46 @@ namespace UMLaut.ViewModel
             toolboxValue = Model.Enum.EShape.ReceiveSignal;
 
         }
+        #endregion
 
+        #region Properties commands
+        #endregion
+
+        #region Canvas commands
+
+
+        private void PerformCanvasMouseDown(MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                try
+                {
+                    if (toolboxValue != 0) {
+                        var point = e.GetPosition((IInputElement)e.Source);
+                        Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, Model.Enum.EShape.Action)));
+                    }
+                }
+                catch (Exception)
+                {
+                    System.Windows.MessageBox.Show("Der opstod en fejl.");
+                }
+            }
+        }
+
+        #endregion
+        #endregion
+
+
+        private void ShowSaveDialogAndSetDiagramFilePath(Diagram diagram)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                diagram.FilePath = saveFileDialog.FileName;
+            }
+        }
     }
+
+
 }

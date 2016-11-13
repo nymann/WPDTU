@@ -8,17 +8,19 @@ namespace UMLaut.Model.Enum
 {
     public enum EShape
     {
-        //Circle,
-        //Square,
-        InitialNode,
-        FinalNode,
-        MergeNode,
         Action,
+        Initial,
+        FlowFinal,
+        ActivityFinal,
+        Decision,
+        Merge,
+        Fork,
+        Join,
         SyncBarHor,
         SyncBarVert,
-        Edge,
         TimeEvent,
         SendSignal,
-        ReceiveSignal
+        ReceiveSignal,
+        Edge
     }
 }
