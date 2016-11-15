@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -12,6 +13,8 @@ using UMLaut.Model.Implementation;
 using UMLaut.Serialization;
 using UMLaut.Model;
 using System.Windows.Controls;
+using UMLaut.UndoRedo;
+using ICommand = System.Windows.Input.ICommand;
 
 namespace UMLaut.ViewModel
 {
@@ -45,6 +48,9 @@ namespace UMLaut.ViewModel
             this.ZoomIn = new RelayCommand<object>(this.PerformZoomIn);
             this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
             this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
+            this.Undo = new RelayCommand<object>(this.PerformUndo);
+            this.Redo = new RelayCommand<object>(this.PerformRedo);
+
 
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
 
@@ -58,14 +64,12 @@ namespace UMLaut.ViewModel
             this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
             this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
             this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
-
         }
         #endregion
 
         #region ICommands
 
         #region Ribbon ICommands
-
 
         public ICommand LaunchNewInstance { get; set; }
         public ICommand OpenFile { get; set; }
@@ -78,6 +82,9 @@ namespace UMLaut.ViewModel
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
         public ICommand CanvasMouseDown { get; set; }
+        public ICommand Undo { get; set; }
+        public ICommand Redo { get; set; }
+
         #endregion
 
 
@@ -153,7 +160,15 @@ namespace UMLaut.ViewModel
 
         private void PerformDeleteShape(object obj)
         {
-            throw new NotImplementedException();
+            // Temporary solution, until we can set active shape.
+            if (Shapes.Count > 0)
+            {
+                IUndoRedoCommand cmd = new DeleteCommand();
+                Shapes.Remove(Shapes.Last());
+                UndoRedo.UndoRedo.InsertInUndoRedo(cmd);
+            }
+            
+            Console.WriteLine("Canvas doesn't contain any shapes."); 
         }
 
         private void PerformTextToShape(object obj)
@@ -175,6 +190,17 @@ namespace UMLaut.ViewModel
         {
             throw new NotImplementedException();
         }
+
+        private void PerformUndo(object obj)
+        {
+            UndoRedo.UndoRedo.Undo(1);
+        }
+
+        private void PerformRedo(object obj)
+        {
+            UndoRedo.UndoRedo.Redo(1);
+        }
+
         #endregion
 
         #region Toolbox commands

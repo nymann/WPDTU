@@ -87,6 +87,10 @@
     <Compile Include="Model\Implementation\UMLShape.cs" />
     <Compile Include="Serialization\Deserializer.cs" />
     <Compile Include="Serialization\Serializer.cs" />
+    <Compile Include="UndoRedo\DeleteCommand.cs" />
+    <Compile Include="UndoRedo\IUndoRedoCommand.cs" />
+    <Compile Include="UndoRedo\MoveShapeCommand.cs" />
+    <Compile Include="UndoRedo\UndoRedo.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -317,6 +321,7 @@
     <Resource Include="Resources\Images\time-event0.png" />
     <Resource Include="Resources\Images\time-event1.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
