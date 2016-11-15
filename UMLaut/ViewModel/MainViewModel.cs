@@ -11,6 +11,7 @@ using UMLaut.Model.Implementation;
 using UMLaut.Serialization;
 using UMLaut.Model;
 using System.Collections.Generic;
+using UMLaut.Resources;
 
 namespace UMLaut.ViewModel
 {
@@ -130,7 +131,7 @@ namespace UMLaut.ViewModel
             }
             catch (Exception)
             {
-                System.Windows.MessageBox.Show("Der opstod en fejl.");
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
             }
 
         }
@@ -165,7 +166,7 @@ namespace UMLaut.ViewModel
             }
            catch (Exception)
             {
-                System.Windows.MessageBox.Show("Der opstod en fejl.");
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
             }
 
         }
@@ -186,8 +187,8 @@ namespace UMLaut.ViewModel
             if(SelectedElement != null)
             {
                 var duplicate = new ShapeViewModel(SelectedElement.Shape);
-                duplicate.X += 30;
-                duplicate.Y += 30;
+                duplicate.X += Constants.DuplicateOffset;
+                duplicate.Y += Constants.DuplicateOffset;
                 Shapes.Add(duplicate);
                 SelectedElement = duplicate;
             }
@@ -319,7 +320,7 @@ namespace UMLaut.ViewModel
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Der opstod en fejl.");
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
                 Console.WriteLine(ex.Message);
             }
         }

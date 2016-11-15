@@ -85,6 +85,7 @@
     <Compile Include="Model\Interface\ILine.cs" />
     <Compile Include="Model\Interface\IShape.cs" />
     <Compile Include="Model\Implementation\UMLShape.cs" />
+    <Compile Include="Resources\Constants.cs" />
     <Compile Include="Serialization\Deserializer.cs" />
     <Compile Include="Serialization\Serializer.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
