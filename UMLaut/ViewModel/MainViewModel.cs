@@ -21,7 +21,7 @@ namespace UMLaut.ViewModel
         private Model.Enum.EShape _toolboxValue;
 
         private readonly Diagram _diagram = new Diagram();
-        private UIElement _selectedElement;
+        private ShapeViewModel _selectedElement;
 
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
@@ -260,6 +260,8 @@ namespace UMLaut.ViewModel
                 var source = e.Source as UIElement;
                 var point = e.GetPosition(source);
 
+ 
+
                 if (_drawingMode)
                 {
                     Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue)));
@@ -271,7 +273,9 @@ namespace UMLaut.ViewModel
                     if (source is Canvas)
                         return;
 
-                    _selectedElement = source as System.Windows.Controls.UserControl;
+                    var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
+                    _selectedElement = shapeVisualElement.DataContext as ShapeViewModel;                                   
+
                 }
             }
             catch (Exception ex)
