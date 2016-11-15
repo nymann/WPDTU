@@ -166,9 +166,12 @@ namespace UMLaut.ViewModel
                 IUndoRedoCommand cmd = new DeleteCommand();
                 Shapes.Remove(Shapes.Last());
                 UndoRedo.UndoRedo.InsertInUndoRedo(cmd);
+                Console.WriteLine(Shapes.Count);
             }
-            
-            Console.WriteLine("Canvas doesn't contain any shapes."); 
+            else
+            {
+                Console.WriteLine("Canvas doesn't contain any shapes. (Shapes.Count == {0}.)", Shapes.Count);
+            }
         }
 
         private void PerformTextToShape(object obj)
@@ -191,15 +194,23 @@ namespace UMLaut.ViewModel
             throw new NotImplementedException();
         }
 
+        #region UndoRedo commands
+        /// <summary>
+        /// Currently won't support multi-level undo (int levels = 1)
+        /// </summary>
         private void PerformUndo(object obj)
         {
             UndoRedo.UndoRedo.Undo(1);
         }
 
+        /// <summary>
+        /// Currently won't support multi-level redo (int levels = 1)
+        /// </summary>
         private void PerformRedo(object obj)
         {
             UndoRedo.UndoRedo.Redo(1);
         }
+        #endregion
 
         #endregion
 

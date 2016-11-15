@@ -14,13 +14,12 @@ namespace UMLaut.UndoRedo
 
         public void Execute()
         {
-            Console.WriteLine("Undo requested.");
+            Console.WriteLine(@"Undo requested.");
         }
 
         public void UnExecute()
         {
-            Console.WriteLine("Redo requested.");
-            
+            Console.WriteLine(@"Redo requested.");            
         }
     }
 }
