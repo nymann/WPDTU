@@ -172,7 +172,7 @@ namespace UMLaut.ViewModel
             // Temporary solution, until we can set active shape.
             if (Shapes.Count > 0)
             {
-                IUndoRedoCommand cmd = new DeleteCommand();
+                IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, Shapes);
                 Shapes.Remove(Shapes.Last()); // TODO:(When active shape is implemented fully then replace with: Shapes.Remove(SelectedElement);)
                 UndoRedo.UndoRedo.InsertInUndoRedo(cmd);
                 Console.WriteLine(Shapes.Count);
