@@ -183,7 +183,14 @@ namespace UMLaut.ViewModel
 
         private void PerformDuplicateShape(object obj)
         {
-            throw new NotImplementedException();
+            if(SelectedElement != null)
+            {
+                var duplicate = new ShapeViewModel(SelectedElement.Shape);
+                duplicate.X += 30;
+                duplicate.Y += 30;
+                Shapes.Add(duplicate);
+                SelectedElement = duplicate;
+            }
         }
 
         private void PerformDeleteShape(object obj)
