@@ -50,6 +50,8 @@ namespace UMLaut.View.Drawable.Selectors
                         return MergeTemplate;
                     case EShape.Fork:
                         return ForkTemplate;
+                    default:
+                        return ActionTemplate;
                 }
             }
 

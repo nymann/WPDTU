@@ -22,6 +22,15 @@ namespace UMLaut.ViewModel
 
         private readonly Diagram _diagram = new Diagram();
         private ShapeViewModel _selectedElement;
+        public ShapeViewModel SelectedElement
+        {
+            get { return _selectedElement; }
+            set
+            {
+                _selectedElement = value;
+                OnPropertyChanged();
+            }
+        }
 
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
@@ -258,24 +267,21 @@ namespace UMLaut.ViewModel
             try
             {
                 var source = e.Source as UIElement;
-                var point = e.GetPosition(source);
-
- 
+                var point = e.GetPosition(source); 
 
                 if (_drawingMode)
                 {
                     Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue)));
                 }
+                else if(IsElementHit(source))
+                {
+                    var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
+                    SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;                                   
+                }
                 else
                 {
-                    if (source == null)
-                        return;
-                    if (source is Canvas)
-                        return;
-
-                    var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
-                    _selectedElement = shapeVisualElement.DataContext as ShapeViewModel;                                   
-
+                    SelectedElement = null;
+                    return;
                 }
             }
             catch (Exception ex)
@@ -297,6 +303,13 @@ namespace UMLaut.ViewModel
             {
                 diagram.FilePath = saveFileDialog.FileName;
             }
+        }
+
+        private bool IsElementHit(UIElement source)
+        {
+            if (source is Canvas || source == null)
+                return false;
+            return true;
         }
     }
 
