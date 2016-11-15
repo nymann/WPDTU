@@ -6,12 +6,11 @@ using GalaSoft.MvvmLight.Command;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Forms;
-using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
-using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using System.Windows.Controls;
 using UMLaut.Model.Implementation;
 using UMLaut.Serialization;
 using UMLaut.Model;
-using System.Windows.Controls;
+using System.Collections.Generic;
 
 namespace UMLaut.ViewModel
 {
@@ -20,7 +19,7 @@ namespace UMLaut.ViewModel
         private bool _drawingMode;
         private Model.Enum.EShape _toolboxValue;
 
-        private readonly Diagram _diagram = new Diagram();
+        private Diagram _diagram = new Diagram();
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
         {
@@ -122,10 +121,11 @@ namespace UMLaut.ViewModel
 
             try
             {
-                if (openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     var path = openFileDialog.FileName;
-                    deserializer.DeserializeFromFile(path);
+                    _diagram = deserializer.DeserializeFromFile(path);
+                    UpdateApplicationStateFromDiagram();
                 }
             }
             catch (Exception)
@@ -135,23 +135,49 @@ namespace UMLaut.ViewModel
 
         }
 
-        private void PerformSaveFile(object obj)
+        private void UpdateApplicationStateFromDiagram()
         {
-            Serializer serializer = new Serializer();
-
-            if (String.IsNullOrEmpty(_diagram.FilePath))
+            foreach(UMLShape umlShape in _diagram.Shapes)
             {
-                ShowSaveDialogAndSetDiagramFilePath(_diagram);
+                Shapes.Add(new ShapeViewModel(umlShape));
+            }
+            foreach(UMLLine umlLine in _diagram.Lines)
+            {
+                Lines.Add(new LineViewModel(umlLine));
             }
 
-           serializer.SerializeToFile(_diagram);
         }
+
+        private void PerformSaveFile(object obj)
+        {
+            try
+            {
+                Serializer serializer = new Serializer();
+
+                if (String.IsNullOrEmpty(_diagram.FilePath))
+                {
+                    if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
+                    {
+                        UpdateDiagramFromApplicationCurrentState();
+                        serializer.SerializeToFile(_diagram);
+                    }
+                }
+            }
+           catch (Exception)
+            {
+                System.Windows.MessageBox.Show("Der opstod en fejl.");
+            }
+
+        }
+
 
         private void PerformSaveFileAs(object obj)
         {
             Serializer serializer = new Serializer();
-            ShowSaveDialogAndSetDiagramFilePath(_diagram);
-            serializer.SerializeToFile(_diagram);
+            if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
+            {
+                serializer.SerializeToFile(_diagram);
+            }
 
         }
 
@@ -295,14 +321,19 @@ namespace UMLaut.ViewModel
         #endregion
 
 
-        private void ShowSaveDialogAndSetDiagramFilePath(Diagram diagram)
+        private bool ShowSaveDialogAndSetDiagramFilePath(Diagram diagram)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.FileName = "*";
+            saveFileDialog.DefaultExt = "ult";
+            saveFileDialog.Filter = "UMLaut Diagram|*.ult";
 
-            if (saveFileDialog.ShowDialog() == true)
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 diagram.FilePath = saveFileDialog.FileName;
+                return true;
             }
+            return false;
         }
 
         private bool IsElementHit(UIElement source)
@@ -310,6 +341,25 @@ namespace UMLaut.ViewModel
             if (source is Canvas || source == null)
                 return false;
             return true;
+        }
+
+        private void UpdateDiagramFromApplicationCurrentState()
+        {
+            List<UMLLine> umlLines = new List<UMLLine>();
+
+            List<UMLShape> umlShapes = new List<UMLShape>();
+
+            foreach (LineViewModel lvm in Lines)
+            {
+                umlLines.Add(lvm.Line);
+            }
+            foreach (ShapeViewModel svm in Shapes)
+            {
+                umlShapes.Add(svm.Shape);
+            }
+
+            _diagram.Lines = umlLines;
+            _diagram.Shapes = umlShapes;
         }
     }
 

@@ -11,7 +11,7 @@ namespace UMLaut.ViewModel
     public class ShapeViewModel : BaseViewModel, IShape
     {
 
-        protected UMLShape Shape { get; }
+        internal UMLShape Shape { get; }
         public ShapeViewModel(UMLShape shape)
         {
             Shape = shape;

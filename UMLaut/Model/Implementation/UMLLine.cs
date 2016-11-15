@@ -10,6 +10,29 @@ namespace UMLaut.Model.Implementation
 {
     public class UMLLine : ILine
     {
+        private UMLLine()
+        {
+
+        }
+        public UMLLine(Guid FromId, Guid ToId)
+        {
+            Type = ELine.Solid;
+            this.FromId = FromId;
+            this.ToId = ToId;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="FromId"></param>
+        /// <param name="ToId"></param>
+        /// <param name="Type"></param>
+        public UMLLine(Guid FromId, Guid ToId, ELine Type)
+        {
+            this.Type = Type;
+            this.FromId = FromId;
+            this.ToId = ToId;
+        }
         /// <summary>
         /// Id of the starting shape
         /// </summary>
@@ -33,24 +56,6 @@ namespace UMLaut.Model.Implementation
         /// </summary>
         /// <param name="FromId"></param>
         /// <param name="ToId"></param>
-        public UMLLine(Guid FromId, Guid ToId)
-        {
-            Type = ELine.Solid;
-            this.FromId = FromId;
-            this.ToId = ToId;
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="FromId"></param>
-        /// <param name="ToId"></param>
-        /// <param name="Type"></param>
-        public UMLLine(Guid FromId, Guid ToId, ELine Type)
-        {
-            this.Type = Type;
-            this.FromId = FromId;
-            this.ToId = ToId;
-        }
     }
 }
