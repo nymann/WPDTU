@@ -21,7 +21,7 @@
         <Grid Grid.Row="0">
             
         <ToolBar x:Name="toolBar" HorizontalAlignment="Stretch" VerticalAlignment="top"  Height="23">
-                <TextBlock x:Name="textBlock" Height="18" TextWrapping="Wrap" Text="Toolbox" VerticalAlignment="Top"/>
+                <TextBlock x:Name="textBlock" Height="18" TextWrapping="Wrap" Text="Værktøjskasse" VerticalAlignment="Top"/>
         </ToolBar>
         </Grid>
         <Grid Grid.Row="1">

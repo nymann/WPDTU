@@ -7,7 +7,7 @@
              xmlns:vm="clr-namespace:UMLaut.ViewModel"
 
              mc:Ignorable="d"
-             d:DesignHeight="210" d:DesignWidth="300">
+             d:DesignHeight="240" d:DesignWidth="300">
 
     <Grid Background="#292929">
         <Grid.Resources>
@@ -37,6 +37,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
         </Grid.RowDefinitions>
 
@@ -45,7 +46,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         
-        <Label Content="Properties"
+        <Label Content="Egenskaber"
                HorizontalAlignment="Center"
                Background="#292929"
                Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
@@ -67,6 +68,9 @@
         
         <Label Content="Tekst"
                Grid.Column="0" Grid.Row="6" />
+        
+        <Label Content="Position"
+               Grid.Column="0" Grid.Row="7" />
 
         <Label Content="{Binding SelectedElement.Type}"
                Grid.Column="1" Grid.Row="1" />
@@ -80,5 +84,8 @@
         <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding SelectedElement.Width}"/>
 
         <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding SelectedElement.Label}"/>
+        
+        <Label Grid.Column="1" Grid.Row="7" Content="{Binding CurrentPosition}"/>
+
     </Grid>
 </UserControl>

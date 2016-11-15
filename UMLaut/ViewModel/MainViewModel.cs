@@ -21,6 +21,8 @@ namespace UMLaut.ViewModel
         private Model.Enum.EShape _toolboxValue;
 
         private Diagram _diagram = new Diagram();
+        private Point _currentPosition;
+
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
         {
@@ -28,6 +30,16 @@ namespace UMLaut.ViewModel
             set
             {
                 _selectedElement = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Point CurrentPosition
+        {
+            get { return _currentPosition; }
+            set
+            {
+                _currentPosition = value;
                 OnPropertyChanged();
             }
         }
@@ -56,6 +68,7 @@ namespace UMLaut.ViewModel
             this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
 
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
+            this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
 
             this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
             this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
@@ -74,8 +87,6 @@ namespace UMLaut.ViewModel
         #region ICommands
 
         #region Ribbon ICommands
-
-
         public ICommand LaunchNewInstance { get; set; }
         public ICommand OpenFile { get; set; }
         public ICommand SaveFile { get; set; }
@@ -86,7 +97,11 @@ namespace UMLaut.ViewModel
         public ICommand ZoomIn { get; set; }
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
+        #endregion
+
+        #region Canvas ICommands
         public ICommand CanvasMouseDown { get; set; }
+        public ICommand CanvasMouseMove { get; set; }
         #endregion
 
 
@@ -294,8 +309,6 @@ namespace UMLaut.ViewModel
         #endregion
 
         #region Canvas commands
-
-
         private void PerformCanvasMouseDown(MouseButtonEventArgs e)
         {
             try
@@ -323,6 +336,11 @@ namespace UMLaut.ViewModel
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
                 Console.WriteLine(ex.Message);
             }
+        }
+        private void PerformCanvasMouseMove(System.Windows.Input.MouseEventArgs e)
+        {
+            var source = e.Source as UIElement;
+            CurrentPosition = e.GetPosition(source);
         }
 
         #endregion

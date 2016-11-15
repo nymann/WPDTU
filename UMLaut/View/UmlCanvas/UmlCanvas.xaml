@@ -89,6 +89,10 @@
                             <cmd:EventToCommand Command="{Binding CanvasMouseWheel}"
                                 PassEventArgsToCommand="True" />
                         </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseMove" >
+                            <cmd:EventToCommand Command="{Binding CanvasMouseMove}"
+                                PassEventArgsToCommand="True" />
+                        </i:EventTrigger>
                     </i:Interaction.Triggers>
                 </Canvas>
             </ItemsPanelTemplate>
