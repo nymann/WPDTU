@@ -11,14 +11,17 @@ using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 using UMLaut.Model.Implementation;
 using UMLaut.Serialization;
 using UMLaut.Model;
+using System.Windows.Controls;
 
 namespace UMLaut.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        public Model.Enum.EShape toolboxValue;
+        private bool _drawingMode;
+        private Model.Enum.EShape _toolboxValue;
 
         private readonly Diagram _diagram = new Diagram();
+        private UIElement _selectedElement;
 
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
@@ -176,55 +179,70 @@ namespace UMLaut.ViewModel
 
         #region Toolbox commands
 
+        public void PerformFreeHand(object obj)
+        {
+            _drawingMode = false;
+        }
+
         public void PerformIsInitialNode(object obj)
         {
-            toolboxValue = Model.Enum.EShape.Initial;
+            _drawingMode = false; // for testing - should be true
+            _toolboxValue = Model.Enum.EShape.Initial;
         }
 
 
         private void PerformIsFinalNode(object obj)
         {
-            toolboxValue = Model.Enum.EShape.ActivityFinal;
+            _drawingMode = true;
+            _toolboxValue = Model.Enum.EShape.ActivityFinal;
         }
 
         private void PerformIsMergelNode(object obj)
         {
-            toolboxValue = Model.Enum.EShape.Merge;
+            _drawingMode = true;
+            _toolboxValue = Model.Enum.EShape.Merge;
         }
 
         private void PerformIsAction(object obj)
         {
-            toolboxValue = Model.Enum.EShape.Action;
+            _drawingMode = true;
+            _toolboxValue = Model.Enum.EShape.Action;
         }
 
         private void PerformIsSyncBarHor(object obj)
         {
-            toolboxValue = Model.Enum.EShape.SyncBarHor;
+            _drawingMode = true;
+            _toolboxValue = Model.Enum.EShape.SyncBarHor;
         }
 
         private void PerformIsSyncBarVert(object obj)
         {
-            toolboxValue = Model.Enum.EShape.SyncBarVert;
+            _drawingMode = true;
+            _toolboxValue = Model.Enum.EShape.SyncBarVert;
         }
 
         private void PerformIsEdge(object obj)
         {
-            toolboxValue = Model.Enum.EShape.Edge;
+            _drawingMode = true;
+            _toolboxValue = Model.Enum.EShape.Edge;
         }
 
         private void PerformIsTimeEvent(object obj)
         {
-            toolboxValue = Model.Enum.EShape.TimeEvent;
+            _drawingMode = true;
+            _toolboxValue = Model.Enum.EShape.TimeEvent;
         }
 
         private void PerformIsSendSignal(object obj)
         {
-            toolboxValue = Model.Enum.EShape.SendSignal;
+            _drawingMode = true;
+            _toolboxValue = Model.Enum.EShape.SendSignal;
         }
 
         private void PerformIsReceiveSignal(object obj)
         {
-            toolboxValue = Model.Enum.EShape.ReceiveSignal;
+            _drawingMode = true;
+            _toolboxValue = Model.Enum.EShape.ReceiveSignal;
 
         }
         #endregion
@@ -237,19 +255,29 @@ namespace UMLaut.ViewModel
 
         private void PerformCanvasMouseDown(MouseButtonEventArgs e)
         {
-            if (e.ButtonState == MouseButtonState.Pressed)
+            try
             {
-                try
+                var source = e.Source as UIElement;
+                var point = e.GetPosition(source);
+
+                if (_drawingMode)
                 {
-                    if (toolboxValue != 0) {
-                        var point = e.GetPosition((IInputElement)e.Source);
-                        Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, Model.Enum.EShape.Action)));
-                    }
+                    Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue)));
                 }
-                catch (Exception)
+                else
                 {
-                    System.Windows.MessageBox.Show("Der opstod en fejl.");
+                    if (source == null)
+                        return;
+                    if (source is Canvas)
+                        return;
+
+                    _selectedElement = source as System.Windows.Controls.UserControl;
                 }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Der opstod en fejl.");
+                Console.WriteLine(ex.Message);
             }
         }
 
