@@ -102,6 +102,8 @@
     <Compile Include="View\Drawable\Line\LineUserControl.xaml.cs">
       <DependentUpon>LineUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Drawable\Selectors\LineDataTemplateSelector.cs" />
+    <Compile Include="View\Drawable\Selectors\ShapeDataTemplateSelector.cs" />
     <Compile Include="View\Drawable\Shape\ActivityFinalUserControl.xaml.cs">
       <DependentUpon>ActivityFinalUserControl.xaml</DependentUpon>
     </Compile>

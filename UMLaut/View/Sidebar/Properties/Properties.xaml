@@ -4,8 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UMLaut.View.Sidebar.Properties"
+             xmlns:vm="clr-namespace:UMLaut.ViewModel"
+
              mc:Ignorable="d"
-             d:DesignHeight="189.053" d:DesignWidth="300">
+             d:DesignHeight="210" d:DesignWidth="300">
+
     <Grid Background="#292929">
         <Grid.Resources>
             <Style TargetType="{x:Type Label}">
@@ -16,6 +19,14 @@
                 <Setter Property="Foreground" Value="#f1f1f1"/>
                 <Setter Property="FontSize" Value="12"/>
             </Style>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="BorderBrush" Value="#292929" />
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Background" Value="#252526"/>
+                <Setter Property="FontFamily" Value="Lucida Sans Unicode"/>
+                <Setter Property="Foreground" Value="#f1f1f1"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Style>           
         </Grid.Resources>
 
         <Grid.RowDefinitions>
@@ -25,6 +36,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -40,32 +53,32 @@
         <Label Content="Type"
                Grid.Column="0" Grid.Row="1" />
 
-        <Label Content="LocX"
+        <Label Content="X"
                Grid.Column="0" Grid.Row="2" />
 
-        <Label Content="LocY"
+        <Label Content="Y"
                Grid.Column="0" Grid.Row="3" />
 
-        <Label Content="SizeX"
+        <Label Content="Højde"
                Grid.Column="0" Grid.Row="4" />
 
-        <Label Content="SizeY"
+        <Label Content="Bredde"
                Grid.Column="0" Grid.Row="5" />
+        
+        <Label Content="Tekst"
+               Grid.Column="0" Grid.Row="6" />
 
-        <!--Dummy Variables-->
-        <Label Content="Rectangle"
+        <Label Content="{Binding SelectedElement.Type}"
                Grid.Column="1" Grid.Row="1" />
 
-        <Label Content="30"
-               Grid.Column="1" Grid.Row="2" />
+        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=SelectedElement.X}"/>
 
-        <Label Content="20"
-               Grid.Column="1" Grid.Row="3" />
+        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedElement.Y}"/>
 
-        <Label Content="420 px"
-               Grid.Column="1" Grid.Row="4" />
+        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SelectedElement.Height}"/>
 
-        <Label Content="10 px"
-               Grid.Column="1" Grid.Row="5" />
+        <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding SelectedElement.Width}"/>
+
+        <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding SelectedElement.Label}"/>
     </Grid>
 </UserControl>
