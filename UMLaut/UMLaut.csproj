@@ -119,6 +119,7 @@
     <Compile Include="View\Drawable\Shape\MergeUserControl.xaml.cs">
       <DependentUpon>MergeUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\InputBindingManager.cs" />
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
       <DependentUpon>Ribbon.xaml</DependentUpon>
     </Compile>
