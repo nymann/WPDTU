@@ -80,7 +80,23 @@
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <Canvas Background="White">
-                    <i:Interaction.Triggers>
+                    <!-- Grid background. A little overwhelming -->
+                    <!--<Canvas.Background>
+                        <DrawingBrush TileMode="Tile" Viewport="-10,-10,40,40" 
+                                     ViewportUnits="Absolute">
+                            <DrawingBrush.Drawing>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Geometry>
+                                        <RectangleGeometry Rect="0,0,50,50"/>
+                                    </GeometryDrawing.Geometry>
+                                    <GeometryDrawing.Pen>
+                                        <Pen Brush="Gray" Thickness="1"/>
+                                    </GeometryDrawing.Pen>
+                                </GeometryDrawing>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.Background>-->
+                <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown" >
                             <cmd:EventToCommand Command="{Binding CanvasMouseDown}"
                                 PassEventArgsToCommand="True" />
