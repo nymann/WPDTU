@@ -8,17 +8,20 @@ using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Controls;
 using UMLaut.Model.Implementation;
-using UMLaut.Serialization;
+using UMLaut.Services;
 using UMLaut.Model;
 using System.Collections.Generic;
 using UMLaut.Resources;
+using System.Windows.Documents;
+using UMLaut.Services.Adorners;
+using UMLaut.Model.Enum;
 
 namespace UMLaut.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
         private bool _drawingMode;
-        private Model.Enum.EShape _toolboxValue;
+        private EShape _toolboxValue;
 
         private Diagram _diagram = new Diagram();
         private Point _currentPosition;
@@ -71,15 +74,19 @@ namespace UMLaut.ViewModel
             this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
 
             this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
-            this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
-            this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
-            this.IsAction = new RelayCommand<object>(this.PerformIsAction);
-            this.IsSyncBarHor = new RelayCommand<object>(this.PerformIsSyncBarHor);
-            this.IsSyncBarVert = new RelayCommand<object>(this.PerformIsSyncBarVert);
-            this.IsEdge = new RelayCommand<object>(this.PerformIsEdge);
-            this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
-            this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
-            this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
+            //this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
+            //this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
+            //this.IsAction = new RelayCommand<object>(this.PerformIsAction);
+            //this.IsSyncBarHor = new RelayCommand<object>(this.PerformIsSyncBarHor);
+            //this.IsSyncBarVert = new RelayCommand<object>(this.PerformIsSyncBarVert);
+            //this.IsEdge = new RelayCommand<object>(this.PerformIsEdge);
+            //this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
+            //this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
+            //this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
+
+            ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
+            LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
+
 
         }
         #endregion
@@ -106,17 +113,19 @@ namespace UMLaut.ViewModel
 
 
         #region Toolbox ICommands
+        public ICommand ShapeToolboxSelection { get; set; }
+        public ICommand LineToolboxSelection { get; set; }
 
         public ICommand IsInitialNode { get; set; }
-        public ICommand IsFinalNode { get; set; }
-        public ICommand IsMergeNode { get; set; }
-        public ICommand IsAction { get; set; }
-        public ICommand IsSyncBarHor { get; set; }
-        public ICommand IsSyncBarVert { get; set; }
-        public ICommand IsEdge { get; set; }
-        public ICommand IsTimeEvent { get; set; }
-        public ICommand IsSendSignal { get; set; }
-        public ICommand IsReceiveSignal { get; set; }
+        //public ICommand IsFinalNode { get; set; }
+        //public ICommand IsMergeNode { get; set; }
+        //public ICommand IsAction { get; set; }
+        //public ICommand IsSyncBarHor { get; set; }
+        //public ICommand IsSyncBarVert { get; set; }
+        //public ICommand IsEdge { get; set; }
+        //public ICommand IsTimeEvent { get; set; }
+        //public ICommand IsSendSignal { get; set; }
+        //public ICommand IsReceiveSignal { get; set; }
         #endregion
 
         #endregion
@@ -236,11 +245,33 @@ namespace UMLaut.ViewModel
         #endregion
 
         #region Toolbox commands
+        
+        // TODO Should be done in one function insted of split onto two.
 
-        public void PerformFreeHand(object obj)
+        /// <summary>
+        /// Set the shape selected in the toolbox
+        /// </summary>
+        /// <param name="shape"></param>
+        public void SetShapeToolboxSelection(EShape shape)
         {
-            _drawingMode = false;
+            _drawingMode = true;
+            _toolboxValue = shape;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="line"></param>
+        public void SetLineToolboxSelection(ELine line)
+        {
+            _drawingMode = true;
+            //_toolboxValue = line as Enum;
+        }
+
+        //public void PerformFreeHand(object obj)
+        //{
+        //    _drawingMode = false;
+        //}
 
         public void PerformIsInitialNode(object obj)
         {
@@ -249,60 +280,60 @@ namespace UMLaut.ViewModel
         }
 
 
-        private void PerformIsFinalNode(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.ActivityFinal;
-        }
+        //private void PerformIsFinalNode(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.ActivityFinal;
+        //}
 
-        private void PerformIsMergelNode(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.Merge;
-        }
+        //private void PerformIsMergelNode(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.Merge;
+        //}
 
-        private void PerformIsAction(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.Action;
-        }
+        //private void PerformIsAction(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.Action;
+        //}
 
-        private void PerformIsSyncBarHor(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.SyncBarHor;
-        }
+        //private void PerformIsSyncBarHor(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.SyncBarHor;
+        //}
 
-        private void PerformIsSyncBarVert(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.SyncBarVert;
-        }
+        //private void PerformIsSyncBarVert(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.SyncBarVert;
+        //}
 
-        private void PerformIsEdge(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.Edge;
-        }
+        //private void PerformIsEdge(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.Edge;
+        //}
 
-        private void PerformIsTimeEvent(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.TimeEvent;
-        }
+        //private void PerformIsTimeEvent(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.TimeEvent;
+        //}
 
-        private void PerformIsSendSignal(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.SendSignal;
-        }
+        //private void PerformIsSendSignal(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.SendSignal;
+        //}
 
-        private void PerformIsReceiveSignal(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.ReceiveSignal;
+        //private void PerformIsReceiveSignal(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.ReceiveSignal;
 
-        }
+        //}
         #endregion
 
         #region Properties commands
@@ -316,6 +347,7 @@ namespace UMLaut.ViewModel
                 var source = e.Source as UIElement;
                 var point = e.GetPosition(source); 
 
+                // TODO: The behavior is kinda fishy..
                 if (_drawingMode)
                 {
                     Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue)));
@@ -323,10 +355,13 @@ namespace UMLaut.ViewModel
                 else if(IsElementHit(source))
                 {
                     var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
-                    SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;                                   
+                    SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
+                    //AddAdorner(source);
+                    //SelectElement(e.MouseDevice.Target, source);                              
                 }
                 else
                 {
+                    //RemoveAdorner(source);
                     SelectedElement = null;
                     return;
                 }
@@ -362,11 +397,40 @@ namespace UMLaut.ViewModel
             return false;
         }
 
+        private void SelectElement(IInputElement target, UIElement element)
+        {
+            var shapeVisualElement = (FrameworkElement)target;
+            SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
+            AddAdorner(element);
+        }
+
+        private void DeselectElement(UIElement element)
+        {
+            
+        }
+
         private bool IsElementHit(UIElement source)
         {
-            if (source is Canvas || source == null)
-                return false;
-            return true;
+            //if (source is Canvas || source == null)
+            //    return false;
+            //return true;
+            Console.Write(!(source is Canvas));
+            Console.Write(!(source is Canvas) || source == null);
+            return !(source is Canvas) || source == null;
+        }
+
+        private void AddAdorner(UIElement element)
+        {
+            AdornerLayer.GetAdornerLayer(element).Add(new BasicAdorner(element));
+        }
+
+        private void RemoveAdorner(UIElement element)
+        {
+            try {
+                Adorner[] adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
+                AdornerLayer.GetAdornerLayer(element).Remove(adorners[0]);
+           } catch { }
+
         }
 
         private void UpdateDiagramFromApplicationCurrentState()

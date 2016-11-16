@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UMLaut.View.Sidebar.Toolbox"
+             xmlns:shapeEnums="clr-namespace:UMLaut.Model.Enum"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="250">
     <UserControl.Resources>
@@ -55,7 +56,7 @@
                         </RadioButton>
                     </Grid>
                     <Grid Grid.Row="0" Grid.Column="1">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFinalNode" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsFinalNode}">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFinalNode" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static shapeEnums:EShape.ActivityFinal}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -68,7 +69,7 @@
                         </RadioButton>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="0">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbMerge" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsMergeNode}">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbMerge" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static shapeEnums:EShape.Merge}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -81,7 +82,7 @@
                         </RadioButton>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbAction" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsAction}">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbAction" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static shapeEnums:EShape.Action}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -94,7 +95,7 @@
                         </RadioButton>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="0">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFJHori" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsSyncBarHor}">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFJHori" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static shapeEnums:EShape.SyncBarHor}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -107,7 +108,7 @@
                         </RadioButton>
                     </Grid>
                     <Grid Grid.Row="2" Grid.Column="1">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFJVert" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsSyncBarVert}">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFJVert" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static shapeEnums:EShape.SyncBarVert}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -120,7 +121,7 @@
                         </RadioButton>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="0">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbEdge" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsEdge}">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbEdge" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static shapeEnums:EShape.Edge}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -133,7 +134,7 @@
                         </RadioButton>
                     </Grid>
                     <Grid Grid.Row="3" Grid.Column="1">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbTimeEvent" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsTimeEvent}">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbTimeEvent" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static shapeEnums:EShape.TimeEvent}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -146,7 +147,7 @@
                         </RadioButton>
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="0">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbSendSignal" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsSendSignal}">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbSendSignal" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static shapeEnums:EShape.SendSignal}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -159,7 +160,7 @@
                         </RadioButton>
                     </Grid>
                     <Grid Grid.Row="4" Grid.Column="1">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbReceiveSignal" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsReceiveSignal}">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbReceiveSignal" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static shapeEnums:EShape.ReceiveSignal}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>

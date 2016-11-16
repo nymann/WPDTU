@@ -38,7 +38,7 @@
         <KeyBinding Command="{Binding ZoomOut}" Modifiers="Ctrl" Key="OemMinus"/>
     </Window.InputBindings>
 
-    <Grid x:Name="Main" Background="DarkSlateGray">
+    <Grid x:Name="Main" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
