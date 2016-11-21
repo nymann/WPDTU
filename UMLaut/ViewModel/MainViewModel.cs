@@ -23,6 +23,8 @@ namespace UMLaut.ViewModel
         private bool _drawingMode;
         private Model.Enum.EShape _toolboxValue;
 
+        private UndoRedo.UndoRedo undoRedo;
+
         private readonly Diagram _diagram = new Diagram();
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
@@ -73,6 +75,8 @@ namespace UMLaut.ViewModel
             this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
             this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
             this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
+
+            undoRedo = new UndoRedo.UndoRedo();
         }
         #endregion
 
@@ -176,7 +180,7 @@ namespace UMLaut.ViewModel
                 IUndoRedoCommand cmd = new DeleteCommand(Shapes.Last(), this);
                 Shapes.Remove(Shapes.Last()); // TODO:(When active shape is implemented fully then replace with: Shapes.Remove(SelectedElement);)
 
-                UndoRedo.UndoRedo.InsertInUndoRedo(cmd);
+                undoRedo.InsertInUndoRedo(cmd);
             }
             else
             {
@@ -210,7 +214,7 @@ namespace UMLaut.ViewModel
         /// </summary>
         private void PerformUndo(object obj)
         {
-            UndoRedo.UndoRedo.Undo(1);
+           undoRedo.Undo(1);
         }
 
         /// <summary>
@@ -218,7 +222,7 @@ namespace UMLaut.ViewModel
         /// </summary>
         private void PerformRedo(object obj)
         {
-            UndoRedo.UndoRedo.Redo(1);
+           undoRedo.Redo(1);
         }
         #endregion
 

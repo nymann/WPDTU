@@ -5,16 +5,16 @@ namespace UMLaut.UndoRedo
 {
     public class UndoRedo
     {
-        private static Stack<IUndoRedoCommand> _undoCommands = new Stack<IUndoRedoCommand>();
-        private static Stack<IUndoRedoCommand> _redoCommands = new Stack<IUndoRedoCommand>();
+        private Stack<IUndoRedoCommand> _undoCommands = new Stack<IUndoRedoCommand>();
+        private Stack<IUndoRedoCommand> _redoCommands = new Stack<IUndoRedoCommand>();
 
-        public static EventHandler EnableUndoRedo;
+        public EventHandler EnableUndoRedo;
 
         /// <summary>
         /// Levels refers to how many times you want to redo.
         /// </summary>
         /// <param name="levels"></param>
-        public static void Redo(int levels)
+        public void Redo(int levels)
         {
             for (var i = 1; i <= levels; i++)
             {
@@ -31,7 +31,7 @@ namespace UMLaut.UndoRedo
         /// Levels refers to how many times you want to Undo.
         /// </summary>
         /// <param name="levels"></param>
-        public static void Undo(int levels)
+        public void Undo(int levels)
         {
             for (var i = 1; i <= levels; i++)
             {
@@ -44,7 +44,7 @@ namespace UMLaut.UndoRedo
             EnableUndoRedo?.Invoke(null, null);
         }
 
-        public static void InsertInUndoRedo(IUndoRedoCommand command)
+        public void InsertInUndoRedo(IUndoRedoCommand command)
         {
             _undoCommands.Push(command);
             _redoCommands.Clear();
