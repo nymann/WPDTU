@@ -50,9 +50,11 @@
 
                 <RibbonGroup Header="Funktioner">
                     <RibbonButton Label="Fortryd"
-                      SmallImageSource="/Resources/Images/undo-16.png"/>
+                      SmallImageSource="/Resources/Images/undo-16.png"
+                      Command="{Binding Undo}"/>
                     <RibbonButton Label="Genskab"
-                      SmallImageSource="/Resources/Images/redo-16.png" />
+                      SmallImageSource="/Resources/Images/redo-16.png"
+                      Command="{Binding Redo}"/>
                     <RibbonButton Label="Dupliker figur"
                       LargeImageSource="/Resources/Images/copy-32.png"
                       SmallImageSource="/Resources/Images/copy-16.png" 
