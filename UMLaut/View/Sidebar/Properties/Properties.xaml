@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:UMLaut.View.Sidebar.Properties"
+             xmlns:b="clr-namespace:UMLaut.View"
              xmlns:vm="clr-namespace:UMLaut.ViewModel"
 
              mc:Ignorable="d"
-             d:DesignHeight="210" d:DesignWidth="300">
+             d:DesignHeight="240" d:DesignWidth="300">
 
     <Grid Background="#292929">
         <Grid.Resources>
@@ -37,6 +38,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
         </Grid.RowDefinitions>
 
@@ -45,7 +47,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         
-        <Label Content="Properties"
+        <Label Content="Egenskaber"
                HorizontalAlignment="Center"
                Background="#292929"
                Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
@@ -67,18 +69,29 @@
         
         <Label Content="Tekst"
                Grid.Column="0" Grid.Row="6" />
+        
+        <Label Content="Position"
+               Grid.Column="0" Grid.Row="7" />
 
         <Label Content="{Binding SelectedElement.Type}"
                Grid.Column="1" Grid.Row="1" />
 
-        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding Path=SelectedElement.X}"/>
+        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedElement.X}" 
+                 b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
 
-        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedElement.Y}"/>
+        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedElement.Y}"
+                 b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
 
-        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SelectedElement.Height}"/>
+        <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SelectedElement.Height}"
+                 b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
 
-        <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding SelectedElement.Width}"/>
+        <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding SelectedElement.Width}"
+                 b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
 
-        <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding SelectedElement.Label}"/>
+        <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding SelectedElement.Label}"
+                 b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
+        
+        <Label Grid.Column="1" Grid.Row="7" Content="{Binding CurrentPosition}"/>
+
     </Grid>
 </UserControl>

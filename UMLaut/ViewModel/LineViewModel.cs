@@ -10,15 +10,55 @@ namespace UMLaut.ViewModel
 {
     public class LineViewModel : BaseViewModel
     {
-
-        private UMLLine _line;
+        internal UMLLine Line { get; }
 
         public LineViewModel(UMLLine line)
         {
-            _line = line;
+            Line = line;
         }
 
-        public ELine Type => _line.Type;
+        public Guid FromId {
+            get
+            {
+                return Line.FromId;
+            }
+            set
+            {
+                Line.FromId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Guid ToId
+        {
+            get
+            {
+                return Line.ToId;
+            }
+            set
+            {
+                Line.ToId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Label {
+            get
+            {
+                return Line.Label;
+            }
+            set
+            {
+                Line.Label = value;
+                OnPropertyChanged();
+            }
+        }
+ 
+        public ELine Type {
+            get {
+                return Line.Type;
+            }
+        }
 
     }
 }

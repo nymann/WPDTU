@@ -5,35 +5,10 @@ namespace UMLaut.Model
 {
     public class UMLShape : IShape
     {
-        /// <summary>
-        /// Id of the shape
-        /// </summary>
-        public Guid Id { get; } = new Guid();
-        /// <summary>
-        /// X position of the shape
-        /// </summary>
-        public double X { get; set; }
-        /// <summary>
-        /// Y Position of the shape
-        /// </summary>
-        public double Y { get; set; }
-        /// <summary>
-        /// Type of the shape, used for determining the UserControl used for drawing the shape
-        /// </summary>
-        public EShape Type { get; set; }
-        /// <summary>
-        /// Height of the shape, defaults to 200
-        /// </summary>
-        public double Height { get; set; }
-        /// <summary>
-        /// Width of the shape, defualts to 200
-        /// </summary>
-        public double Width { get; set; }
-        /// <summary>
-        /// Text of the shape
-        /// </summary>
-        public string Label { get; set; }
+        private UMLShape()
+        {
 
+        }
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -69,6 +44,36 @@ namespace UMLaut.Model
             this.Type = Type;
             Label = "";
         }
+
+        /// <summary>
+        /// Id of the shape
+        /// </summary>
+        public Guid Id { get; } = new Guid();
+        /// <summary>
+        /// X position of the shape
+        /// </summary>
+        public double X { get; set; }
+        /// <summary>
+        /// Y Position of the shape
+        /// </summary>
+        public double Y { get; set; }
+        /// <summary>
+        /// Type of the shape, used for determining the UserControl used for drawing the shape
+        /// </summary>
+        public EShape Type { get; set; }
+        /// <summary>
+        /// Height of the shape, defaults to 200
+        /// </summary>
+        public double Height { get; set; }
+        /// <summary>
+        /// Width of the shape, defualts to 200
+        /// </summary>
+        public double Width { get; set; }
+        /// <summary>
+        /// Text of the shape
+        /// </summary>
+        public string Label { get; set; }
+
 
     }
 }

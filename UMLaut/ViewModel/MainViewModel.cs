@@ -7,25 +7,31 @@ using GalaSoft.MvvmLight.Command;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Forms;
-using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
-using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
+using System.Windows.Controls;
 using UMLaut.Model.Implementation;
-using UMLaut.Serialization;
+using UMLaut.Services;
 using UMLaut.Model;
 using System.Windows.Controls;
 using UMLaut.UndoRedo;
 using ICommand = System.Windows.Input.ICommand;
+using System.Collections.Generic;
+using UMLaut.Resources;
+using System.Windows.Documents;
+using UMLaut.Services.Adorners;
+using UMLaut.Model.Enum;
 
 namespace UMLaut.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
         private bool _drawingMode;
-        private Model.Enum.EShape _toolboxValue;
+        private EShape _toolboxValue;
+
+        private Diagram _diagram = new Diagram();
+        private Point _currentPosition;
 
         private UndoRedo.UndoRedo undoRedo;
 
-        private readonly Diagram _diagram = new Diagram();
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
         {
@@ -33,6 +39,16 @@ namespace UMLaut.ViewModel
             set
             {
                 _selectedElement = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Point CurrentPosition
+        {
+            get { return _currentPosition; }
+            set
+            {
+                _currentPosition = value;
                 OnPropertyChanged();
             }
         }
@@ -64,17 +80,22 @@ namespace UMLaut.ViewModel
 
 
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
+            this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
 
             this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
-            this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
-            this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
-            this.IsAction = new RelayCommand<object>(this.PerformIsAction);
-            this.IsSyncBarHor = new RelayCommand<object>(this.PerformIsSyncBarHor);
-            this.IsSyncBarVert = new RelayCommand<object>(this.PerformIsSyncBarVert);
-            this.IsEdge = new RelayCommand<object>(this.PerformIsEdge);
-            this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
-            this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
-            this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
+            //this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
+            //this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
+            //this.IsAction = new RelayCommand<object>(this.PerformIsAction);
+            //this.IsSyncBarHor = new RelayCommand<object>(this.PerformIsSyncBarHor);
+            //this.IsSyncBarVert = new RelayCommand<object>(this.PerformIsSyncBarVert);
+            //this.IsEdge = new RelayCommand<object>(this.PerformIsEdge);
+            //this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
+            //this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
+            //this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
+
+            ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
+            LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
+
 
             undoRedo = new UndoRedo.UndoRedo();
         }
@@ -83,7 +104,6 @@ namespace UMLaut.ViewModel
         #region ICommands
 
         #region Ribbon ICommands
-
         public ICommand LaunchNewInstance { get; set; }
         public ICommand OpenFile { get; set; }
         public ICommand SaveFile { get; set; }
@@ -94,25 +114,30 @@ namespace UMLaut.ViewModel
         public ICommand ZoomIn { get; set; }
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
+        #endregion
+
+        #region Canvas ICommands
         public ICommand CanvasMouseDown { get; set; }
         public ICommand Undo { get; set; }
         public ICommand Redo { get; set; }
-
+        public ICommand CanvasMouseMove { get; set; }
         #endregion
 
 
         #region Toolbox ICommands
+        public ICommand ShapeToolboxSelection { get; set; }
+        public ICommand LineToolboxSelection { get; set; }
 
         public ICommand IsInitialNode { get; set; }
-        public ICommand IsFinalNode { get; set; }
-        public ICommand IsMergeNode { get; set; }
-        public ICommand IsAction { get; set; }
-        public ICommand IsSyncBarHor { get; set; }
-        public ICommand IsSyncBarVert { get; set; }
-        public ICommand IsEdge { get; set; }
-        public ICommand IsTimeEvent { get; set; }
-        public ICommand IsSendSignal { get; set; }
-        public ICommand IsReceiveSignal { get; set; }
+        //public ICommand IsFinalNode { get; set; }
+        //public ICommand IsMergeNode { get; set; }
+        //public ICommand IsAction { get; set; }
+        //public ICommand IsSyncBarHor { get; set; }
+        //public ICommand IsSyncBarVert { get; set; }
+        //public ICommand IsEdge { get; set; }
+        //public ICommand IsTimeEvent { get; set; }
+        //public ICommand IsSendSignal { get; set; }
+        //public ICommand IsReceiveSignal { get; set; }
         #endregion
 
         #endregion
@@ -133,42 +158,76 @@ namespace UMLaut.ViewModel
 
             try
             {
-                if (openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     var path = openFileDialog.FileName;
-                    deserializer.DeserializeFromFile(path);
+                    _diagram = deserializer.DeserializeFromFile(path);
+                    UpdateApplicationStateFromDiagram();
                 }
             }
             catch (Exception)
             {
-                System.Windows.MessageBox.Show("Der opstod en fejl.");
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+            }
+
+        }
+
+        private void UpdateApplicationStateFromDiagram()
+        {
+            foreach(UMLShape umlShape in _diagram.Shapes)
+            {
+                Shapes.Add(new ShapeViewModel(umlShape));
+            }
+            foreach(UMLLine umlLine in _diagram.Lines)
+            {
+                Lines.Add(new LineViewModel(umlLine));
             }
 
         }
 
         private void PerformSaveFile(object obj)
         {
-            Serializer serializer = new Serializer();
-
-            if (String.IsNullOrEmpty(_diagram.FilePath))
+            try
             {
-                ShowSaveDialogAndSetDiagramFilePath(_diagram);
+                Serializer serializer = new Serializer();
+
+                if (String.IsNullOrEmpty(_diagram.FilePath))
+                {
+                    if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
+                    {
+                        UpdateDiagramFromApplicationCurrentState();
+                        serializer.SerializeToFile(_diagram);
+                    }
+                }
+            }
+           catch (Exception)
+            {
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
             }
 
-           serializer.SerializeToFile(_diagram);
         }
+
 
         private void PerformSaveFileAs(object obj)
         {
             Serializer serializer = new Serializer();
-            ShowSaveDialogAndSetDiagramFilePath(_diagram);
-            serializer.SerializeToFile(_diagram);
+            if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
+            {
+                serializer.SerializeToFile(_diagram);
+            }
 
         }
 
         private void PerformDuplicateShape(object obj)
         {
-            throw new NotImplementedException();
+            if(SelectedElement != null)
+            {
+                var duplicate = new ShapeViewModel(SelectedElement.Shape);
+                duplicate.X += Constants.DuplicateOffset;
+                duplicate.Y += Constants.DuplicateOffset;
+                Shapes.Add(duplicate);
+                SelectedElement = duplicate;
+            }
         }
 
         private void PerformDeleteShape(object obj)
@@ -229,11 +288,33 @@ namespace UMLaut.ViewModel
         #endregion
 
         #region Toolbox commands
+        
+        // TODO Should be done in one function insted of split onto two.
 
-        public void PerformFreeHand(object obj)
+        /// <summary>
+        /// Set the shape selected in the toolbox
+        /// </summary>
+        /// <param name="shape"></param>
+        public void SetShapeToolboxSelection(EShape shape)
         {
-            _drawingMode = false;
+            _drawingMode = true;
+            _toolboxValue = shape;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="line"></param>
+        public void SetLineToolboxSelection(ELine line)
+        {
+            _drawingMode = true;
+            //_toolboxValue = line as Enum;
+        }
+
+        //public void PerformFreeHand(object obj)
+        //{
+        //    _drawingMode = false;
+        //}
 
         public void PerformIsInitialNode(object obj)
         {
@@ -242,68 +323,66 @@ namespace UMLaut.ViewModel
         }
 
 
-        private void PerformIsFinalNode(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.ActivityFinal;
-        }
+        //private void PerformIsFinalNode(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.ActivityFinal;
+        //}
 
-        private void PerformIsMergelNode(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.Merge;
-        }
+        //private void PerformIsMergelNode(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.Merge;
+        //}
 
-        private void PerformIsAction(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.Action;
-        }
+        //private void PerformIsAction(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.Action;
+        //}
 
-        private void PerformIsSyncBarHor(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.SyncBarHor;
-        }
+        //private void PerformIsSyncBarHor(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.SyncBarHor;
+        //}
 
-        private void PerformIsSyncBarVert(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.SyncBarVert;
-        }
+        //private void PerformIsSyncBarVert(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.SyncBarVert;
+        //}
 
-        private void PerformIsEdge(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.Edge;
-        }
+        //private void PerformIsEdge(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.Edge;
+        //}
 
-        private void PerformIsTimeEvent(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.TimeEvent;
-        }
+        //private void PerformIsTimeEvent(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.TimeEvent;
+        //}
 
-        private void PerformIsSendSignal(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.SendSignal;
-        }
+        //private void PerformIsSendSignal(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.SendSignal;
+        //}
 
-        private void PerformIsReceiveSignal(object obj)
-        {
-            _drawingMode = true;
-            _toolboxValue = Model.Enum.EShape.ReceiveSignal;
+        //private void PerformIsReceiveSignal(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.ReceiveSignal;
 
-        }
+        //}
         #endregion
 
         #region Properties commands
         #endregion
 
         #region Canvas commands
-
-
         private void PerformCanvasMouseDown(MouseButtonEventArgs e)
         {
             try
@@ -311,6 +390,7 @@ namespace UMLaut.ViewModel
                 var source = e.Source as UIElement;
                 var point = e.GetPosition(source); 
 
+                // TODO: The behavior is kinda fishy..
                 if (_drawingMode)
                 {
                     Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue)));
@@ -318,40 +398,101 @@ namespace UMLaut.ViewModel
                 else if(IsElementHit(source))
                 {
                     var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
-                    SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;                                   
+                    SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
+                    //AddAdorner(source);
+                    //SelectElement(e.MouseDevice.Target, source);                              
                 }
                 else
                 {
+                    //RemoveAdorner(source);
                     SelectedElement = null;
                     return;
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Der opstod en fejl.");
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
                 Console.WriteLine(ex.Message);
             }
+        }
+        private void PerformCanvasMouseMove(System.Windows.Input.MouseEventArgs e)
+        {
+            var source = e.Source as UIElement;
+            CurrentPosition = e.GetPosition(source);
         }
 
         #endregion
         #endregion
 
 
-        private void ShowSaveDialogAndSetDiagramFilePath(Diagram diagram)
+        private bool ShowSaveDialogAndSetDiagramFilePath(Diagram diagram)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.FileName = "*";
+            saveFileDialog.DefaultExt = "ult";
+            saveFileDialog.Filter = "UMLaut Diagram|*.ult";
 
-            if (saveFileDialog.ShowDialog() == true)
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 diagram.FilePath = saveFileDialog.FileName;
+                return true;
             }
+            return false;
+        }
+
+        private void SelectElement(IInputElement target, UIElement element)
+        {
+            var shapeVisualElement = (FrameworkElement)target;
+            SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
+            AddAdorner(element);
+        }
+
+        private void DeselectElement(UIElement element)
+        {
+            
         }
 
         private bool IsElementHit(UIElement source)
         {
-            if (source is Canvas || source == null)
-                return false;
-            return true;
+            //if (source is Canvas || source == null)
+            //    return false;
+            //return true;
+            Console.Write(!(source is Canvas));
+            Console.Write(!(source is Canvas) || source == null);
+            return !(source is Canvas) || source == null;
+        }
+
+        private void AddAdorner(UIElement element)
+        {
+            AdornerLayer.GetAdornerLayer(element).Add(new BasicAdorner(element));
+        }
+
+        private void RemoveAdorner(UIElement element)
+        {
+            try {
+                Adorner[] adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
+                AdornerLayer.GetAdornerLayer(element).Remove(adorners[0]);
+           } catch { }
+
+        }
+
+        private void UpdateDiagramFromApplicationCurrentState()
+        {
+            List<UMLLine> umlLines = new List<UMLLine>();
+
+            List<UMLShape> umlShapes = new List<UMLShape>();
+
+            foreach (LineViewModel lvm in Lines)
+            {
+                umlLines.Add(lvm.Line);
+            }
+            foreach (ShapeViewModel svm in Shapes)
+            {
+                umlShapes.Add(svm.Shape);
+            }
+
+            _diagram.Lines = umlLines;
+            _diagram.Shapes = umlShapes;
         }
     }
 

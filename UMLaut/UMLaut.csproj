@@ -85,12 +85,14 @@
     <Compile Include="Model\Interface\ILine.cs" />
     <Compile Include="Model\Interface\IShape.cs" />
     <Compile Include="Model\Implementation\UMLShape.cs" />
-    <Compile Include="Serialization\Deserializer.cs" />
-    <Compile Include="Serialization\Serializer.cs" />
     <Compile Include="UndoRedo\DeleteCommand.cs" />
     <Compile Include="UndoRedo\IUndoRedoCommand.cs" />
     <Compile Include="UndoRedo\MoveShapeCommand.cs" />
     <Compile Include="UndoRedo\UndoRedo.cs" />
+    <Compile Include="Resources\Constants.cs" />
+    <Compile Include="Services\Adorners\BasicAdorner.cs" />
+    <Compile Include="Services\Serialization\Deserializer.cs" />
+    <Compile Include="Services\Serialization\Serializer.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="View\Drawable\Shape\MergeUserControl.xaml.cs">
       <DependentUpon>MergeUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\InputBindingManager.cs" />
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
       <DependentUpon>Ribbon.xaml</DependentUpon>
     </Compile>
