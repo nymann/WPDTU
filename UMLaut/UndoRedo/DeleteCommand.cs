@@ -31,7 +31,7 @@ namespace UMLaut.UndoRedo
         public void UnExecute()
         {
             Console.WriteLine(@"Redoing.");
-            _mainViewModel.Shapes.Remove(_mainViewModel.Shapes.Last());
+            _mainViewModel.Shapes.Remove(_selectedElement);
         }
     }
 }

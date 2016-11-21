@@ -232,12 +232,11 @@ namespace UMLaut.ViewModel
 
         private void PerformDeleteShape(object obj)
         {
-            // Temporary solution, until we can set active shape.
             if (Shapes.Count > 0)
             {
                 Console.WriteLine(Shapes.Last().Type);
-                IUndoRedoCommand cmd = new DeleteCommand(Shapes.Last(), this);
-                Shapes.Remove(Shapes.Last()); // TODO:(When active shape is implemented fully then replace with: Shapes.Remove(SelectedElement);)
+                IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, this);
+                Shapes.Remove(SelectedElement);
 
                 undoRedo.InsertInUndoRedo(cmd);
             }
