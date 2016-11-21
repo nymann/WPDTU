@@ -20,7 +20,7 @@ namespace UMLaut.UndoRedo
             {
                 if (_redoCommands.Count == 0) continue;
                 var command = _redoCommands.Pop();
-                command.Execute();
+                command.UnExecute();
                 _undoCommands.Push(command);
             }
             // If the UndoRedo feature is enabled, disable it.
@@ -48,7 +48,6 @@ namespace UMLaut.UndoRedo
         {
             _undoCommands.Push(command);
             _redoCommands.Clear();
-            command.Execute();
         }
     }
 }
