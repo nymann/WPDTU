@@ -85,6 +85,7 @@
     <Compile Include="Model\Interface\ILine.cs" />
     <Compile Include="Model\Interface\IShape.cs" />
     <Compile Include="Model\Implementation\UMLShape.cs" />
+    <Compile Include="UndoRedo\AddShapeCommand.cs" />
     <Compile Include="UndoRedo\DeleteCommand.cs" />
     <Compile Include="UndoRedo\DuplicateCommand.cs" />
     <Compile Include="UndoRedo\IUndoRedoCommand.cs" />

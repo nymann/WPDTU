@@ -34,6 +34,7 @@ namespace UMLaut.ViewModel
 
         private ShapeViewModel _storedElement;
         private ShapeViewModel _selectedElement;
+
         public ShapeViewModel SelectedElement
         {
             get { return _selectedElement; }
@@ -55,10 +56,12 @@ namespace UMLaut.ViewModel
         }
 
         #region Collections
-        public ObservableCollection<LineViewModel> Lines {get; set;}
+
+        public ObservableCollection<LineViewModel> Lines { get; set; }
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
+
         #endregion
-    
+
         #region Constructor
 
         public MainViewModel()
@@ -83,8 +86,11 @@ namespace UMLaut.ViewModel
             this.Redo = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformRedo);
 
 
-            this.CanvasMouseDown = new GalaSoft.MvvmLight.Command.RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
-            this.CanvasMouseMove = new GalaSoft.MvvmLight.Command.RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
+            this.CanvasMouseDown =
+                new GalaSoft.MvvmLight.Command.RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
+            this.CanvasMouseMove =
+                new GalaSoft.MvvmLight.Command.RelayCommand<System.Windows.Input.MouseEventArgs>(
+                    this.PerformCanvasMouseMove);
 
             this.IsInitialNode = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformIsInitialNode);
             //this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
@@ -102,11 +108,13 @@ namespace UMLaut.ViewModel
 
             undoRedo = new UndoRedo.UndoRedo();
         }
+
         #endregion
 
         #region ICommands
 
         #region Ribbon ICommands
+
         public ICommand LaunchNewInstance { get; set; }
         public ICommand OpenFile { get; set; }
         public ICommand SaveFile { get; set; }
@@ -120,17 +128,20 @@ namespace UMLaut.ViewModel
         public ICommand ZoomIn { get; set; }
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
+
         #endregion
 
         #region Canvas ICommands
+
         public ICommand CanvasMouseDown { get; set; }
         public ICommand Undo { get; set; }
         public ICommand Redo { get; set; }
         public ICommand CanvasMouseMove { get; set; }
+
         #endregion
 
-
         #region Toolbox ICommands
+
         public ICommand ShapeToolboxSelection { get; set; }
         public ICommand LineToolboxSelection { get; set; }
 
@@ -144,11 +155,13 @@ namespace UMLaut.ViewModel
         //public ICommand IsTimeEvent { get; set; }
         //public ICommand IsSendSignal { get; set; }
         //public ICommand IsReceiveSignal { get; set; }
+
         #endregion
 
         #endregion
 
         #region Commands
+
         #region Ribbon commands
 
         private void PerformLaunchNewInstance(object obj)
@@ -175,20 +188,18 @@ namespace UMLaut.ViewModel
             {
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
             }
-
         }
 
         private void UpdateApplicationStateFromDiagram()
         {
-            foreach(UMLShape umlShape in _diagram.Shapes)
+            foreach (UMLShape umlShape in _diagram.Shapes)
             {
                 Shapes.Add(new ShapeViewModel(umlShape));
             }
-            foreach(UMLLine umlLine in _diagram.Lines)
+            foreach (UMLLine umlLine in _diagram.Lines)
             {
                 Lines.Add(new LineViewModel(umlLine));
             }
-
         }
 
         private void PerformSaveFile(object obj)
@@ -206,11 +217,10 @@ namespace UMLaut.ViewModel
                     }
                 }
             }
-           catch (Exception)
+            catch (Exception)
             {
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
             }
-
         }
 
         private void PerformSaveFileAs(object obj)
@@ -220,7 +230,6 @@ namespace UMLaut.ViewModel
             {
                 serializer.SerializeToFile(_diagram);
             }
-
         }
 
         private void PerformCopy(object obj)
@@ -238,7 +247,6 @@ namespace UMLaut.ViewModel
 
         private void PerformInsert(object obj)
         {
-            Console.WriteLine("{0}", _storedElement.Shape.ToString());
             if (_storedElement == null) return;
             Shapes.Add(_storedElement);
             _storedElement = null;
@@ -260,15 +268,10 @@ namespace UMLaut.ViewModel
 
         private void PerformDeleteShape(object obj)
         {
-            if (Shapes.Count > 0)
-            {
-                IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, this);
-                Shapes.Remove(SelectedElement);
-                undoRedo.InsertInUndoRedo(cmd);
-            } else
-            {
-                Console.WriteLine("Canvas doesn't contain any shapes. (Shapes.Count == {0}.)", Shapes.Count);
-            }
+            if (Shapes.Count <= 0 || SelectedElement == null) return;
+            IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, this);
+            Shapes.Remove(SelectedElement);
+            undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformTextToShape(object obj)
@@ -292,12 +295,13 @@ namespace UMLaut.ViewModel
         }
 
         #region UndoRedo commands
+
         /// <summary>
         /// Currently won't support multi-level undo (int levels = 1)
         /// </summary>
         private void PerformUndo(object obj)
         {
-           undoRedo.Undo(1);
+            undoRedo.Undo(1);
         }
 
         /// <summary>
@@ -305,14 +309,15 @@ namespace UMLaut.ViewModel
         /// </summary>
         private void PerformRedo(object obj)
         {
-           undoRedo.Redo(1);
+            undoRedo.Redo(1);
         }
+
         #endregion
 
         #endregion
 
         #region Toolbox commands
-        
+
         // TODO Should be done in one function insted of split onto two.
 
         /// <summary>
@@ -401,27 +406,34 @@ namespace UMLaut.ViewModel
         //    _toolboxValue = Model.Enum.EShape.ReceiveSignal;
 
         //}
+
         #endregion
 
         #region Properties commands
+
         #endregion
 
         #region Canvas commands
+
         private void PerformCanvasMouseDown(MouseButtonEventArgs e)
         {
             try
             {
                 var source = e.Source as UIElement;
-                var point = e.GetPosition(source); 
+                var point = e.GetPosition(source);
 
                 // TODO: The behavior is kinda fishy..
                 if (_drawingMode)
                 {
-                    Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue)));
+                    var addedShape = new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue));
+                    Shapes.Add(addedShape);
+                    IUndoRedoCommand cmd = new AddShapeCommand(addedShape, this);
+                    undoRedo.InsertInUndoRedo(cmd);
+
                 }
-                else if(IsElementHit(source))
+                else if (IsElementHit(source))
                 {
-                    var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
+                    var shapeVisualElement = (FrameworkElement) e.MouseDevice.Target;
                     SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
                     //AddAdorner(source);
                     //SelectElement(e.MouseDevice.Target, source);                              
@@ -439,6 +451,7 @@ namespace UMLaut.ViewModel
                 Console.WriteLine(ex.Message);
             }
         }
+
         private void PerformCanvasMouseMove(System.Windows.Input.MouseEventArgs e)
         {
             var source = e.Source as UIElement;
@@ -446,8 +459,8 @@ namespace UMLaut.ViewModel
         }
 
         #endregion
-        #endregion
 
+        #endregion
 
         private bool ShowSaveDialogAndSetDiagramFilePath(Diagram diagram)
         {
@@ -466,14 +479,13 @@ namespace UMLaut.ViewModel
 
         private void SelectElement(IInputElement target, UIElement element)
         {
-            var shapeVisualElement = (FrameworkElement)target;
+            var shapeVisualElement = (FrameworkElement) target;
             SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
             AddAdorner(element);
         }
 
         private void DeselectElement(UIElement element)
         {
-            
         }
 
         private bool IsElementHit(UIElement source)
@@ -493,11 +505,14 @@ namespace UMLaut.ViewModel
 
         private void RemoveAdorner(UIElement element)
         {
-            try {
+            try
+            {
                 Adorner[] adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
                 AdornerLayer.GetAdornerLayer(element).Remove(adorners[0]);
-           } catch { }
-
+            }
+            catch
+            {
+            }
         }
 
         private void UpdateDiagramFromApplicationCurrentState()
@@ -519,6 +534,4 @@ namespace UMLaut.ViewModel
             _diagram.Shapes = umlShapes;
         }
     }
-
-
 }

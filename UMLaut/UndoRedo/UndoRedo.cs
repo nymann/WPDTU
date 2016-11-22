@@ -5,8 +5,8 @@ namespace UMLaut.UndoRedo
 {
     public class UndoRedo
     {
-        private Stack<IUndoRedoCommand> _undoCommands = new Stack<IUndoRedoCommand>();
-        private Stack<IUndoRedoCommand> _redoCommands = new Stack<IUndoRedoCommand>();
+        private readonly Stack<IUndoRedoCommand> _undoCommands = new Stack<IUndoRedoCommand>();
+        private readonly Stack<IUndoRedoCommand> _redoCommands = new Stack<IUndoRedoCommand>();
 
         public EventHandler EnableUndoRedo;
 
