@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UMLaut.View.Drawable
+namespace UMLaut.View.Drawable.Shape
 {
     /// <summary>
-    /// Interaction logic for SyncBarHorUserControl.xaml
+    /// Interaction logic for SendSignalUserControl.xaml
     /// </summary>
-    public partial class SyncBarHorUserControl : UserControl
+    public partial class SendSignalUserControl : UserControl
     {
-        public SyncBarHorUserControl()
+        public SendSignalUserControl()
         {
             InitializeComponent();
         }

@@ -12,7 +12,7 @@
         <!--<Image x:Key="MyImg" Source="UMLaut/Pic/icon.PNG"/>-->
     </UserControl.Resources>
 
-    <Grid Background="#DEFAFF">
+    <Grid Background="#F4F8FD">
 
         <Grid.Resources>
             <Style TargetType="{x:Type Label}">
@@ -20,6 +20,7 @@
                 <Setter Property="FontWeight" Value="Light"/>
                 <Setter Property="Foreground" Value="#08191C"/>
                 <Setter Property="FontSize" Value="11"/>
+                <Setter Property="FontWeight" Value="Bold"/>
             </Style>
         </Grid.Resources>
 

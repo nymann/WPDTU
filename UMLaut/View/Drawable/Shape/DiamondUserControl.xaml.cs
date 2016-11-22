@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UMLaut.View.Drawable
+namespace UMLaut.View.Drawable.Shape
 {
     /// <summary>
-    /// Interaction logic for SendSignalUserControl.xaml
+    /// Interaction logic for DiamondUserControl.xaml
     /// </summary>
-    public partial class SendSignalUserControl : UserControl
+    public partial class DiamondUserControl : UserControl
     {
-        public SendSignalUserControl()
+        public DiamondUserControl()
         {
             InitializeComponent();
         }

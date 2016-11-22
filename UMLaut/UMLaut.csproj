@@ -91,7 +91,7 @@
     <Compile Include="Services\Serialization\Deserializer.cs" />
     <Compile Include="Services\Serialization\Serializer.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="ViewModel\BooleanToVisibilityConverter .cs" />
+    <Compile Include="Services\Converter\BooleanToVisibilityConverter .cs" />
     <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ShapeViewModel.cs" />
@@ -121,22 +121,22 @@
     <Compile Include="View\Drawable\Shape\MergeUserControl.xaml.cs">
       <DependentUpon>MergeUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drawable\DiamondUserControl.xaml.cs">
+    <Compile Include="View\Drawable\Shape\DiamondUserControl.xaml.cs">
       <DependentUpon>DiamondUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drawable\ReceiveSignalUserControl.xaml.cs">
+    <Compile Include="View\Drawable\Shape\ReceiveSignalUserControl.xaml.cs">
       <DependentUpon>ReceiveSignalUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drawable\SendSignalUserControl.xaml.cs">
+    <Compile Include="View\Drawable\Shape\SendSignalUserControl.xaml.cs">
       <DependentUpon>SendSignalUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drawable\SyncBarHorUserControl.xaml.cs">
+    <Compile Include="View\Drawable\Shape\SyncBarHorUserControl.xaml.cs">
       <DependentUpon>SyncBarHorUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drawable\SyncBarVertUserControl.xaml.cs">
+    <Compile Include="View\Drawable\Shape\SyncBarVertUserControl.xaml.cs">
       <DependentUpon>SyncBarVertUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drawable\TimeEventUserControl.xaml.cs">
+    <Compile Include="View\Drawable\Shape\TimeEventUserControl.xaml.cs">
       <DependentUpon>TimeEventUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\InputBindingManager.cs" />
@@ -178,7 +178,7 @@
     <Page Include="View\Drawable\Shape\ActivityFinalUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Drawable\DiamondUserControl.xaml">
+    <Page Include="View\Drawable\Shape\DiamondUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,23 +202,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Drawable\ReceiveSignalUserControl.xaml">
+    <Page Include="View\Drawable\Shape\ReceiveSignalUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Drawable\SendSignalUserControl.xaml">
+    <Page Include="View\Drawable\Shape\SendSignalUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Drawable\SyncBarHorUserControl.xaml">
+    <Page Include="View\Drawable\Shape\SyncBarHorUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Drawable\SyncBarVertUserControl.xaml">
+    <Page Include="View\Drawable\Shape\SyncBarVertUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Drawable\TimeEventUserControl.xaml">
+    <Page Include="View\Drawable\Shape\TimeEventUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -370,6 +370,9 @@
   <ItemGroup>
     <Resource Include="Resources\Images\mouse.png" />
     <Resource Include="Resources\Images\application-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\export-64.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

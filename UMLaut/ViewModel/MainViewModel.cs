@@ -17,6 +17,7 @@ using UMLaut.Services.Adorners;
 using UMLaut.Model.Enum;
 using System.Linq;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace UMLaut.ViewModel
 {
@@ -82,6 +83,7 @@ namespace UMLaut.ViewModel
             this.DuplicateShape = new RelayCommand<object>(this.PerformDuplicateShape);
             this.DeleteShape = new RelayCommand<object>(this.PerformDeleteShape);
             this.TextToShape = new RelayCommand<object>(this.PerformTextToShape);
+            this.ExportDiagram = new RelayCommand<object>(this.PerformExportDiagram);
             this.ZoomIn = new RelayCommand<object>(this.PerformZoomIn);
             this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
             this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
@@ -112,6 +114,8 @@ namespace UMLaut.ViewModel
         public ICommand DuplicateShape { get; set; }
         public ICommand DeleteShape { get; set; }
         public ICommand TextToShape { get; set; }
+        public ICommand ExportDiagram { get; set; }
+
         public ICommand ZoomIn { get; set; }
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
@@ -244,7 +248,51 @@ namespace UMLaut.ViewModel
 
         private void PerformTextToShape(object obj)
         {
-            if (!(SelectedElement == null)) { SelectedElement.IsEditing = !SelectedElement.IsEditing; }
+            if (SelectedElement != null)
+            {
+                SelectedElement.IsEditing = !SelectedElement.IsEditing;
+            }
+        }
+        private void PerformExportDiagram(object parameter)
+        {
+            var canvas = parameter as Canvas;
+            if (canvas != null)
+            {
+                try
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.FileName = "*";
+                    saveFileDialog.DefaultExt = "png";
+                    saveFileDialog.Filter = "Portable Network Graphics|*.png";
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        var path = saveFileDialog.FileName;
+                        RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
+                              (int)canvas.RenderSize.Height, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+                        rtb.Render(canvas);
+
+                        var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+
+                        BitmapEncoder pngEncoder = new PngBitmapEncoder();
+                        pngEncoder.Frames.Add(BitmapFrame.Create(crop));
+
+                        using (var fs = System.IO.File.OpenWrite(path))
+                        {
+                            pngEncoder.Save(fs);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+                }
+
+            }
+            else
+            {
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+            }
         }
 
         private void PerformZoomIn(object obj)
@@ -511,6 +559,7 @@ namespace UMLaut.ViewModel
         }
         #endregion
         #endregion
+
 
 
         private bool ShowSaveDialogAndSetDiagramFilePath(Diagram diagram)

@@ -10,23 +10,22 @@
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="300">
 
-    <Grid Background="#292929">
+    <Grid Background="#A8CEFD">
         <Grid.Resources>
             <Style TargetType="{x:Type Label}">
                 <Setter Property="BorderBrush" Value="#313131" />
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Background" Value="#272822"/>
+                <Setter Property="BorderThickness" Value="0.7"/>
                 <Setter Property="FontFamily" Value="Lucida Sans Unicode"/>
                 <Setter Property="FontWeight" Value="Light"/>
-                <Setter Property="Foreground" Value="#66D9EF"/>
+                <Setter Property="Foreground" Value="#08191C"/>
                 <Setter Property="FontSize" Value="10"/>
             </Style>
             <Style TargetType="{x:Type TextBox}">
                 <Setter Property="BorderBrush" Value="#313131" />
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Background" Value="#272822"/>
+                <Setter Property="BorderThickness" Value="0.5"/>
+                <Setter Property="Background" Value="#A8CEFD"/>
                 <Setter Property="FontFamily" Value="Lucida Sans Unicode"/>
-                <Setter Property="Foreground" Value="#66D9EF"/>
+                <Setter Property="Foreground" Value="#08191C"/>
                 <Setter Property="FontWeight" Value="Light"/>
                 <Setter Property="FontSize" Value="10"/>
             </Style>           
@@ -51,7 +50,8 @@
         <Label Content="Egenskaber"
                HorizontalAlignment="Center"
                BorderThickness="0"
-               Background="#292929"
+               FontSize="11"
+               FontWeight="Bold"
                Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
 
         <Label Content="Type"

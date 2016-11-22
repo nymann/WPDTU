@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+
              mc:Ignorable="d" 
              d:DesignHeight="140" d:DesignWidth="1200">
 
@@ -65,6 +67,10 @@
                       LargeImageSource="/Resources/Images/comment-24.png"
                       SmallImageSource="/Resources/Images/comment-16.png"
                       Command="{Binding TextToShape}"/>
+                    <RibbonButton Label="Eksportér diagram"
+                      LargeImageSource="/Resources/Images/export-64.png"
+                      Command="{Binding ExportDiagram}"
+                      CommandParameter="{Binding ElementName=Canvas, diag:PresentationTraceSources.TraceLevel=High}"/>
                 </RibbonGroup>
 
                 <RibbonGroup Header="Zoom">

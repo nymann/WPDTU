@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UMLaut.View.Drawable
+namespace UMLaut.View.Drawable.Shape
 {
     /// <summary>
-    /// Interaction logic for TimeEventUserControl.xaml
+    /// Interaction logic for SyncBarVertUserControl.xaml
     /// </summary>
-    public partial class TimeEventUserControl : UserControl
+    public partial class SyncBarVertUserControl : UserControl
     {
-        public TimeEventUserControl()
+        public SyncBarVertUserControl()
         {
             InitializeComponent();
         }

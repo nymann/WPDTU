@@ -9,6 +9,7 @@
              xmlns:vm="clr-namespace:UMLaut.ViewModel"
              xmlns:drw="clr-namespace:UMLaut.View.Drawable"
              xmlns:slc="clr-namespace:UMLaut.View.Drawable.Selectors"
+             xmlns:shape="clr-namespace:UMLaut.View.Drawable.Shape"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
 
@@ -18,34 +19,69 @@
         <slc:ShapeDataTemplateSelector x:Key="ShapeDataTemplateSelector">
             <slc:ShapeDataTemplateSelector.ActionTemplate>
                 <DataTemplate>
-                    <drw:ActivityUserControl/>
+                    <shape:ActivityUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.ActionTemplate>
             <slc:ShapeDataTemplateSelector.ActivityFinalTemplate>
                 <DataTemplate>
-                    <drw:ActivityFinalUserControl/>
+                    <shape:ActivityFinalUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.ActivityFinalTemplate>
             <slc:ShapeDataTemplateSelector.InitialTemplate>
                 <DataTemplate>
-                    <drw:InitialUserControl/>
+                    <shape:InitialUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.InitialTemplate>
             <slc:ShapeDataTemplateSelector.FlowFinalTemplate>
                 <DataTemplate>
-                    <drw:FlowFinalUserControl/>
+                    <shape:FlowFinalUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.FlowFinalTemplate>
             <slc:ShapeDataTemplateSelector.MergeTemplate>
                 <DataTemplate>
-                    <drw:MergeUserControl/>
+                    <shape:MergeUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.MergeTemplate>
             <slc:ShapeDataTemplateSelector.ForkTemplate>
                 <DataTemplate>
-                    <drw:ForkUserControl/>
+                    <shape:ForkUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.ForkTemplate>
+            <slc:ShapeDataTemplateSelector.SyncBarHorTemplate>
+                <DataTemplate>
+                    <shape:SyncBarHorUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.SyncBarHorTemplate>
+            <slc:ShapeDataTemplateSelector.SyncBarVertTemplate>
+                <DataTemplate>
+                    <shape:SyncBarVertUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.SyncBarVertTemplate>
+            <slc:ShapeDataTemplateSelector.TimeEventTemplate>
+                <DataTemplate>
+                    <shape:TimeEventUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.TimeEventTemplate>
+            <slc:ShapeDataTemplateSelector.JoinTemplate>
+                <DataTemplate>
+                    <shape:MergeUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.JoinTemplate>
+            <slc:ShapeDataTemplateSelector.DecisionTemplate>
+                <DataTemplate>
+                    <shape:MergeUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.DecisionTemplate>
+            <slc:ShapeDataTemplateSelector.SendSignalTemplate>
+                <DataTemplate>
+                    <shape:SendSignalUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.SendSignalTemplate>
+            <slc:ShapeDataTemplateSelector.ReceiveSignalTemplate>
+                <DataTemplate>
+                    <shape:ReceiveSignalUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.ReceiveSignalTemplate>
         </slc:ShapeDataTemplateSelector>
 
         <slc:LineDataTemplateSelector x:Key="LineDataTemplateSelector">
@@ -95,7 +131,7 @@
 
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <Canvas>
+                <Canvas Name="Canvas">
                 <!--<Canvas Background="White">-->
                     <!-- Grid background. A little overwhelming -->
                     <Canvas.Background>
