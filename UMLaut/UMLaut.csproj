@@ -85,19 +85,24 @@
     <Compile Include="Model\Interface\ILine.cs" />
     <Compile Include="Model\Interface\IShape.cs" />
     <Compile Include="Model\Implementation\UMLShape.cs" />
-    <Compile Include="Serialization\Deserializer.cs" />
-    <Compile Include="Serialization\Serializer.cs" />
+    <Compile Include="Resources\Constants.cs" />
+    <Compile Include="Services\Adorners\BasicAdorner.cs" />
+    <Compile Include="Services\Converter\FirstDegreeFunctionConverter.cs" />
+    <Compile Include="Services\Serialization\Deserializer.cs" />
+    <Compile Include="Services\Serialization\Serializer.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\BooleanToVisibilityConverter .cs" />
     <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ShapeViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\Drawable\Line\DashedLineUserControl.xaml.cs">
       <DependentUpon>DashedLineUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Drawable\Line\LineUserControl.xaml.cs">
       <DependentUpon>LineUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Drawable\Selectors\LineDataTemplateSelector.cs" />
+    <Compile Include="View\Drawable\Selectors\ShapeDataTemplateSelector.cs" />
     <Compile Include="View\Drawable\Shape\ActivityFinalUserControl.xaml.cs">
       <DependentUpon>ActivityFinalUserControl.xaml</DependentUpon>
     </Compile>
@@ -134,6 +139,7 @@
     <Compile Include="View\Drawable\TimeEventUserControl.xaml.cs">
       <DependentUpon>TimeEventUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\InputBindingManager.cs" />
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
       <DependentUpon>Ribbon.xaml</DependentUpon>
     </Compile>
@@ -333,9 +339,6 @@
     <Resource Include="Resources\Images\zoomtofit-32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\application-icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\action.png" />
     <Resource Include="Resources\Images\action0.png" />
     <Resource Include="Resources\Images\action1.png" />
@@ -366,6 +369,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\mouse.png" />
+    <Resource Include="Resources\Images\application-icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

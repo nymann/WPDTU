@@ -6,5 +6,5 @@
              xmlns:local="clr-namespace:UMLaut.View.Drawable"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Line Stroke="Black" X1="0" Y1="0" X2="300" Y2="70" StrokeThickness="2"/>
+    <Line Stroke="Black" X1="{Binding From.X}" Y1="{Binding From.Y}" X2="{Binding To.X}" Y2="{Binding To.Y}" StrokeThickness="2"/>
 </UserControl>

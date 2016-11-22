@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using UMLaut.Model.Implementation;
 
-namespace UMLaut.Serialization
+namespace UMLaut.Services
 {
     public class Serializer
     {

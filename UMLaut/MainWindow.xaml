@@ -31,14 +31,14 @@
         <KeyBinding Command="{Binding Redo}" Modifiers="Ctrl+Shift" Key="Z"/>
         <KeyBinding Command="{Binding Redo}" Modifiers="Ctrl" Key="Y"/>
         <KeyBinding Command="{Binding DuplicateShape}" Modifiers="Ctrl" Key="D"/>
-        <KeyBinding Command="{Binding TextToShape}" Key="T"/>
         <KeyBinding Command="{Binding TextToShape}" Modifiers="Ctrl" Key="T"/>
-        <KeyBinding Command="{Binding DeleteShape}" Key="Delete"/>
+        <KeyBinding Command="{Binding TextToShape}" Modifiers="Ctrl" Key="T"/>
+        <KeyBinding Command="{Binding DeleteShape}" Modifiers="Ctrl" Key="Delete"/>
         <KeyBinding Command="{Binding ZoomIn}" Modifiers="Ctrl" Key="OemPlus"/>
         <KeyBinding Command="{Binding ZoomOut}" Modifiers="Ctrl" Key="OemMinus"/>
     </Window.InputBindings>
 
-    <Grid x:Name="Main" Background="DarkSlateGray">
+    <Grid x:Name="Main" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
@@ -50,7 +50,10 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <sidebar:Sidebar Grid.Column="0"/>
-            <umlCanvas:UmlCanvas Grid.Column="1"/> 
+            <ScrollViewer HorizontalScrollBarVisibility="Visible" Grid.Column="1">
+
+                <umlCanvas:UmlCanvas Grid.Column="1" Height="3200" Width="3200"/>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Window>

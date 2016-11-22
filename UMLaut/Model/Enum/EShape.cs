@@ -21,7 +21,6 @@ namespace UMLaut.Model.Enum
         SyncBarVert,
         TimeEvent,
         SendSignal,
-        ReceiveSignal,
-        Edge
+        ReceiveSignal
     }
 }

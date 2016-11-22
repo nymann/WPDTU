@@ -4,46 +4,52 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UMLaut.View.Sidebar.Toolbox"
+             xmlns:enum="clr-namespace:UMLaut.Model.Enum"
+
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="250">
     <UserControl.Resources>
         <!--<Image x:Key="MyImg" Source="UMLaut/Pic/icon.PNG"/>-->
     </UserControl.Resources>
 
-    <Grid Background="WhiteSmoke">
-        
-        
-        
+    <Grid Background="#DEFAFF">
+
+        <Grid.Resources>
+            <Style TargetType="{x:Type Label}">
+                <Setter Property="FontFamily" Value="Lucida Sans Unicode"/>
+                <Setter Property="FontWeight" Value="Light"/>
+                <Setter Property="Foreground" Value="#08191C"/>
+                <Setter Property="FontSize" Value="11"/>
+            </Style>
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="23"/>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            
-        <ToolBar x:Name="toolBar" HorizontalAlignment="Stretch" VerticalAlignment="top"  Height="23">
-                <TextBlock x:Name="textBlock" Height="18" TextWrapping="Wrap" Text="Toolbox" VerticalAlignment="Top"/>
-        </ToolBar>
+            <Label Content="Værktøjskasse" HorizontalAlignment="Center"/>
         </Grid>
         <Grid Grid.Row="1">
-            
+
             <ScrollViewer
-                Padding="10,10">
+                Padding="10,10" VerticalScrollBarVisibility="Auto">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="58"/>
-                        <RowDefinition Height="78"/>
-                        <RowDefinition Height="78"/>
-                        <RowDefinition Height="78"/>
-                        <RowDefinition Height="78"/>
-                        <RowDefinition Height="78"/>
+                        <RowDefinition Height="75"/>
+                        <RowDefinition Height="75"/>
+                        <RowDefinition Height="75"/>
+                        <RowDefinition Height="75"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+
 
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFreeHand" Padding="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Silver" Command="{Binding IsFreeHand}">
+                    <Grid Grid.Row="0" Grid.Column="0">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFreeHand" Padding="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsFreeHand}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -55,8 +61,8 @@
                             <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/free-hand.png"/>
                         </RadioButton>
                     </Grid>
-                    <Grid x:Name="tbGridInitialNode" Grid.Row="1" Grid.Column="0">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbInitialNode" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsInitialNode}">
+                    <Grid x:Name="tbGridInitialNode" Grid.Row="0" Grid.Column="1">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbInitialNode" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static enum:EShape.Initial}">
                             <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/initial-node.png"/>
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
@@ -68,8 +74,10 @@
                             </RadioButton.ToolTip>
                         </RadioButton>
                     </Grid>
-                    <Grid Grid.Row="1" Grid.Column="1">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFinalNode" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsFinalNode}">
+
+                    <Grid Grid.Row="0" Grid.Column="2">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFinalNode" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static enum:EShape.ActivityFinal}">
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/final-node.png"/>
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -78,24 +86,12 @@
                                     </StackPanel>
                                 </ToolTip>
                             </RadioButton.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/final-node.png"/>
                         </RadioButton>
                     </Grid>
-                    <Grid Grid.Row="2" Grid.Column="0">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbMerge" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsMergeNode}">
-                            <RadioButton.ToolTip>
-                                <ToolTip MaxWidth="300">
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold">Merge Node</TextBlock>
-                                        <TextBlock TextWrapping="Wrap">Description of Merge Node</TextBlock>
-                                    </StackPanel>
-                                </ToolTip>
-                            </RadioButton.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/merge-node.png"/>
-                        </RadioButton>
-                    </Grid>
-                    <Grid Grid.Row="2" Grid.Column="1">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbAction" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsAction}">
+
+
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbAction" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static enum:EShape.Action}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -107,34 +103,24 @@
                             <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/action1.png"/>
                         </RadioButton>
                     </Grid>
-                    <Grid Grid.Row="3" Grid.Column="0">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFJHori" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsSyncBarHor}">
+
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbMerge" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static enum:EShape.Merge}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
-                                        <TextBlock FontWeight="Bold">Synchronization Bar</TextBlock>
-                                        <TextBlock TextWrapping="Wrap">Description of Fork/Join Synchronization Bar</TextBlock>
+                                        <TextBlock FontWeight="Bold">Merge Node</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Merge Node</TextBlock>
                                     </StackPanel>
                                 </ToolTip>
                             </RadioButton.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/fork-join-hori.PNG"/>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/merge-node.png"/>
                         </RadioButton>
                     </Grid>
-                    <Grid Grid.Row="3" Grid.Column="1">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFJVert" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsSyncBarVert}">
-                            <RadioButton.ToolTip>
-                                <ToolTip MaxWidth="300">
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold">Synchronization Bar</TextBlock>
-                                        <TextBlock TextWrapping="Wrap">Description of Fork/Join Synchronization Bar</TextBlock>
-                                    </StackPanel>
-                                </ToolTip>
-                            </RadioButton.ToolTip>
-                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/fork-join-vert.PNG"/>
-                        </RadioButton>
-                    </Grid>
-                    <Grid Grid.Row="4" Grid.Column="0">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbEdge" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsEdge}">
+
+
+                    <Grid Grid.Row="1" Grid.Column="2">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbEdge" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding LineToolboxSelection}" CommandParameter="{x:Static enum:ELine.Solid}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -146,8 +132,39 @@
                             <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/edge.PNG"/>
                         </RadioButton>
                     </Grid>
-                    <Grid Grid.Row="4" Grid.Column="1">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbTimeEvent" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsTimeEvent}">
+
+
+                    <Grid Grid.Row="2" Grid.Column="0">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFJHori" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static enum:EShape.SyncBarHor}">
+                            <RadioButton.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Synchronization Bar</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Fork/Join Synchronization Bar</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </RadioButton.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/fork-join-hori.PNG"/>
+                        </RadioButton>
+                    </Grid>
+
+                    <Grid Grid.Row="2" Grid.Column="1">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbFJVert" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static enum:EShape.SyncBarVert}">
+                            <RadioButton.ToolTip>
+                                <ToolTip MaxWidth="300">
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold">Synchronization Bar</TextBlock>
+                                        <TextBlock TextWrapping="Wrap">Description of Fork/Join Synchronization Bar</TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </RadioButton.ToolTip>
+                            <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/fork-join-vert.PNG"/>
+                        </RadioButton>
+                    </Grid>
+
+
+                    <Grid Grid.Row="2" Grid.Column="2">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbTimeEvent" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static enum:EShape.TimeEvent}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -159,8 +176,9 @@
                             <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/time-event1.PNG"/>
                         </RadioButton>
                     </Grid>
-                    <Grid Grid.Row="5" Grid.Column="0">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbSendSignal" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsSendSignal}">
+
+                    <Grid Grid.Row="3" Grid.Column="0">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbSendSignal" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static enum:EShape.SendSignal}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -172,8 +190,9 @@
                             <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Resources/Images/send-signal-state.PNG"/>
                         </RadioButton>
                     </Grid>
-                    <Grid Grid.Row="5" Grid.Column="1">
-                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbReceiveSignal" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding IsReceiveSignal}">
+
+                    <Grid Grid.Row="3" Grid.Column="1">
+                        <RadioButton GroupName="Toolbox" Style="{StaticResource {x:Type ToggleButton}}" x:Name="tbReceiveSignal" Padding="15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" Command="{Binding ShapeToolboxSelection}" CommandParameter="{x:Static enum:EShape.ReceiveSignal}">
                             <RadioButton.ToolTip>
                                 <ToolTip MaxWidth="300">
                                     <StackPanel>
@@ -188,12 +207,5 @@
                 </Grid>
             </ScrollViewer>
         </Grid>
-
-
-
-
-
-
-
     </Grid>
 </UserControl>

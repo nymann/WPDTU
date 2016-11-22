@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using UMLaut.Model.Implementation;
 
-namespace UMLaut.Serialization
+namespace UMLaut.Services
 {
     class Deserializer
     {

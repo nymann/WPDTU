@@ -8,23 +8,84 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:vm="clr-namespace:UMLaut.ViewModel"
              xmlns:drw="clr-namespace:UMLaut.View.Drawable"
+             xmlns:slc="clr-namespace:UMLaut.View.Drawable.Selectors"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
-   
+
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type vm:LineViewModel}">
-            <drw:LineUserControl/>
-        </DataTemplate>
+        <!--Defining the datatemplates to the ShapeViewModelSelector
+            TODO: Check for a better solution-->
+        <slc:ShapeDataTemplateSelector x:Key="ShapeDataTemplateSelector">
+            <slc:ShapeDataTemplateSelector.ActionTemplate>
+                <DataTemplate>
+                    <drw:ActivityUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.ActionTemplate>
+            <slc:ShapeDataTemplateSelector.ActivityFinalTemplate>
+                <DataTemplate>
+                    <drw:ActivityFinalUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.ActivityFinalTemplate>
+            <slc:ShapeDataTemplateSelector.InitialTemplate>
+                <DataTemplate>
+                    <drw:InitialUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.InitialTemplate>
+            <slc:ShapeDataTemplateSelector.FlowFinalTemplate>
+                <DataTemplate>
+                    <drw:FlowFinalUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.FlowFinalTemplate>
+            <slc:ShapeDataTemplateSelector.MergeTemplate>
+                <DataTemplate>
+                    <drw:MergeUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.MergeTemplate>
+            <slc:ShapeDataTemplateSelector.ForkTemplate>
+                <DataTemplate>
+                    <drw:ForkUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.ForkTemplate>
+        </slc:ShapeDataTemplateSelector>
+
+        <slc:LineDataTemplateSelector x:Key="LineDataTemplateSelector">
+            <slc:LineDataTemplateSelector.SolidLineTemplate>
+                <DataTemplate>
+                    <drw:LineUserControl/>
+                </DataTemplate>
+            </slc:LineDataTemplateSelector.SolidLineTemplate>
+            <slc:LineDataTemplateSelector.DashedLineTemplate>
+                <DataTemplate>
+                    <drw:LineUserControl/>
+                </DataTemplate>
+            </slc:LineDataTemplateSelector.DashedLineTemplate>
+        </slc:LineDataTemplateSelector>
+
         <DataTemplate DataType="{x:Type vm:ShapeViewModel}">
-            <drw:ActivityUserControl/>
+            <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ShapeDataTemplateSelector}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMouseDown}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseMove" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMove}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ContentPresenter>
         </DataTemplate>
-        
+
+        <DataTemplate DataType="{x:Type vm:LineViewModel}">
+            <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource LineDataTemplateSelector}"/>
+        </DataTemplate>
+
+        <!--Unpacking the CompisteCollection-->
         <CollectionViewSource x:Key="LinesViewSource" Source="{Binding Path=Lines}" />
         <CollectionViewSource x:Key="ShapesViewSource" Source="{Binding Path=Shapes}" />
     </UserControl.Resources>
 
     <ItemsControl>
-
         <ItemsControl.ItemsSource>
             <CompositeCollection>
                 <CollectionContainer Collection="{Binding Source={StaticResource LinesViewSource}}" />
@@ -34,10 +95,38 @@
 
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <Canvas Background="White">
+                <Canvas>
+                <!--<Canvas Background="White">-->
+                    <!-- Grid background. A little overwhelming -->
+                    <Canvas.Background>
+                        <DrawingBrush TileMode="Tile" Viewport="-10,-10,40,40" 
+                                     ViewportUnits="Absolute">
+                            <DrawingBrush.Drawing>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Geometry>
+                                        <RectangleGeometry Rect="0,0,50,50"/>
+                                    </GeometryDrawing.Geometry>
+                                    <GeometryDrawing.Pen>
+                                        <Pen Brush="Gray" Thickness="0.1"/>
+                                    </GeometryDrawing.Pen>
+                                </GeometryDrawing>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.Background>
+                    <Canvas.RenderTransform>
+                        <ScaleTransform ScaleX="{Binding ZoomPercentage}" ScaleY="{Binding ZoomPercentage}"/>
+                    </Canvas.RenderTransform>
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown" >
                             <cmd:EventToCommand Command="{Binding CanvasMouseDown}"
+                                PassEventArgsToCommand="True" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseWheel" >
+                            <cmd:EventToCommand Command="{Binding CanvasMouseWheel}"
+                                PassEventArgsToCommand="True" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="MouseMove" >
+                            <cmd:EventToCommand Command="{Binding CanvasMouseMove}"
                                 PassEventArgsToCommand="True" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
@@ -47,17 +136,9 @@
 
         <ItemsControl.ItemContainerStyle>
             <Style TargetType="ContentPresenter">
-                <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
-                <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
+                <Setter Property="Canvas.Left" Value="{Binding X, UpdateSourceTrigger=PropertyChanged}"></Setter>
+                <Setter Property="Canvas.Top" Value="{Binding Y, UpdateSourceTrigger=PropertyChanged}"></Setter>
             </Style>
-
         </ItemsControl.ItemContainerStyle>
-
-        <!--   <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Label Content="{Binding Path=Content}" />
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>-->
     </ItemsControl>
 </UserControl>
-
