@@ -36,7 +36,7 @@ namespace UMLaut.View.Drawable.Selectors
 
             if (shapeView != null)
             {
-                switch (shapeView.Type)
+                switch (shapeView.Shape.Type)
                 {
                     case EShape.Initial:
                         return InitialTemplate;

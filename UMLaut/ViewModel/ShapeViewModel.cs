@@ -8,7 +8,7 @@ using UMLaut.Model.Enum;
 
 namespace UMLaut.ViewModel
 {
-    public class ShapeViewModel : BaseViewModel, IShape
+    public class ShapeViewModel : BaseViewModel
     {
         private bool _isEditing = false;
         public bool IsEditing
@@ -22,13 +22,13 @@ namespace UMLaut.ViewModel
         }
 
 
-        internal UMLShape Shape { get; }
+        public UMLShape Shape { get; set; }
         public ShapeViewModel(UMLShape shape)
         {
             Shape = shape;
         }
 
-        Guid IShape.Id
+        public Guid Id
         {
             get { return Shape.Id; }
         }
@@ -39,7 +39,7 @@ namespace UMLaut.ViewModel
             set
             {
                 Shape.Label = value;
-                OnPropertyChanged();
+                //OnPropertyChanged();
             }
         }
 
@@ -49,7 +49,7 @@ namespace UMLaut.ViewModel
             set
             {
                 Shape.Height = value;
-                OnPropertyChanged();
+                //OnPropertyChanged();
             }
         }
 
@@ -61,7 +61,7 @@ namespace UMLaut.ViewModel
             set
             {
                 Shape.Width = value;
-                OnPropertyChanged();
+                //OnPropertyChanged();
             }
         }
 
@@ -84,6 +84,6 @@ namespace UMLaut.ViewModel
             }
         }
 
-  
+
     }
 }

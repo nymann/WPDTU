@@ -12,33 +12,43 @@ namespace UMLaut.ViewModel
     {
         internal UMLLine Line { get; }
 
+        private ShapeViewModel _to;
+        private ShapeViewModel _from;
+
+        public Guid FromId => _from.Id;
+        public Guid ToId => _to.Id;
+
+        public ELine Type => Line.Type;
+
         public LineViewModel(UMLLine line)
         {
             Line = line;
         }
 
-        public Guid FromId {
+        public ShapeViewModel From {
             get
             {
-                return Line.FromId;
+                return _from;
             }
             set
             {
-                Line.FromId = value;
+                _from = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(FromId));
             }
         }
 
-        public Guid ToId
+        public ShapeViewModel To
         {
             get
             {
-                return Line.ToId;
+                return _to;
             }
             set
             {
-                Line.ToId = value;
+                _to = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(ToId));
             }
         }
 
@@ -53,12 +63,5 @@ namespace UMLaut.ViewModel
                 OnPropertyChanged();
             }
         }
- 
-        public ELine Type {
-            get {
-                return Line.Type;
-            }
-        }
-
     }
 }

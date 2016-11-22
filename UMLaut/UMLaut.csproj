@@ -87,6 +87,7 @@
     <Compile Include="Model\Implementation\UMLShape.cs" />
     <Compile Include="Resources\Constants.cs" />
     <Compile Include="Services\Adorners\BasicAdorner.cs" />
+    <Compile Include="Services\Converter\FirstDegreeFunctionConverter.cs" />
     <Compile Include="Services\Serialization\Deserializer.cs" />
     <Compile Include="Services\Serialization\Serializer.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />

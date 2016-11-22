@@ -14,6 +14,8 @@ namespace UMLaut.View
     /*
         Source: http://stackoverflow.com/questions/563195/bind-textbox-on-enter-key-press
         modified
+
+        used for hitting enter in textboxes
     */
     public static class InputBindingsManager
     {
@@ -57,7 +59,7 @@ namespace UMLaut.View
 
         static void HandlePreviewKeyDown(object sender, KeyEventArgs e)
         {
-            TextBox textBox = sender as TextBox;
+        TextBox textBox = sender as TextBox;
             if (textBox != null)
             {
                 if (e.Key == Key.Enter)

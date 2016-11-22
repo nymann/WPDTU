@@ -76,8 +76,8 @@
         <Label Content="{Binding SelectedElement.Type}"
                Grid.Column="1" Grid.Row="1" />
 
-        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedElement.X}" 
-                 b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
+        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedElement.X}"/>
+        <!--b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>-->
 
         <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedElement.Y}"
                  b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>

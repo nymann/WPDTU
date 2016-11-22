@@ -15,16 +15,21 @@ using UMLaut.Resources;
 using System.Windows.Documents;
 using UMLaut.Services.Adorners;
 using UMLaut.Model.Enum;
+using System.Linq;
+using System.Windows.Media;
 
 namespace UMLaut.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
         private bool _drawingMode;
-        private EShape _toolboxValue;
+        private EShape _toolboxShapeValue;
+        private ELine _toolboxLineValue;
 
         private Diagram _diagram = new Diagram();
         private Point _currentPosition;
+
+        private Point _beforeMovePosition;
 
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
@@ -57,7 +62,7 @@ namespace UMLaut.ViewModel
                 OnPropertyChanged();
             }
         }
-
+        private UIElement SelectedUIElement { get; set; }
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
@@ -85,16 +90,10 @@ namespace UMLaut.ViewModel
             this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
             this.CanvasMouseWheel = new RelayCommand<MouseWheelEventArgs>(this.PerformCanvasMouseWheel);
 
+            ShapeMouseDown = new RelayCommand<MouseButtonEventArgs>(PerformShapeMouseDown);
+            ShapeMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(PerformShapeMove);
+
             this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
-            //this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
-            //this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
-            //this.IsAction = new RelayCommand<object>(this.PerformIsAction);
-            //this.IsSyncBarHor = new RelayCommand<object>(this.PerformIsSyncBarHor);
-            //this.IsSyncBarVert = new RelayCommand<object>(this.PerformIsSyncBarVert);
-            //this.IsEdge = new RelayCommand<object>(this.PerformIsEdge);
-            //this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
-            //this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
-            //this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
 
             ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
             LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
@@ -122,6 +121,9 @@ namespace UMLaut.ViewModel
         public ICommand CanvasMouseDown { get; set; }
         public ICommand CanvasMouseMove { get; set; }
         public ICommand CanvasMouseWheel { get; set; }
+
+        public ICommand ShapeMouseDown { get; set; }
+        public ICommand ShapeMove { get; set; }
         #endregion
 
 
@@ -130,15 +132,7 @@ namespace UMLaut.ViewModel
         public ICommand LineToolboxSelection { get; set; }
 
         public ICommand IsInitialNode { get; set; }
-        //public ICommand IsFinalNode { get; set; }
-        //public ICommand IsMergeNode { get; set; }
-        //public ICommand IsAction { get; set; }
-        //public ICommand IsSyncBarHor { get; set; }
-        //public ICommand IsSyncBarVert { get; set; }
-        //public ICommand IsEdge { get; set; }
-        //public ICommand IsTimeEvent { get; set; }
-        //public ICommand IsSendSignal { get; set; }
-        //public ICommand IsReceiveSignal { get; set; }
+
         #endregion
 
         #endregion
@@ -163,6 +157,7 @@ namespace UMLaut.ViewModel
                 {
                     var path = openFileDialog.FileName;
                     _diagram = deserializer.DeserializeFromFile(path);
+                    ResetApplicationState();
                     UpdateApplicationStateFromDiagram();
                 }
             }
@@ -171,6 +166,12 @@ namespace UMLaut.ViewModel
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
             }
 
+        }
+
+        private void ResetApplicationState()
+        {
+            Lines.Clear();
+            Shapes.Clear();
         }
 
         private void UpdateApplicationStateFromDiagram()
@@ -200,12 +201,16 @@ namespace UMLaut.ViewModel
                         serializer.SerializeToFile(_diagram);
                     }
                 }
+                else
+                {
+                    UpdateDiagramFromApplicationCurrentState();
+                    serializer.SerializeToFile(_diagram);
+                }
             }
            catch (Exception)
             {
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
             }
-
         }
 
 
@@ -223,11 +228,11 @@ namespace UMLaut.ViewModel
         {
             if(SelectedElement != null)
             {
-                var duplicate = new ShapeViewModel(SelectedElement.Shape);
+                var duplicateModel = new UMLShape(SelectedElement.Shape.X, SelectedElement.Shape.Y, SelectedElement.Shape.Height, SelectedElement.Shape.Width, SelectedElement.Shape.Type);
+                var duplicate = new ShapeViewModel(duplicateModel);
                 duplicate.X += Constants.DuplicateOffset;
                 duplicate.Y += Constants.DuplicateOffset;
                 Shapes.Add(duplicate);
-                SelectedElement = duplicate;
             }
         }
 
@@ -271,7 +276,7 @@ namespace UMLaut.ViewModel
         public void SetShapeToolboxSelection(EShape shape)
         {
             _drawingMode = true;
-            _toolboxValue = shape;
+            _toolboxShapeValue = shape;
         }
 
         /// <summary>
@@ -281,7 +286,7 @@ namespace UMLaut.ViewModel
         public void SetLineToolboxSelection(ELine line)
         {
             _drawingMode = true;
-            //_toolboxValue = line as Enum;
+            _toolboxLineValue = line;
         }
 
         //public void PerformFreeHand(object obj)
@@ -292,70 +297,94 @@ namespace UMLaut.ViewModel
         public void PerformIsInitialNode(object obj)
         {
             _drawingMode = false; // for testing - should be true
-            _toolboxValue = Model.Enum.EShape.Initial;
+            _toolboxShapeValue = Model.Enum.EShape.Initial;
         }
-
-
-        //private void PerformIsFinalNode(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.ActivityFinal;
-        //}
-
-        //private void PerformIsMergelNode(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.Merge;
-        //}
-
-        //private void PerformIsAction(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.Action;
-        //}
-
-        //private void PerformIsSyncBarHor(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.SyncBarHor;
-        //}
-
-        //private void PerformIsSyncBarVert(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.SyncBarVert;
-        //}
-
-        //private void PerformIsEdge(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.Edge;
-        //}
-
-        //private void PerformIsTimeEvent(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.TimeEvent;
-        //}
-
-        //private void PerformIsSendSignal(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.SendSignal;
-        //}
-
-        //private void PerformIsReceiveSignal(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.ReceiveSignal;
-
-        //}
         #endregion
 
         #region Properties commands
         #endregion
 
         #region Canvas commands
+        private void PerformShapeMouseDown(MouseButtonEventArgs e)
+        {
+            if (!_drawingMode)
+            {
+                FrameworkElement movingElement = (FrameworkElement)e.MouseDevice.Target;
+                if (movingElement != null)
+                {
+                    // Save the position of the mouse incase the event is a move
+                    _beforeMovePosition = RelativeMousePosition(e);
+                }
+            }  
+        }
+
+        private void PerformShapeMove(System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && !_drawingMode)
+            {
+                // Get the element to move
+                FrameworkElement element = (FrameworkElement)e.MouseDevice.Target;
+                if (element != null)
+                {
+                    // Retrieve the view model & canvas                 
+                    Canvas canvas = FindParentOfType<Canvas>(element);
+                    ShapeViewModel movingShape = element.DataContext as ShapeViewModel;
+
+                    Point canvasPosition = Mouse.GetPosition(canvas);
+                    var deltaX = canvasPosition.X - _beforeMovePosition.X;
+                    var deltaY = canvasPosition.Y - _beforeMovePosition.Y;
+
+                    if (movingShape.X + deltaX >= 0 && movingShape.X + deltaX <= canvas.RenderSize.Width - movingShape.Width)
+                    {
+                        
+                        movingShape.X += deltaX;
+                        _beforeMovePosition.X = canvasPosition.X;
+                    }
+
+                    if (movingShape.Y + deltaY >= 0 && movingShape.Y + deltaY <= canvas.RenderSize.Height - movingShape.Height)
+                    {
+                        movingShape.Y += deltaY;
+                        _beforeMovePosition.Y = canvasPosition.Y;
+                    }
+
+
+
+
+
+
+                    //movingShape.X += deltaX;
+                    //movingShape.Y += deltaY;
+                    //_beforeMovePosition = canvasPosition;
+
+                    //if (newX > 0 && newX < canvas.RenderSize.Width)
+                    //{
+                    //    movingShape.X += canvasPosition.X - _beforeMovePosition.X;
+                    //    _beforeMovePosition.X = newX;
+                    //}
+
+                    //if (newY > 0 && newY < canvas.RenderSize.Height)
+                    //{
+                    //    movingShape.Y += canvasPosition.Y - _beforeMovePosition.Y;
+                    //    _beforeMovePosition.Y = newY;
+                    //}
+
+
+                    // Fetch the new position on the canvas
+                    //Point relativePosition = RelativeMousePosition(e);
+                    //var deltaX = relativePosition.X - _beforeMovePosition.X;
+                    //var deltaY = relativePosition.Y - _beforeMovePosition.Y;
+                    //movingShape.X += deltaX;
+                    //movingShape.Y += deltaY;
+                    //_beforeMovePosition = relativePosition;
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         private void PerformCanvasMouseDown(MouseButtonEventArgs e)
         {
             try
@@ -366,14 +395,21 @@ namespace UMLaut.ViewModel
                 // TODO: The behavior is kinda fishy..
                 if (_drawingMode)
                 {
-                    Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue)));
+                    var model = new UMLShape(point.X, point.Y, GetDefaultHeight(_toolboxShapeValue), GetDefaultWidth(_toolboxShapeValue), _toolboxShapeValue);
+                    Shapes.Add(new ShapeViewModel(model));
+
                 }
-                else if(IsElementHit(source))
+                else if (IsElementHit(source))
                 {
+                    if(SelectedElement != null)
+                    {
+                        ClearSelection();
+                    }
+                    SelectedUIElement = source;
                     var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
                     SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
                     if (!(SelectedElement == null)) { SelectedElement.IsEditing = false; }
-                    //AddAdorner(source);
+                    AddAdorner(source);
                     //SelectElement(e.MouseDevice.Target, source);       
                     if (e.ClickCount.Equals(2)) // if (doubleclick)
                     {
@@ -384,6 +420,7 @@ namespace UMLaut.ViewModel
                 {   if (!(SelectedElement == null)) { SelectedElement.IsEditing = false; }
                     //RemoveAdorner(source);
                     SelectedElement = null;
+                    ClearSelection();
                     return;
                 }
             }
@@ -393,10 +430,43 @@ namespace UMLaut.ViewModel
                 Console.WriteLine(ex.Message);
             }
         }
+
+        private void ClearSelection()
+        {
+            if(SelectedUIElement != null)
+            {
+                RemoveAdorner(SelectedUIElement);
+            }
+            SelectedUIElement = null;
+            SelectedElement = null;
+        }
+
+        /// <summary>
+        /// PerformCanvasMouseMove - finds the position of the mouse on the canvas.
+        /// </summary>
+        /// <param name="e">Mouse Event</param>
         private void PerformCanvasMouseMove(System.Windows.Input.MouseEventArgs e)
         {
-            var source = e.Source as UIElement;
-            CurrentPosition = e.GetPosition(source);
+            var source = e.MouseDevice.Target as Canvas;
+            if (source != null)
+            {
+                CurrentPosition = e.GetPosition(source);
+            }
+            else
+            {
+                CurrentPosition = RelativeMousePosition(e);
+            }
+        }
+        /// <summary>
+        /// RelativeMousePosition - Finds the position of the mouse on the canvas
+        /// </summary>
+        /// <param name="e">Mouse event</param>
+        /// <returns>Point of the mouse relative to the canvas</returns>
+        private Point RelativeMousePosition(System.Windows.Input.MouseEventArgs e)
+        {
+            var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
+            var canvas = FindParentOfType<Canvas>(shapeVisualElement);
+            return Mouse.GetPosition(canvas);
         }
 
         private void PerformCanvasMouseWheel(MouseWheelEventArgs e)
@@ -419,6 +489,17 @@ namespace UMLaut.ViewModel
                 }
                 ZoomPercentage -= 0.1;
             }
+        }
+        /// <summary>
+        /// FindParentOfType - Finds the parent of the passed object recursivly
+        /// </summary>
+        /// <typeparam name="T">Type of parent to find</typeparam>
+        /// <param name="o">Object to look for parent from</param>
+        /// <returns>Parent Object</returns>
+        private static T FindParentOfType<T>(DependencyObject o)
+        {
+            dynamic parent = VisualTreeHelper.GetParent(o);
+            return parent.GetType().IsAssignableFrom(typeof(T)) ? parent : FindParentOfType<T>(parent);
         }
         #endregion
         #endregion
@@ -453,11 +534,6 @@ namespace UMLaut.ViewModel
 
         private bool IsElementHit(UIElement source)
         {
-            //if (source is Canvas || source == null)
-            //    return false;
-            //return true;
-            Console.Write(!(source is Canvas));
-            Console.Write(!(source is Canvas) || source == null);
             return !(source is Canvas) || source == null;
         }
 
@@ -468,30 +544,97 @@ namespace UMLaut.ViewModel
 
         private void RemoveAdorner(UIElement element)
         {
-            try {
+            try
+            {
                 Adorner[] adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
-                AdornerLayer.GetAdornerLayer(element).Remove(adorners[0]);
-           } catch { }
+                foreach(Adorner adorner in adorners)
+                {
+                    AdornerLayer.GetAdornerLayer(element).Remove(adorner);
+                }
+            } 
+            catch(Exception)
+            {
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+            }
 
         }
 
         private void UpdateDiagramFromApplicationCurrentState()
         {
-            List<UMLLine> umlLines = new List<UMLLine>();
-
-            List<UMLShape> umlShapes = new List<UMLShape>();
-
-            foreach (LineViewModel lvm in Lines)
-            {
-                umlLines.Add(lvm.Line);
-            }
-            foreach (ShapeViewModel svm in Shapes)
-            {
-                umlShapes.Add(svm.Shape);
-            }
+            List<UMLLine> umlLines = Lines.Select(x => x.Line).ToList();
+            List<UMLShape> umlShapes = Shapes.Select(x => x.Shape).ToList();
 
             _diagram.Lines = umlLines;
             _diagram.Shapes = umlShapes;
+        }
+
+        private int GetDefaultHeight(EShape _toolboxValue)
+        {
+            switch (_toolboxValue)
+            {
+                case EShape.Action:
+                    return Constants.Drawables.Shapes.Action.DefaultHeight;
+                case EShape.ActivityFinal:
+                    return Constants.Drawables.Shapes.ActivityFinal.DefaultHeight;
+                case EShape.Decision:
+                    return Constants.Drawables.Shapes.Decision.DefaultHeight;
+                case EShape.FlowFinal:
+                    return Constants.Drawables.Shapes.FlowFinal.DefaultHeight;
+                case EShape.Fork:
+                    return Constants.Drawables.Shapes.Fork.DefaultHeight;
+                case EShape.Initial:
+                    return Constants.Drawables.Shapes.Initial.DefaultHeight;
+                case EShape.Join:
+                    return Constants.Drawables.Shapes.Join.DefaultHeight;
+                case EShape.Merge:
+                    return Constants.Drawables.Shapes.Merge.DefaultHeight;
+                case EShape.ReceiveSignal:
+                    return Constants.Drawables.Shapes.ReceiveSignal.DefaultHeight;
+                case EShape.SendSignal:
+                    return Constants.Drawables.Shapes.SendSignal.DefaultHeight;
+                case EShape.SyncBarHor:
+                    return Constants.Drawables.Shapes.SyncBarHor.DefaultHeight;
+                case EShape.SyncBarVert:
+                    return Constants.Drawables.Shapes.SyncBarVert.DefaultHeight;
+                case EShape.TimeEvent:
+                    return Constants.Drawables.Shapes.TimeEvent.DefaultHeight;
+                default:
+                    return Constants.Drawables.Shapes.DefaultHeight;
+            }
+        }
+        private int GetDefaultWidth(EShape _toolboxValue)
+        {
+            switch (_toolboxValue)
+            {
+                case EShape.Action:
+                    return Constants.Drawables.Shapes.Action.DefaultWidth;
+                case EShape.ActivityFinal:
+                    return Constants.Drawables.Shapes.ActivityFinal.DefaultWidth;
+                case EShape.Decision:
+                    return Constants.Drawables.Shapes.Decision.DefaultWidth;
+                case EShape.FlowFinal:
+                    return Constants.Drawables.Shapes.FlowFinal.DefaultWidth;
+                case EShape.Fork:
+                    return Constants.Drawables.Shapes.Fork.DefaultWidth;
+                case EShape.Initial:
+                    return Constants.Drawables.Shapes.Initial.DefaultWidth;
+                case EShape.Join:
+                    return Constants.Drawables.Shapes.Join.DefaultWidth;
+                case EShape.Merge:
+                    return Constants.Drawables.Shapes.Merge.DefaultWidth;
+                case EShape.ReceiveSignal:
+                    return Constants.Drawables.Shapes.ReceiveSignal.DefaultWidth;
+                case EShape.SendSignal:
+                    return Constants.Drawables.Shapes.SendSignal.DefaultWidth;
+                case EShape.SyncBarHor:
+                    return Constants.Drawables.Shapes.SyncBarHor.DefaultWidth;
+                case EShape.SyncBarVert:
+                    return Constants.Drawables.Shapes.SyncBarVert.DefaultWidth;
+                case EShape.TimeEvent:
+                    return Constants.Drawables.Shapes.TimeEvent.DefaultWidth;
+                default:
+                    return Constants.Drawables.Shapes.DefaultWidth;
+            }
         }
     }
 
