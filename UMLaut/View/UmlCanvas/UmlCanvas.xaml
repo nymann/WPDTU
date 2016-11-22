@@ -10,8 +10,7 @@
              xmlns:drw="clr-namespace:UMLaut.View.Drawable"
              xmlns:slc="clr-namespace:UMLaut.View.Drawable.Selectors"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="800"
-             Name="UMLCanvas">
+             d:DesignHeight="800" d:DesignWidth="800">
 
     <UserControl.Resources>
         <!--Defining the datatemplates to the ShapeViewModelSelector
@@ -57,27 +56,9 @@
             </slc:LineDataTemplateSelector.SolidLineTemplate>
         </slc:LineDataTemplateSelector>
 
-        <!--<DataTemplate DataType="{x:Type vm:ShapeViewModel}">
-            <Thumb>
-                 <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource 
-                                                        AncestorType={x:Type ItemsControl}}, Path=DataContext.ThumpMouseDownCommand}"
-                                PassEventArgsToCommand="True" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="DragDelta">
-                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource 
-                                                        AncestorType={x:Type ItemsControl}}, Path=DataContext.ThumbDragCommand}"
-                                PassEventArgsToCommand="True" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers> 
-                <Thumb.Template>
-                    <ControlTemplate>
-                        <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ShapeDataTemplateSelector}" />
-                    </ControlTemplate>
-                </Thumb.Template>
-            </Thumb>
-        </DataTemplate>-->
+        <DataTemplate DataType="{x:Type vm:ShapeViewModel}">
+            <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ShapeDataTemplateSelector}"/>
+        </DataTemplate>
 
         <DataTemplate DataType="{x:Type vm:LineViewModel}">
             <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource LineDataTemplateSelector}"/>
@@ -86,12 +67,9 @@
         <!--Unpacking the CompisteCollection-->
         <CollectionViewSource x:Key="LinesViewSource" Source="{Binding Path=Lines}" />
         <CollectionViewSource x:Key="ShapesViewSource" Source="{Binding Path=Shapes}" />
-
-
-        
     </UserControl.Resources>
 
-    <ItemsControl x:Name="Controller">
+    <ItemsControl>
         <ItemsControl.ItemsSource>
             <CompositeCollection>
                 <CollectionContainer Collection="{Binding Source={StaticResource LinesViewSource}}" />
@@ -102,7 +80,23 @@
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <Canvas Background="White">
-                    <i:Interaction.Triggers>
+                    <!-- Grid background. A little overwhelming -->
+                    <!--<Canvas.Background>
+                        <DrawingBrush TileMode="Tile" Viewport="-10,-10,40,40" 
+                                     ViewportUnits="Absolute">
+                            <DrawingBrush.Drawing>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Geometry>
+                                        <RectangleGeometry Rect="0,0,50,50"/>
+                                    </GeometryDrawing.Geometry>
+                                    <GeometryDrawing.Pen>
+                                        <Pen Brush="Gray" Thickness="1"/>
+                                    </GeometryDrawing.Pen>
+                                </GeometryDrawing>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </Canvas.Background>-->
+                <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown" >
                             <cmd:EventToCommand Command="{Binding CanvasMouseDown}"
                                 PassEventArgsToCommand="True" />
@@ -122,32 +116,9 @@
 
         <ItemsControl.ItemContainerStyle>
             <Style TargetType="ContentPresenter">
-                <Setter Property="Canvas.Left" Value="{Binding Path=X}"></Setter>
-                <Setter Property="Canvas.Top" Value="{Binding Path=Y}"></Setter>
+                <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
+                <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
             </Style>
         </ItemsControl.ItemContainerStyle>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Thumb>
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="DragDelta">
-                            <cmd:EventToCommand Command="{Binding DataContext.ThumbDragCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                PassEventArgsToCommand="True" />
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="PreviewMouseDown">
-                            <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource 
-                                                        AncestorType={x:Type ItemsControl}}, Path=DataContext.ThumpMouseDownCommand}"
-                                PassEventArgsToCommand="True" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <Thumb.Template>
-                        <ControlTemplate>
-                            <drw:ActivityUserControl/>
-                        </ControlTemplate>
-                    </Thumb.Template>
-                </Thumb>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
     </ItemsControl>
-    
 </UserControl>

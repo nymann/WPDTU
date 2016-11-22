@@ -15,7 +15,6 @@ using UMLaut.Resources;
 using System.Windows.Documents;
 using UMLaut.Services.Adorners;
 using UMLaut.Model.Enum;
-using System.Windows.Controls.Primitives;
 
 namespace UMLaut.ViewModel
 {
@@ -26,8 +25,6 @@ namespace UMLaut.ViewModel
 
         private Diagram _diagram = new Diagram();
         private Point _currentPosition;
-
-        public ShapeViewModel TestShape { get; set; }
 
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
@@ -59,12 +56,8 @@ namespace UMLaut.ViewModel
 
         public MainViewModel()
         {
-            TestShape = new ShapeViewModel(new UMLShape(200, 200, EShape.Action));
-
             Lines = new ObservableCollection<LineViewModel>();
             Shapes = new ObservableCollection<ShapeViewModel>();
-
-            Shapes.Add(new ShapeViewModel(new UMLShape(200, 200, EShape.Action)));
 
             this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
             this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
@@ -80,10 +73,17 @@ namespace UMLaut.ViewModel
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
             this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
 
-            ThumbDragCommand = new RelayCommand<DragDeltaEventArgs>(onDragDelta);
-            ThumpMouseDownCommand = new RelayCommand<MouseButtonEventArgs>(onMouseDown);
-
             this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
+            //this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
+            //this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
+            //this.IsAction = new RelayCommand<object>(this.PerformIsAction);
+            //this.IsSyncBarHor = new RelayCommand<object>(this.PerformIsSyncBarHor);
+            //this.IsSyncBarVert = new RelayCommand<object>(this.PerformIsSyncBarVert);
+            //this.IsEdge = new RelayCommand<object>(this.PerformIsEdge);
+            //this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
+            //this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
+            //this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
+
             ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
             LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
 
@@ -109,9 +109,6 @@ namespace UMLaut.ViewModel
         #region Canvas ICommands
         public ICommand CanvasMouseDown { get; set; }
         public ICommand CanvasMouseMove { get; set; }
-
-        public ICommand ThumbDragCommand { get; set; }
-        public ICommand ThumpMouseDownCommand { get; set; }
         #endregion
 
 
@@ -120,6 +117,15 @@ namespace UMLaut.ViewModel
         public ICommand LineToolboxSelection { get; set; }
 
         public ICommand IsInitialNode { get; set; }
+        //public ICommand IsFinalNode { get; set; }
+        //public ICommand IsMergeNode { get; set; }
+        //public ICommand IsAction { get; set; }
+        //public ICommand IsSyncBarHor { get; set; }
+        //public ICommand IsSyncBarVert { get; set; }
+        //public ICommand IsEdge { get; set; }
+        //public ICommand IsTimeEvent { get; set; }
+        //public ICommand IsSendSignal { get; set; }
+        //public ICommand IsReceiveSignal { get; set; }
         #endregion
 
         #endregion
@@ -250,7 +256,6 @@ namespace UMLaut.ViewModel
         {
             _drawingMode = true;
             _toolboxValue = shape;
-            //Shapes.Add(new ShapeViewModel(new UMLShape(200, 200, _toolboxValue)));
         }
 
         /// <summary>
@@ -263,51 +268,78 @@ namespace UMLaut.ViewModel
             //_toolboxValue = line as Enum;
         }
 
+        //public void PerformFreeHand(object obj)
+        //{
+        //    _drawingMode = false;
+        //}
+
         public void PerformIsInitialNode(object obj)
         {
             _drawingMode = false; // for testing - should be true
             _toolboxValue = Model.Enum.EShape.Initial;
         }
+
+
+        //private void PerformIsFinalNode(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.ActivityFinal;
+        //}
+
+        //private void PerformIsMergelNode(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.Merge;
+        //}
+
+        //private void PerformIsAction(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.Action;
+        //}
+
+        //private void PerformIsSyncBarHor(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.SyncBarHor;
+        //}
+
+        //private void PerformIsSyncBarVert(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.SyncBarVert;
+        //}
+
+        //private void PerformIsEdge(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.Edge;
+        //}
+
+        //private void PerformIsTimeEvent(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.TimeEvent;
+        //}
+
+        //private void PerformIsSendSignal(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.SendSignal;
+        //}
+
+        //private void PerformIsReceiveSignal(object obj)
+        //{
+        //    _drawingMode = true;
+        //    _toolboxValue = Model.Enum.EShape.ReceiveSignal;
+
+        //}
         #endregion
 
         #region Properties commands
         #endregion
 
         #region Canvas commands
-
-        public void onMouseDown(MouseButtonEventArgs e)
-        {
-            Console.Write("Mouse Down!");
-        }
-
-        /// <summary>
-        /// onDelatDrag - Shape drag event handling. 
-        /// </summary>
-        /// <param name="e"></param>
-        public void onDragDelta(DragDeltaEventArgs e)
-        {
-            //TODO: Clean this up..
-            Thumb source = e.Source as Thumb;
-
-            if (source != null)
-            {
-                ShapeViewModel movedShape = source.DataContext as ShapeViewModel;
-                if (movedShape != null)
-                {
-                    // Handle the drag
-                    movedShape.Shape.X += e.HorizontalChange;
-                    movedShape.Shape.Y += e.VerticalChange;
-                    OnPropertyChanged();
-                }
-            }
-
-           
-
-            
-
-        }
-
-
         private void PerformCanvasMouseDown(MouseButtonEventArgs e)
         {
             try
