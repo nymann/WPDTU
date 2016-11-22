@@ -59,7 +59,7 @@ namespace UMLaut.View
 
         static void HandlePreviewKeyDown(object sender, KeyEventArgs e)
         {
-            TextBox textBox = sender as TextBox;
+        TextBox textBox = sender as TextBox;
             if (textBox != null)
             {
                 if (e.Key == Key.Enter)

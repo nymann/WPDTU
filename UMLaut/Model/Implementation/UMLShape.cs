@@ -1,11 +1,21 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using UMLaut.Model.Enum;
 using UMLaut.Resources;
 
 namespace UMLaut.Model
 {
-    public class UMLShape : IShape
+    public class UMLShape :  IShape
     {
+        private Guid _id;
+        private double _height;
+        private double _width;
+        private EShape _type;
+        private string _label = "";
+        private double _x;
+        private double _y;
+
         private UMLShape()
         {
 
@@ -18,13 +28,12 @@ namespace UMLaut.Model
         /// <param name="Type">Shape type</param>
         public UMLShape(double X, double Y, EShape Type)
         {
-            Id = Guid.NewGuid();
-            Height = Constants.Drawables.Shapes.DefaultHeight;
-            Width = Constants.Drawables.Shapes.DefaultWidth;
-            this.X = X;
-            this.Y = Y;
-            this.Type = Type;
-            Label = "";
+            _id = Guid.NewGuid();
+            _height = Constants.Drawables.Shapes.DefaultHeight; ;
+            _width = Constants.Drawables.Shapes.DefaultWidth; ;
+            _x = X;
+            _y = Y;
+            _type = Type;
         }
 
         /// <summary>
@@ -37,13 +46,12 @@ namespace UMLaut.Model
         /// <param name="Type"></param>
         public UMLShape(double X, double Y, double Height, double Width, EShape Type)
         {
-            Id = Guid.NewGuid();
-            this.Height = Height;
-            this.Width = Width;
-            this.X = X;
-            this.Y = Y;
-            this.Type = Type;
-            Label = "";
+            _id = Guid.NewGuid();
+            _height = Height;
+            _width = Width;
+            _x = X;
+            _y = Y;
+            _type = Type;
         }
 
         /// <summary>
@@ -53,28 +61,62 @@ namespace UMLaut.Model
         /// <summary>
         /// X position of the shape
         /// </summary>
-        public double X { get; set; }
+        public double X {
+            get { return _x; }
+            set
+            {
+                if (_x == value)
+                {
+                    return;
+                }
+                _x = value;
+            } 
+        }
         /// <summary>
         /// Y Position of the shape
         /// </summary>
-        public double Y { get; set; }
+        public double Y {
+            get { return _y; }
+            set 
+            {
+                if (_y == value) {
+                    return;
+                }
+                _y = value;
+            }
+        }
         /// <summary>
         /// Type of the shape, used for determining the UserControl used for drawing the shape
         /// </summary>
-        public EShape Type { get; set; }
+        public EShape Type {
+            get { return _type; }
+            set { _type = value; }
+        }
         /// <summary>
         /// Height of the shape, defaults to 200
         /// </summary>
-        public double Height { get; set; }
+        public double Height {
+            get { return _height; }
+            set { _height = value; }
+        }
         /// <summary>
         /// Width of the shape, defualts to 200
         /// </summary>
-        public double Width { get; set; }
+        public double Width {
+            get { return _width; }
+            set { _width = value; }
+        }
         /// <summary>
         /// Text of the shape
         /// </summary>
-        public string Label { get; set; }
+        public string Label {
+            get { return _label; }
+            set { _label = value; }
+        }
 
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            => PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
     }
 }
