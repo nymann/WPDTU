@@ -95,7 +95,6 @@
     <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ShapeViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\Drawable\Line\DashedLineUserControl.xaml.cs">
       <DependentUpon>DashedLineUserControl.xaml</DependentUpon>
     </Compile>
