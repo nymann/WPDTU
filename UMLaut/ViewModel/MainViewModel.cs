@@ -33,6 +33,16 @@ namespace UMLaut.ViewModel
         private UndoRedo.UndoRedo undoRedo;
 
         private ShapeViewModel _storedElement;
+        public ShapeViewModel StoredElement
+        {
+            get { return _storedElement; }
+            set
+            {
+                _storedElement = value;
+                OnPropertyChanged();
+            }
+        }
+
         private ShapeViewModel _selectedElement;
 
         public ShapeViewModel SelectedElement
@@ -76,7 +86,7 @@ namespace UMLaut.ViewModel
             this.DuplicateShape = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformDuplicateShape);
             this.Cut = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformCut);
             this.Copy = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformCopy);
-            this.Insert = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformInsert);
+            this.Paste = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformPaste);
             this.DeleteShape = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformDeleteShape);
             this.TextToShape = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformTextToShape);
             this.ZoomIn = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformZoomIn);
@@ -121,7 +131,7 @@ namespace UMLaut.ViewModel
         public ICommand SaveFileAs { get; set; }
         public ICommand DuplicateShape { get; set; }
         public ICommand Cut { get; set; }
-        public ICommand Insert { get; set; }
+        public ICommand Paste { get; set; }
         public ICommand Copy { get; set; }
         public ICommand DeleteShape { get; set; }
         public ICommand TextToShape { get; set; }
@@ -243,9 +253,11 @@ namespace UMLaut.ViewModel
             if (SelectedElement == null) return;
             _storedElement = _selectedElement;
             Shapes.Remove(_selectedElement);
+            IUndoRedoCommand cmd = new CutCommand(this, _storedElement);
+            undoRedo.InsertInUndoRedo(cmd);
         }
 
-        private void PerformInsert(object obj)
+        private void PerformPaste(object obj)
         {
             if (_storedElement == null) return;
             Shapes.Add(_storedElement);
@@ -258,11 +270,10 @@ namespace UMLaut.ViewModel
             var duplicate = new ShapeViewModel(SelectedElement.Shape);
             duplicate.X += Constants.DuplicateOffset;
             duplicate.Y += Constants.DuplicateOffset;
-
-            IUndoRedoCommand cmd = new DuplicateCommand(duplicate, this);
-
             Shapes.Add(duplicate);
             SelectedElement = duplicate;
+
+            IUndoRedoCommand cmd = new DuplicateCommand(duplicate, this);
             undoRedo.InsertInUndoRedo(cmd);
         }
 
@@ -403,7 +414,7 @@ namespace UMLaut.ViewModel
         //private void PerformIsReceiveSignal(object obj)
         //{
         //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.ReceiveSignal;
+        //    _toolboxValue = Model.Enum.ESfhape.ReceiveSignal;
 
         //}
 
@@ -425,9 +436,9 @@ namespace UMLaut.ViewModel
                 // TODO: The behavior is kinda fishy..
                 if (_drawingMode)
                 {
-                    var addedShape = new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue));
-                    Shapes.Add(addedShape);
-                    IUndoRedoCommand cmd = new AddShapeCommand(addedShape, this);
+                    var shapeToAdd = new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue));
+                    Shapes.Add(shapeToAdd);
+                    IUndoRedoCommand cmd = new AddShapeCommand(shapeToAdd, this);
                     undoRedo.InsertInUndoRedo(cmd);
 
                 }

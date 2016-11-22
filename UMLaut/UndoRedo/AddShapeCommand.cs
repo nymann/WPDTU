@@ -4,8 +4,8 @@ namespace UMLaut.UndoRedo
 {
     public class AddShapeCommand : IUndoRedoCommand
     {
-        private ShapeViewModel _selectedElement;
-        private MainViewModel _mainViewModel;
+        private readonly ShapeViewModel _selectedElement;
+        private readonly MainViewModel _mainViewModel;
 
         public AddShapeCommand(ShapeViewModel selectedElement, MainViewModel mainViewModel)
         {

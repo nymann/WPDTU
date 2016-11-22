@@ -13,28 +13,23 @@ namespace UMLaut.UndoRedo
         {
             _selectedElement = selectedElement;
             _mainViewModel = mainViewModel;
-
         }
 
         public void Execute()
         {
             // Undo
-
-            // Remove the duplicated shape.
             _mainViewModel.Shapes.Remove(_selectedElement);
-
-
         }
 
         public void UnExecute()
         {
             // Redo
             
-            // TODO(When duplicating a shape, undo -> redo, then the shape gets added at the top right hand corner despite having the correct X and Y values).
-
-            var duplicate = new ShapeViewModel(_selectedElement.Shape);
-            //IUndoRedoCommand cmd = new DuplicateCommand(duplicate);
-
+            // TODO(Bug, talk to Kristian).
+            var duplicate = _selectedElement;
+            duplicate.X = _selectedElement.X + 30;
+            duplicate.Y = _selectedElement.Y + 30;
+           
             _mainViewModel.Shapes.Add(duplicate);
         }
     }

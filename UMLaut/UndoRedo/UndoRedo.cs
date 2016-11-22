@@ -16,6 +16,7 @@ namespace UMLaut.UndoRedo
         /// <param name="levels"></param>
         public void Redo(int levels)
         {
+            Console.WriteLine("RedoCommands.Count = {0}.", _redoCommands.Count);
             for (var i = 1; i <= levels; i++)
             {
                 if (_redoCommands.Count == 0) continue;
@@ -32,7 +33,8 @@ namespace UMLaut.UndoRedo
         /// </summary>
         /// <param name="levels"></param>
         public void Undo(int levels)
-        {
+        {   
+            Console.WriteLine("UndoCommands.Count = {0}.", _undoCommands.Count);
             for (var i = 1; i <= levels; i++)
             {
                 if (_undoCommands.Count == 0) continue;
