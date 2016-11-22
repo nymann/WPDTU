@@ -54,6 +54,11 @@
                     <drw:LineUserControl/>
                 </DataTemplate>
             </slc:LineDataTemplateSelector.SolidLineTemplate>
+            <slc:LineDataTemplateSelector.DashedLineTemplate>
+                <DataTemplate>
+                    <drw:LineUserControl/>
+                </DataTemplate>
+            </slc:LineDataTemplateSelector.DashedLineTemplate>
         </slc:LineDataTemplateSelector>
 
         <DataTemplate DataType="{x:Type vm:ShapeViewModel}">

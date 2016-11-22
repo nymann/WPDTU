@@ -39,7 +39,7 @@ namespace UMLaut.ViewModel
             set
             {
                 Shape.Label = value;
-                //OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -49,7 +49,7 @@ namespace UMLaut.ViewModel
             set
             {
                 Shape.Height = value;
-                //OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
 
@@ -61,7 +61,7 @@ namespace UMLaut.ViewModel
             set
             {
                 Shape.Width = value;
-                //OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
 
