@@ -45,6 +45,7 @@ namespace UMLaut.ViewModel
 
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
 
+            this.IsFreeHand = new RelayCommand<object>(this.PerformIsFreeHand);
             this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
             this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
             this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
@@ -80,6 +81,7 @@ namespace UMLaut.ViewModel
 
         #region Toolbox ICommands
 
+        public ICommand IsFreeHand { get; set; }
         public ICommand IsInitialNode { get; set; }
         public ICommand IsFinalNode { get; set; }
         public ICommand IsMergeNode { get; set; }
@@ -175,6 +177,11 @@ namespace UMLaut.ViewModel
         #endregion
 
         #region Toolbox commands
+
+        public void PerformIsFreeHand(object obj)
+        {
+            toolboxValue = Model.Enum.EShape.FreeHand;
+        }
 
         public void PerformIsInitialNode(object obj)
         {

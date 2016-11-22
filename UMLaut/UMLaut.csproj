@@ -119,9 +119,6 @@
     <Compile Include="View\Drawable\DiamondUserControl.xaml.cs">
       <DependentUpon>DiamondUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Drawable\LineUserControl.xaml.cs">
-      <DependentUpon>LineUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Drawable\ReceiveSignalUserControl.xaml.cs">
       <DependentUpon>ReceiveSignalUserControl.xaml</DependentUpon>
     </Compile>
@@ -178,9 +175,6 @@
     <Page Include="View\Drawable\DiamondUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Drawable\LineUserControl.xaml">
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Drawable\Shape\ActivityUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -363,6 +357,15 @@
     <Resource Include="Resources\Images\time-event.png" />
     <Resource Include="Resources\Images\time-event0.png" />
     <Resource Include="Resources\Images\time-event1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Hands-Hand-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\free-hand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\mouse.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
