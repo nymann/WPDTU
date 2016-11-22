@@ -121,6 +121,24 @@
     <Compile Include="View\Drawable\Shape\MergeUserControl.xaml.cs">
       <DependentUpon>MergeUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Drawable\DiamondUserControl.xaml.cs">
+      <DependentUpon>DiamondUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\ReceiveSignalUserControl.xaml.cs">
+      <DependentUpon>ReceiveSignalUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\SendSignalUserControl.xaml.cs">
+      <DependentUpon>SendSignalUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\SyncBarHorUserControl.xaml.cs">
+      <DependentUpon>SyncBarHorUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\SyncBarVertUserControl.xaml.cs">
+      <DependentUpon>SyncBarVertUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Drawable\TimeEventUserControl.xaml.cs">
+      <DependentUpon>TimeEventUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\InputBindingManager.cs" />
     <Compile Include="View\Ribbon\Ribbon.xaml.cs">
       <DependentUpon>Ribbon.xaml</DependentUpon>
@@ -159,7 +177,10 @@
     </Page>
     <Page Include="View\Drawable\Shape\ActivityFinalUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Drawable\DiamondUserControl.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Drawable\Shape\ActivityUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -180,6 +201,26 @@
     <Page Include="View\Drawable\Shape\MergeUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Drawable\ReceiveSignalUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Drawable\SendSignalUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Drawable\SyncBarHorUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Drawable\SyncBarVertUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Drawable\TimeEventUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Ribbon\Ribbon.xaml">
       <SubType>Designer</SubType>
@@ -321,6 +362,13 @@
     <Resource Include="Resources\Images\time-event1.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Images\Hands-Hand-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\free-hand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\mouse.png" />
     <Resource Include="Resources\Images\application-icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

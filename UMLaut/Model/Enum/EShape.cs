@@ -8,6 +8,7 @@ namespace UMLaut.Model.Enum
 {
     public enum EShape
     {
+        FreeHand,
         Action,
         Initial,
         FlowFinal,

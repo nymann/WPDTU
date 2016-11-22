@@ -52,7 +52,7 @@
             <sidebar:Sidebar Grid.Column="0"/>
             <ScrollViewer HorizontalScrollBarVisibility="Visible" Grid.Column="1">
 
-                <umlCanvas:UmlCanvas Grid.Column="1" Height="1200" Width="2200"/>
+                <umlCanvas:UmlCanvas Grid.Column="1" Height="3200" Width="3200"/>
             </ScrollViewer>
         </Grid>
     </Grid>

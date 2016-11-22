@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="UMLaut.View.Drawable.DiamondUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UMLaut.View.Drawable"
+             mc:Ignorable="d" 
+             Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" Width="{Binding Width}" Height="{Binding Height}" 
+             d:DesignHeight="100" d:DesignWidth="100">
+    <Grid>
+        <Polygon Points="0,50 50,100 100,50 50,0"
+                 Stroke="Black"
+                 StrokeThickness="2">
+            <Polygon.Fill>
+                <SolidColorBrush Color="White"/>
+            </Polygon.Fill>
+            <Polygon.RenderTransform>
+                <ScaleTransform ScaleX="{Binding Scale}"
+                                ScaleY="{Binding Scale}"/>
+            </Polygon.RenderTransform>
+        </Polygon>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Label}"/>
+    </Grid>
+</UserControl>

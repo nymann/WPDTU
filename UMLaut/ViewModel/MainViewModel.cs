@@ -93,7 +93,7 @@ namespace UMLaut.ViewModel
             ShapeMouseDown = new RelayCommand<MouseButtonEventArgs>(PerformShapeMouseDown);
             ShapeMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(PerformShapeMove);
 
-            this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
+            this.IsFreeHand = new RelayCommand<object>(this.PerformIsFreeHand);
 
             ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
             LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
@@ -131,6 +131,7 @@ namespace UMLaut.ViewModel
         public ICommand ShapeToolboxSelection { get; set; }
         public ICommand LineToolboxSelection { get; set; }
 
+        public ICommand IsFreeHand { get; set; }
         public ICommand IsInitialNode { get; set; }
 
         #endregion
@@ -269,6 +270,12 @@ namespace UMLaut.ViewModel
     
         // TODO Should be done in one function insted of split onto two.
 
+        public void PerformIsFreeHand(object obj)
+        {
+            _drawingMode = false;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Hand;
+        }
+
         /// <summary>
         /// Set the shape selected in the toolbox
         /// </summary>
@@ -277,6 +284,7 @@ namespace UMLaut.ViewModel
         {
             _drawingMode = true;
             _toolboxShapeValue = shape;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         /// <summary>
@@ -287,18 +295,9 @@ namespace UMLaut.ViewModel
         {
             _drawingMode = true;
             _toolboxLineValue = line;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
-        //public void PerformFreeHand(object obj)
-        //{
-        //    _drawingMode = false;
-        //}
-
-        public void PerformIsInitialNode(object obj)
-        {
-            _drawingMode = false; // for testing - should be true
-            _toolboxShapeValue = Model.Enum.EShape.Initial;
-        }
         #endregion
 
         #region Properties commands
