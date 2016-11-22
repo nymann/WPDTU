@@ -253,6 +253,7 @@ namespace UMLaut.ViewModel
             if (SelectedElement == null) return;
             _storedElement = _selectedElement;
             Shapes.Remove(_selectedElement);
+            SelectedElement = null;
             IUndoRedoCommand cmd = new CutCommand(this, _storedElement);
             undoRedo.InsertInUndoRedo(cmd);
         }
