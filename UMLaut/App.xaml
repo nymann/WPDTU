@@ -2,12 +2,17 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:UMLaut"
-             xmlns:cvtr="clr-namespace:UMLaut.Services.Converter"
+             xmlns:vm="clr-namespace:UMLaut.ViewModel"
+             StartupUri="MainWindow.xaml"
+             xmlns:cvtr="clr-namespace:UMLaut.Services.Converter">
 
-             StartupUri="MainWindow.xaml">
     <Application.Resources>
+            
         <ResourceDictionary>
             <cvtr:FirstDegreeFunctionConverter x:Key="DefaultInnerNodeFactor" A="0.7" B="0" />
+            <vm:BooleanToVisibilityConverter x:Key="TrueToVisibleConverter" />
+            <vm:BooleanToVisibilityConverter x:Key="FalseToVisibleConverter" IsReversed="True" />
         </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

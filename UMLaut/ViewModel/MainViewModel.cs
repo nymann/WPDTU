@@ -52,8 +52,17 @@ namespace UMLaut.ViewModel
             }
         }
 
+        private double _zoomPercentage = 1;
+        public double ZoomPercentage
+        {
+            get { return _zoomPercentage; }
+            set
+            {
+                _zoomPercentage = value;
+                OnPropertyChanged();
+            }
+        }
         private UIElement SelectedUIElement { get; set; }
-
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
@@ -79,6 +88,7 @@ namespace UMLaut.ViewModel
 
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
             this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
+            this.CanvasMouseWheel = new RelayCommand<MouseWheelEventArgs>(this.PerformCanvasMouseWheel);
 
             ShapeMouseDown = new RelayCommand<MouseButtonEventArgs>(PerformShapeMouseDown);
             ShapeMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(PerformShapeMove);
@@ -110,6 +120,7 @@ namespace UMLaut.ViewModel
         #region Canvas ICommands
         public ICommand CanvasMouseDown { get; set; }
         public ICommand CanvasMouseMove { get; set; }
+        public ICommand CanvasMouseWheel { get; set; }
 
         public ICommand ShapeMouseDown { get; set; }
         public ICommand ShapeMove { get; set; }
@@ -232,27 +243,30 @@ namespace UMLaut.ViewModel
 
         private void PerformTextToShape(object obj)
         {
-            throw new NotImplementedException();
+            if (!(SelectedElement == null)) { SelectedElement.IsEditing = !SelectedElement.IsEditing; }
         }
 
         private void PerformZoomIn(object obj)
         {
-            throw new NotImplementedException();
+            ZoomPercentage += 0.1;
         }
 
         private void PerformZoomOut(object obj)
         {
-            throw new NotImplementedException();
+            if (ZoomPercentage > 0.49)
+            {
+                ZoomPercentage -= 0.1;
+            }
         }
 
         private void PerformZoomToFit(object obj)
         {
-            throw new NotImplementedException();
+            ZoomPercentage = 1.0;
         }
         #endregion
 
         #region Toolbox commands
-        
+    
         // TODO Should be done in one function insted of split onto two.
 
         /// <summary>
@@ -403,11 +417,18 @@ namespace UMLaut.ViewModel
                     SelectedUIElement = source;
                     var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
                     SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
+                    if (!(SelectedElement == null)) { SelectedElement.IsEditing = false; }
                     AddAdorner(source);
-
+                    //SelectElement(e.MouseDevice.Target, source);       
+                    if (e.ClickCount.Equals(2)) // if (doubleclick)
+                    {
+                        SelectedElement.IsEditing = true;
+                    }
                 }
                 else
-                {
+                {   if (!(SelectedElement == null)) { SelectedElement.IsEditing = false; }
+                    //RemoveAdorner(source);
+                    SelectedElement = null;
                     ClearSelection();
                     return;
                 }
@@ -457,6 +478,27 @@ namespace UMLaut.ViewModel
             return Mouse.GetPosition(canvas);
         }
 
+        private void PerformCanvasMouseWheel(MouseWheelEventArgs e)
+        {
+            e.Handled = true;
+
+            if (e.Delta > 0)
+            {
+                if (ZoomPercentage > 10)
+                {
+                    return;
+                }
+                ZoomPercentage += 0.1;
+            }
+            else
+            {
+                if (ZoomPercentage < 0.49)
+                {
+                    return;
+                }
+                ZoomPercentage -= 0.1;
+            }
+        }
         /// <summary>
         /// FindParentOfType - Finds the parent of the passed object recursivly
         /// </summary>

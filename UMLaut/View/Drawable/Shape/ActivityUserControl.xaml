@@ -8,13 +8,22 @@
              d:DesignHeight="600" d:DesignWidth="600"
              Height="{Binding Height}"
              Width="{Binding Width}">
-
-    <UserControl.Resources>
-
-    </UserControl.Resources>
     
     <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2"
-        CornerRadius="10,10,10,10" BorderBrush="Black" Background="#CDF4FF">
-        <TextBlock Name="activityLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Label}"/>
+        CornerRadius="25,25,25,25" BorderBrush="Black" Background="#CDF4FF">
+        <!--<TextBlock Name="activityLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Label}"/>
+        -->
+        <Grid VerticalAlignment="Center">
+            <TextBlock Name="activityLabel" Text="{Binding Label}"  Background="#CDF4FF"
+            Visibility="{Binding IsEditing, Converter={StaticResource FalseToVisibleConverter}}"
+            VerticalAlignment="Center" 
+            HorizontalAlignment="Center" />
+            <TextBox Text="{Binding Label}"  Background="#CDF4FF"
+            Visibility="{Binding IsEditing, Converter={StaticResource TrueToVisibleConverter}}"
+            VerticalAlignment="Center" 
+            HorizontalContentAlignment="Center" />
+        </Grid>
+
+
     </Border>
 </UserControl>

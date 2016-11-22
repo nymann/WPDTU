@@ -90,8 +90,8 @@
 
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <!--<Canvas Background="White">-->
                 <Canvas>
+                <!--<Canvas Background="White">-->
                     <!-- Grid background. A little overwhelming -->
                     <Canvas.Background>
                         <DrawingBrush TileMode="Tile" Viewport="-10,-10,40,40" 
@@ -108,7 +108,10 @@
                             </DrawingBrush.Drawing>
                         </DrawingBrush>
                     </Canvas.Background>
-                <i:Interaction.Triggers>
+                    <Canvas.RenderTransform>
+                        <ScaleTransform ScaleX="{Binding ZoomPercentage}" ScaleY="{Binding ZoomPercentage}"/>
+                    </Canvas.RenderTransform>
+                    <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown" >
                             <cmd:EventToCommand Command="{Binding CanvasMouseDown}"
                                 PassEventArgsToCommand="True" />
