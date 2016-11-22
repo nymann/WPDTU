@@ -262,6 +262,8 @@ namespace UMLaut.ViewModel
             if (_storedElement == null) return;
             Shapes.Add(_storedElement);
             _storedElement = null;
+            IUndoRedoCommand cmd = new PasteCommand(this);
+            undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformDuplicateShape(object obj)

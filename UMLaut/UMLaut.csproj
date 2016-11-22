@@ -91,6 +91,7 @@
     <Compile Include="UndoRedo\DuplicateCommand.cs" />
     <Compile Include="UndoRedo\IUndoRedoCommand.cs" />
     <Compile Include="UndoRedo\MoveShapeCommand.cs" />
+    <Compile Include="UndoRedo\PasteCommand.cs" />
     <Compile Include="UndoRedo\UndoRedo.cs" />
     <Compile Include="Resources\Constants.cs" />
     <Compile Include="Services\Adorners\BasicAdorner.cs" />
