@@ -376,11 +376,20 @@ namespace UMLaut.ViewModel
             try
             {
                 var source = e.Source as UIElement;
-                var point = e.GetPosition(source); 
 
                 // TODO: The behavior is kinda fishy..
                 if (_drawingMode)
                 {
+                    Point point;
+                    if (source is Canvas)
+                    {
+                        point = e.GetPosition(source);
+                    }
+                    else
+                    {
+                        point = RelativeMousePosition(e);
+                    }
+
                     var model = new UMLShape(point.X, point.Y, GetDefaultHeight(_toolboxShapeValue), GetDefaultWidth(_toolboxShapeValue), _toolboxShapeValue);
                     Shapes.Add(new ShapeViewModel(model));
 
