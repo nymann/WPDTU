@@ -32,7 +32,7 @@ namespace UMLaut.ViewModel
 
         private UndoRedo.UndoRedo undoRedo;
 
-        private ShapeViewModel _cuttedElement;
+        private ShapeViewModel _storedElement;
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
         {
@@ -72,6 +72,7 @@ namespace UMLaut.ViewModel
             this.SaveFileAs = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformSaveFileAs);
             this.DuplicateShape = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformDuplicateShape);
             this.Cut = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformCut);
+            this.Copy = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformCopy);
             this.Insert = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformInsert);
             this.DeleteShape = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformDeleteShape);
             this.TextToShape = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformTextToShape);
@@ -99,7 +100,6 @@ namespace UMLaut.ViewModel
             ShapeToolboxSelection = new GalaSoft.MvvmLight.Command.RelayCommand<EShape>(SetShapeToolboxSelection);
             LineToolboxSelection = new GalaSoft.MvvmLight.Command.RelayCommand<ELine>(SetLineToolboxSelection);
 
-
             undoRedo = new UndoRedo.UndoRedo();
         }
         #endregion
@@ -114,6 +114,7 @@ namespace UMLaut.ViewModel
         public ICommand DuplicateShape { get; set; }
         public ICommand Cut { get; set; }
         public ICommand Insert { get; set; }
+        public ICommand Copy { get; set; }
         public ICommand DeleteShape { get; set; }
         public ICommand TextToShape { get; set; }
         public ICommand ZoomIn { get; set; }
@@ -222,19 +223,25 @@ namespace UMLaut.ViewModel
 
         }
 
+        private void PerformCopy(object obj)
+        {
+            if (_selectedElement == null) return;
+            _storedElement = _selectedElement;
+        }
+
         private void PerformCut(object obj)
         {
             if (SelectedElement == null) return;
-            _cuttedElement = _selectedElement;
+            _storedElement = _selectedElement;
             Shapes.Remove(_selectedElement);
         }
 
         private void PerformInsert(object obj)
         {
-            Console.WriteLine("{0}", _cuttedElement.Shape.ToString());
-            if (_cuttedElement == null) return;
-            Shapes.Add(_cuttedElement);
-            _cuttedElement = null;
+            Console.WriteLine("{0}", _storedElement.Shape.ToString());
+            if (_storedElement == null) return;
+            Shapes.Add(_storedElement);
+            _storedElement = null;
         }
 
         private void PerformDuplicateShape(object obj)
