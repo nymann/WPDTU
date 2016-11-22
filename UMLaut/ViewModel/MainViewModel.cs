@@ -83,6 +83,7 @@ namespace UMLaut.ViewModel
 
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
             this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
+            this.CanvasMouseWheel = new RelayCommand<MouseWheelEventArgs>(this.PerformCanvasMouseWheel);
 
             this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
             //this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
@@ -120,6 +121,7 @@ namespace UMLaut.ViewModel
         #region Canvas ICommands
         public ICommand CanvasMouseDown { get; set; }
         public ICommand CanvasMouseMove { get; set; }
+        public ICommand CanvasMouseWheel { get; set; }
         #endregion
 
 
@@ -397,6 +399,27 @@ namespace UMLaut.ViewModel
             CurrentPosition = e.GetPosition(source);
         }
 
+        private void PerformCanvasMouseWheel(MouseWheelEventArgs e)
+        {
+            e.Handled = true;
+
+            if (e.Delta > 0)
+            {
+                if (ZoomPercentage > 10)
+                {
+                    return;
+                }
+                ZoomPercentage += 0.1;
+            }
+            else
+            {
+                if (ZoomPercentage < 0.49)
+                {
+                    return;
+                }
+                ZoomPercentage -= 0.1;
+            }
+        }
         #endregion
         #endregion
 
