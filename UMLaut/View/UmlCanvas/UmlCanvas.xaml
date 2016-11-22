@@ -57,7 +57,18 @@
         </slc:LineDataTemplateSelector>
 
         <DataTemplate DataType="{x:Type vm:ShapeViewModel}">
-            <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ShapeDataTemplateSelector}"/>
+            <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ShapeDataTemplateSelector}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMouseDown}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseMove" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMove}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ContentPresenter>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type vm:LineViewModel}">
@@ -79,9 +90,10 @@
 
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <Canvas Background="White">
+                <!--<Canvas Background="White">-->
+                <Canvas>
                     <!-- Grid background. A little overwhelming -->
-                    <!--<Canvas.Background>
+                    <Canvas.Background>
                         <DrawingBrush TileMode="Tile" Viewport="-10,-10,40,40" 
                                      ViewportUnits="Absolute">
                             <DrawingBrush.Drawing>
@@ -90,12 +102,12 @@
                                         <RectangleGeometry Rect="0,0,50,50"/>
                                     </GeometryDrawing.Geometry>
                                     <GeometryDrawing.Pen>
-                                        <Pen Brush="Gray" Thickness="1"/>
+                                        <Pen Brush="Gray" Thickness="0.1"/>
                                     </GeometryDrawing.Pen>
                                 </GeometryDrawing>
                             </DrawingBrush.Drawing>
                         </DrawingBrush>
-                    </Canvas.Background>-->
+                    </Canvas.Background>
                 <i:Interaction.Triggers>
                         <i:EventTrigger EventName="MouseDown" >
                             <cmd:EventToCommand Command="{Binding CanvasMouseDown}"
@@ -116,8 +128,8 @@
 
         <ItemsControl.ItemContainerStyle>
             <Style TargetType="ContentPresenter">
-                <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
-                <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
+                <Setter Property="Canvas.Left" Value="{Binding X, UpdateSourceTrigger=PropertyChanged}"></Setter>
+                <Setter Property="Canvas.Top" Value="{Binding Y, UpdateSourceTrigger=PropertyChanged}"></Setter>
             </Style>
         </ItemsControl.ItemContainerStyle>
     </ItemsControl>

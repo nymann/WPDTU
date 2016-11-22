@@ -15,6 +15,8 @@ using UMLaut.Resources;
 using System.Windows.Documents;
 using UMLaut.Services.Adorners;
 using UMLaut.Model.Enum;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 
 namespace UMLaut.ViewModel
 {
@@ -25,6 +27,8 @@ namespace UMLaut.ViewModel
 
         private Diagram _diagram = new Diagram();
         private Point _currentPosition;
+
+        private Point _beforeMovePosition;
 
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
@@ -73,16 +77,10 @@ namespace UMLaut.ViewModel
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
             this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
 
+            ShapeMouseDown = new RelayCommand<MouseButtonEventArgs>(PerformShapeMouseDown);
+            ShapeMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(PerformShapeMove);
+
             this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
-            //this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
-            //this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
-            //this.IsAction = new RelayCommand<object>(this.PerformIsAction);
-            //this.IsSyncBarHor = new RelayCommand<object>(this.PerformIsSyncBarHor);
-            //this.IsSyncBarVert = new RelayCommand<object>(this.PerformIsSyncBarVert);
-            //this.IsEdge = new RelayCommand<object>(this.PerformIsEdge);
-            //this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
-            //this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
-            //this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
 
             ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
             LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
@@ -109,6 +107,9 @@ namespace UMLaut.ViewModel
         #region Canvas ICommands
         public ICommand CanvasMouseDown { get; set; }
         public ICommand CanvasMouseMove { get; set; }
+
+        public ICommand ShapeMouseDown { get; set; }
+        public ICommand ShapeMove { get; set; }
         #endregion
 
 
@@ -211,8 +212,8 @@ namespace UMLaut.ViewModel
             if(SelectedElement != null)
             {
                 var duplicate = new ShapeViewModel(SelectedElement.Shape);
-                duplicate.X += Constants.DuplicateOffset;
-                duplicate.Y += Constants.DuplicateOffset;
+                duplicate.Shape.X += Constants.DuplicateOffset;
+                duplicate.Shape.Y += Constants.DuplicateOffset;
                 Shapes.Add(duplicate);
                 SelectedElement = duplicate;
             }
@@ -340,6 +341,86 @@ namespace UMLaut.ViewModel
         #endregion
 
         #region Canvas commands
+        private void PerformShapeMouseDown(MouseButtonEventArgs e)
+        {
+            if (!_drawingMode)
+            {
+                FrameworkElement movingElement = (FrameworkElement)e.MouseDevice.Target;
+                if (movingElement != null)
+                {
+                    // Save the position of the mouse incase the event is a move
+                    _beforeMovePosition = RelativeMousePosition(e);
+                }
+            }  
+        }
+
+        private void PerformShapeMove(System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && !_drawingMode)
+            {
+                // Get the element to move
+                FrameworkElement element = (FrameworkElement)e.MouseDevice.Target;
+                if (element != null)
+                {
+                    // Retrieve the view model & canvas                 
+                    Canvas canvas = FindParentOfType<Canvas>(element);
+                    ShapeViewModel movingShape = element.DataContext as ShapeViewModel;
+
+                    Point canvasPosition = Mouse.GetPosition(canvas);
+                    var deltaX = canvasPosition.X - _beforeMovePosition.X;
+                    var deltaY = canvasPosition.Y - _beforeMovePosition.Y;
+
+                    if (movingShape.X + deltaX >= 0 && movingShape.X + deltaX <= canvas.RenderSize.Width - movingShape.Width)
+                    {
+                        
+                        movingShape.X += deltaX;
+                        _beforeMovePosition.X = canvasPosition.X;
+                    }
+
+                    if (movingShape.Y + deltaY >= 0 && movingShape.Y + deltaY <= canvas.RenderSize.Height - movingShape.Height)
+                    {
+                        movingShape.Y += deltaY;
+                        _beforeMovePosition.Y = canvasPosition.Y;
+                    }
+
+
+
+
+
+
+                    //movingShape.X += deltaX;
+                    //movingShape.Y += deltaY;
+                    //_beforeMovePosition = canvasPosition;
+
+                    //if (newX > 0 && newX < canvas.RenderSize.Width)
+                    //{
+                    //    movingShape.X += canvasPosition.X - _beforeMovePosition.X;
+                    //    _beforeMovePosition.X = newX;
+                    //}
+
+                    //if (newY > 0 && newY < canvas.RenderSize.Height)
+                    //{
+                    //    movingShape.Y += canvasPosition.Y - _beforeMovePosition.Y;
+                    //    _beforeMovePosition.Y = newY;
+                    //}
+
+
+                    // Fetch the new position on the canvas
+                    //Point relativePosition = RelativeMousePosition(e);
+                    //var deltaX = relativePosition.X - _beforeMovePosition.X;
+                    //var deltaY = relativePosition.Y - _beforeMovePosition.Y;
+                    //movingShape.X += deltaX;
+                    //movingShape.Y += deltaY;
+                    //_beforeMovePosition = relativePosition;
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="e"></param>
         private void PerformCanvasMouseDown(MouseButtonEventArgs e)
         {
             try
@@ -352,12 +433,11 @@ namespace UMLaut.ViewModel
                 {
                     Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue)));
                 }
-                else if(IsElementHit(source))
+                else if (IsElementHit(source))
                 {
                     var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
                     SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
-                    //AddAdorner(source);
-                    //SelectElement(e.MouseDevice.Target, source);                              
+
                 }
                 else
                 {
@@ -372,12 +452,46 @@ namespace UMLaut.ViewModel
                 Console.WriteLine(ex.Message);
             }
         }
+
+        /// <summary>
+        /// PerformCanvasMouseMove - finds the position of the mouse on the canvas.
+        /// </summary>
+        /// <param name="e">Mouse Event</param>
         private void PerformCanvasMouseMove(System.Windows.Input.MouseEventArgs e)
         {
-            var source = e.Source as UIElement;
-            CurrentPosition = e.GetPosition(source);
+            var source = e.MouseDevice.Target as Canvas;
+            if (source != null)
+            {
+                CurrentPosition = e.GetPosition(source);
+            }
+            else
+            {
+                CurrentPosition = RelativeMousePosition(e);
+            }
+        }
+        /// <summary>
+        /// RelativeMousePosition - Finds the position of the mouse on the canvas
+        /// </summary>
+        /// <param name="e">Mouse event</param>
+        /// <returns>Point of the mouse relative to the canvas</returns>
+        private Point RelativeMousePosition(System.Windows.Input.MouseEventArgs e)
+        {
+            var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
+            var canvas = FindParentOfType<Canvas>(shapeVisualElement);
+            return Mouse.GetPosition(canvas);
         }
 
+        /// <summary>
+        /// FindParentOfType - Finds the parent of the passed object recursivly
+        /// </summary>
+        /// <typeparam name="T">Type of parent to find</typeparam>
+        /// <param name="o">Object to look for parent from</param>
+        /// <returns>Parent Object</returns>
+        private static T FindParentOfType<T>(DependencyObject o)
+        {
+            dynamic parent = VisualTreeHelper.GetParent(o);
+            return parent.GetType().IsAssignableFrom(typeof(T)) ? parent : FindParentOfType<T>(parent);
+        }
         #endregion
         #endregion
 
