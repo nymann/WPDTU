@@ -236,7 +236,7 @@ namespace UMLaut.ViewModel
 
         private void PerformTextToShape(object obj)
         {
-            throw new NotImplementedException();
+            if (!(SelectedElement == null)) { SelectedElement.IsEditing = !SelectedElement.IsEditing; }
         }
 
         private void PerformZoomIn(object obj)
