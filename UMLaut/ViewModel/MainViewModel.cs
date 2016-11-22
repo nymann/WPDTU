@@ -225,8 +225,12 @@ namespace UMLaut.ViewModel
                 var duplicate = new ShapeViewModel(SelectedElement.Shape);
                 duplicate.X += Constants.DuplicateOffset;
                 duplicate.Y += Constants.DuplicateOffset;
+
+                IUndoRedoCommand cmd = new DuplicateCommand(duplicate, this);
+
                 Shapes.Add(duplicate);
                 SelectedElement = duplicate;
+                undoRedo.InsertInUndoRedo(cmd);
             }
         }
 

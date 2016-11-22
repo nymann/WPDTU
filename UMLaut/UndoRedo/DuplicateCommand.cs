@@ -1,4 +1,5 @@
 ﻿using System;
+using UMLaut.Resources;
 using UMLaut.ViewModel;
 
 namespace UMLaut.UndoRedo
@@ -8,22 +9,35 @@ namespace UMLaut.UndoRedo
         private ShapeViewModel _selectedElement;
         private MainViewModel _mainViewModel;
 
-        public DuplicateCommand(ShapeViewModel shapeViewModel, MainViewModel mainViewModel)
+        public DuplicateCommand(ShapeViewModel selectedElement, MainViewModel mainViewModel)
         {
-            _selectedElement = shapeViewModel;
+            _selectedElement = selectedElement;
             _mainViewModel = mainViewModel;
+
         }
 
         public void Execute()
         {
-            Console.WriteLine(@"Undoing.");
+            // Undo
+
+            // Remove the duplicated shape.
             _mainViewModel.Shapes.Remove(_selectedElement);
+
         }
 
         public void UnExecute()
         {
-            Console.WriteLine(@"Redoing.");
-            _mainViewModel.Shapes.Add(_selectedElement);
+            // Redo
+            
+            // TODO(When duplicating a shape, undo -> redo, then the shape gets added at the top right hand corner despite having the correct X and Y values).
+
+            var duplicate = new ShapeViewModel(_selectedElement.Shape)
+            {
+                X = Constants.DuplicateOffset,
+                Y = Constants.DuplicateOffset
+            };
+
+            _mainViewModel.Shapes.Add(duplicate);
         }
     }
 }
