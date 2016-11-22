@@ -47,6 +47,17 @@ namespace UMLaut.ViewModel
             }
         }
 
+        private double _zoomPercentage = 1;
+        public double ZoomPercentage
+        {
+            get { return _zoomPercentage; }
+            set
+            {
+                _zoomPercentage = value;
+                OnPropertyChanged();
+            }
+        }
+
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
@@ -230,22 +241,25 @@ namespace UMLaut.ViewModel
 
         private void PerformZoomIn(object obj)
         {
-            throw new NotImplementedException();
+            ZoomPercentage += 0.1;
         }
 
         private void PerformZoomOut(object obj)
         {
-            throw new NotImplementedException();
+            if (ZoomPercentage > 0.49)
+            {
+                ZoomPercentage -= 0.1;
+            }
         }
 
         private void PerformZoomToFit(object obj)
         {
-            throw new NotImplementedException();
+            ZoomPercentage = 1.0;
         }
         #endregion
 
         #region Toolbox commands
-        
+    
         // TODO Should be done in one function insted of split onto two.
 
         /// <summary>

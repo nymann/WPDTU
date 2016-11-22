@@ -76,10 +76,11 @@
                       LargeImageSource="/Resources/Images/zoomout-32.png"
                       SmallImageSource="/Resources/Images/zoomout-16.png" 
                       Command="{Binding ZoomOut}"/>
-                    <RibbonButton Label="Tilpas zoom"
+                    <RibbonButton Label="Nulstil zoom"
                       LargeImageSource="/Resources/Images/zoomtofit-32.png"
                       SmallImageSource="/Resources/Images/zoomtofit-16.png"
                       Command="{Binding ZoomToFit}"/>
+                    <RibbonTextBox IsEnabled="False" Label="Zoomfaktor" Text="{Binding ZoomPercentage}" />
                 </RibbonGroup>
             </RibbonTab>
         </Ribbon>

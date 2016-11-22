@@ -50,7 +50,10 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <sidebar:Sidebar Grid.Column="0"/>
-            <umlCanvas:UmlCanvas Grid.Column="1"/> 
+            <ScrollViewer HorizontalScrollBarVisibility="Visible" Grid.Column="1">
+
+                <umlCanvas:UmlCanvas Grid.Column="1" Height="1200" Width="2200"/>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Window>
