@@ -234,13 +234,10 @@ namespace UMLaut.ViewModel
         {
             if (Shapes.Count > 0)
             {
-                Console.WriteLine(Shapes.Last().Type);
                 IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, this);
                 Shapes.Remove(SelectedElement);
-
                 undoRedo.InsertInUndoRedo(cmd);
-            }
-            else
+            } else
             {
                 Console.WriteLine("Canvas doesn't contain any shapes. (Shapes.Count == {0}.)", Shapes.Count);
             }
