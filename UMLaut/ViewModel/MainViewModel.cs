@@ -56,6 +56,7 @@ namespace UMLaut.ViewModel
             this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
             this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
             this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
 
         }
         #endregion
@@ -181,57 +182,69 @@ namespace UMLaut.ViewModel
         public void PerformIsFreeHand(object obj)
         {
             toolboxValue = Model.Enum.EShape.FreeHand;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Hand;
         }
 
         public void PerformIsInitialNode(object obj)
         {
             toolboxValue = Model.Enum.EShape.Initial;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
+
         }
 
 
         private void PerformIsFinalNode(object obj)
         {
             toolboxValue = Model.Enum.EShape.ActivityFinal;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         private void PerformIsMergelNode(object obj)
         {
             toolboxValue = Model.Enum.EShape.Merge;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         private void PerformIsAction(object obj)
         {
             toolboxValue = Model.Enum.EShape.Action;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         private void PerformIsSyncBarHor(object obj)
         {
             toolboxValue = Model.Enum.EShape.SyncBarHor;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         private void PerformIsSyncBarVert(object obj)
         {
             toolboxValue = Model.Enum.EShape.SyncBarVert;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         private void PerformIsEdge(object obj)
         {
             toolboxValue = Model.Enum.EShape.Edge;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         private void PerformIsTimeEvent(object obj)
         {
             toolboxValue = Model.Enum.EShape.TimeEvent;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         private void PerformIsSendSignal(object obj)
         {
             toolboxValue = Model.Enum.EShape.SendSignal;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         private void PerformIsReceiveSignal(object obj)
         {
             toolboxValue = Model.Enum.EShape.ReceiveSignal;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
 
         }
         #endregion
