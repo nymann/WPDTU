@@ -1,5 +1,6 @@
 ﻿using System;
 using UMLaut.Model.Enum;
+using UMLaut.Resources;
 
 namespace UMLaut.Model
 {
@@ -18,8 +19,8 @@ namespace UMLaut.Model
         public UMLShape(double X, double Y, EShape Type)
         {
             Id = Guid.NewGuid();
-            Height = 200;
-            Width = 200;
+            Height = Constants.Drawables.Shapes.DefaultHeight;
+            Width = Constants.Drawables.Shapes.DefaultWidth;
             this.X = X;
             this.Y = Y;
             this.Type = Type;

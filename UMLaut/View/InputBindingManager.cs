@@ -14,6 +14,8 @@ namespace UMLaut.View
     /*
         Source: http://stackoverflow.com/questions/563195/bind-textbox-on-enter-key-press
         modified
+
+        used for hitting enter in textboxes
     */
     public static class InputBindingsManager
     {

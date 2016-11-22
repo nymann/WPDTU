@@ -5,14 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UMLaut.View.Drawable"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Height="80" Width="80">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Height="{Binding Height}"
+             Width="{Binding Width}" >
+    <Grid>
         <Ellipse Fill="#CDF4FF"
                  HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch" />
         <Ellipse Fill="Black"
-                 Height="60"
-                 Width="60"
+                 Height="{Binding Path=Height, Converter={StaticResource DefaultInnerNodeFactor}}"
+                 Width="{Binding Path=Width, Converter={StaticResource DefaultInnerNodeFactor}}"
                  HorizontalAlignment="Center"
                  VerticalAlignment="Center" />
     </Grid>

@@ -15,13 +15,15 @@ using UMLaut.Resources;
 using System.Windows.Documents;
 using UMLaut.Services.Adorners;
 using UMLaut.Model.Enum;
+using System.Linq;
 
 namespace UMLaut.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
         private bool _drawingMode;
-        private EShape _toolboxValue;
+        private EShape _toolboxShapeValue;
+        private ELine _toolboxLineValue;
 
         private Diagram _diagram = new Diagram();
         private Point _currentPosition;
@@ -46,6 +48,8 @@ namespace UMLaut.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        private UIElement SelectedUIElement { get; set; }
 
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
@@ -74,15 +78,6 @@ namespace UMLaut.ViewModel
             this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
 
             this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
-            //this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
-            //this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
-            //this.IsAction = new RelayCommand<object>(this.PerformIsAction);
-            //this.IsSyncBarHor = new RelayCommand<object>(this.PerformIsSyncBarHor);
-            //this.IsSyncBarVert = new RelayCommand<object>(this.PerformIsSyncBarVert);
-            //this.IsEdge = new RelayCommand<object>(this.PerformIsEdge);
-            //this.IsTimeEvent = new RelayCommand<object>(this.PerformIsTimeEvent);
-            //this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
-            //this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
 
             ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
             LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
@@ -117,15 +112,7 @@ namespace UMLaut.ViewModel
         public ICommand LineToolboxSelection { get; set; }
 
         public ICommand IsInitialNode { get; set; }
-        //public ICommand IsFinalNode { get; set; }
-        //public ICommand IsMergeNode { get; set; }
-        //public ICommand IsAction { get; set; }
-        //public ICommand IsSyncBarHor { get; set; }
-        //public ICommand IsSyncBarVert { get; set; }
-        //public ICommand IsEdge { get; set; }
-        //public ICommand IsTimeEvent { get; set; }
-        //public ICommand IsSendSignal { get; set; }
-        //public ICommand IsReceiveSignal { get; set; }
+
         #endregion
 
         #endregion
@@ -150,6 +137,7 @@ namespace UMLaut.ViewModel
                 {
                     var path = openFileDialog.FileName;
                     _diagram = deserializer.DeserializeFromFile(path);
+                    ResetApplicationState();
                     UpdateApplicationStateFromDiagram();
                 }
             }
@@ -158,6 +146,12 @@ namespace UMLaut.ViewModel
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
             }
 
+        }
+
+        private void ResetApplicationState()
+        {
+            Lines.Clear();
+            Shapes.Clear();
         }
 
         private void UpdateApplicationStateFromDiagram()
@@ -187,12 +181,16 @@ namespace UMLaut.ViewModel
                         serializer.SerializeToFile(_diagram);
                     }
                 }
+                else
+                {
+                    UpdateDiagramFromApplicationCurrentState();
+                    serializer.SerializeToFile(_diagram);
+                }
             }
            catch (Exception)
             {
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
             }
-
         }
 
 
@@ -210,11 +208,11 @@ namespace UMLaut.ViewModel
         {
             if(SelectedElement != null)
             {
-                var duplicate = new ShapeViewModel(SelectedElement.Shape);
+                var duplicateModel = new UMLShape(SelectedElement.Shape.X, SelectedElement.Shape.Y, SelectedElement.Shape.Height, SelectedElement.Shape.Width, SelectedElement.Shape.Type);
+                var duplicate = new ShapeViewModel(duplicateModel);
                 duplicate.X += Constants.DuplicateOffset;
                 duplicate.Y += Constants.DuplicateOffset;
                 Shapes.Add(duplicate);
-                SelectedElement = duplicate;
             }
         }
 
@@ -255,7 +253,7 @@ namespace UMLaut.ViewModel
         public void SetShapeToolboxSelection(EShape shape)
         {
             _drawingMode = true;
-            _toolboxValue = shape;
+            _toolboxShapeValue = shape;
         }
 
         /// <summary>
@@ -265,7 +263,7 @@ namespace UMLaut.ViewModel
         public void SetLineToolboxSelection(ELine line)
         {
             _drawingMode = true;
-            //_toolboxValue = line as Enum;
+            _toolboxLineValue = line;
         }
 
         //public void PerformFreeHand(object obj)
@@ -276,64 +274,8 @@ namespace UMLaut.ViewModel
         public void PerformIsInitialNode(object obj)
         {
             _drawingMode = false; // for testing - should be true
-            _toolboxValue = Model.Enum.EShape.Initial;
+            _toolboxShapeValue = Model.Enum.EShape.Initial;
         }
-
-
-        //private void PerformIsFinalNode(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.ActivityFinal;
-        //}
-
-        //private void PerformIsMergelNode(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.Merge;
-        //}
-
-        //private void PerformIsAction(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.Action;
-        //}
-
-        //private void PerformIsSyncBarHor(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.SyncBarHor;
-        //}
-
-        //private void PerformIsSyncBarVert(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.SyncBarVert;
-        //}
-
-        //private void PerformIsEdge(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.Edge;
-        //}
-
-        //private void PerformIsTimeEvent(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.TimeEvent;
-        //}
-
-        //private void PerformIsSendSignal(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.SendSignal;
-        //}
-
-        //private void PerformIsReceiveSignal(object obj)
-        //{
-        //    _drawingMode = true;
-        //    _toolboxValue = Model.Enum.EShape.ReceiveSignal;
-
-        //}
         #endregion
 
         #region Properties commands
@@ -350,19 +292,24 @@ namespace UMLaut.ViewModel
                 // TODO: The behavior is kinda fishy..
                 if (_drawingMode)
                 {
-                    Shapes.Add(new ShapeViewModel(new UMLShape(point.X, point.Y, _toolboxValue)));
+                    var model = new UMLShape(point.X, point.Y, GetDefaultHeight(_toolboxShapeValue), GetDefaultWidth(_toolboxShapeValue), _toolboxShapeValue);
+                    Shapes.Add(new ShapeViewModel(model));
+
                 }
                 else if(IsElementHit(source))
                 {
+                    if(SelectedElement != null)
+                    {
+                        ClearSelection();
+                    }
+                    SelectedUIElement = source;
                     var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
                     SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
-                    //AddAdorner(source);
-                    //SelectElement(e.MouseDevice.Target, source);                              
+                    AddAdorner(source);
                 }
                 else
                 {
-                    //RemoveAdorner(source);
-                    SelectedElement = null;
+                    ClearSelection();
                     return;
                 }
             }
@@ -372,6 +319,17 @@ namespace UMLaut.ViewModel
                 Console.WriteLine(ex.Message);
             }
         }
+
+        private void ClearSelection()
+        {
+            if(SelectedUIElement != null)
+            {
+                RemoveAdorner(SelectedUIElement);
+            }
+            SelectedUIElement = null;
+            SelectedElement = null;
+        }
+
         private void PerformCanvasMouseMove(System.Windows.Input.MouseEventArgs e)
         {
             var source = e.Source as UIElement;
@@ -411,11 +369,6 @@ namespace UMLaut.ViewModel
 
         private bool IsElementHit(UIElement source)
         {
-            //if (source is Canvas || source == null)
-            //    return false;
-            //return true;
-            Console.Write(!(source is Canvas));
-            Console.Write(!(source is Canvas) || source == null);
             return !(source is Canvas) || source == null;
         }
 
@@ -426,30 +379,97 @@ namespace UMLaut.ViewModel
 
         private void RemoveAdorner(UIElement element)
         {
-            try {
+            try
+            {
                 Adorner[] adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
-                AdornerLayer.GetAdornerLayer(element).Remove(adorners[0]);
-           } catch { }
+                foreach(Adorner adorner in adorners)
+                {
+                    AdornerLayer.GetAdornerLayer(element).Remove(adorner);
+                }
+            } 
+            catch(Exception)
+            {
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+            }
 
         }
 
         private void UpdateDiagramFromApplicationCurrentState()
         {
-            List<UMLLine> umlLines = new List<UMLLine>();
-
-            List<UMLShape> umlShapes = new List<UMLShape>();
-
-            foreach (LineViewModel lvm in Lines)
-            {
-                umlLines.Add(lvm.Line);
-            }
-            foreach (ShapeViewModel svm in Shapes)
-            {
-                umlShapes.Add(svm.Shape);
-            }
+            List<UMLLine> umlLines = Lines.Select(x => x.Line).ToList();
+            List<UMLShape> umlShapes = Shapes.Select(x => x.Shape).ToList();
 
             _diagram.Lines = umlLines;
             _diagram.Shapes = umlShapes;
+        }
+
+        private int GetDefaultHeight(EShape _toolboxValue)
+        {
+            switch (_toolboxValue)
+            {
+                case EShape.Action:
+                    return Constants.Drawables.Shapes.Action.DefaultHeight;
+                case EShape.ActivityFinal:
+                    return Constants.Drawables.Shapes.ActivityFinal.DefaultHeight;
+                case EShape.Decision:
+                    return Constants.Drawables.Shapes.Decision.DefaultHeight;
+                case EShape.FlowFinal:
+                    return Constants.Drawables.Shapes.FlowFinal.DefaultHeight;
+                case EShape.Fork:
+                    return Constants.Drawables.Shapes.Fork.DefaultHeight;
+                case EShape.Initial:
+                    return Constants.Drawables.Shapes.Initial.DefaultHeight;
+                case EShape.Join:
+                    return Constants.Drawables.Shapes.Join.DefaultHeight;
+                case EShape.Merge:
+                    return Constants.Drawables.Shapes.Merge.DefaultHeight;
+                case EShape.ReceiveSignal:
+                    return Constants.Drawables.Shapes.ReceiveSignal.DefaultHeight;
+                case EShape.SendSignal:
+                    return Constants.Drawables.Shapes.SendSignal.DefaultHeight;
+                case EShape.SyncBarHor:
+                    return Constants.Drawables.Shapes.SyncBarHor.DefaultHeight;
+                case EShape.SyncBarVert:
+                    return Constants.Drawables.Shapes.SyncBarVert.DefaultHeight;
+                case EShape.TimeEvent:
+                    return Constants.Drawables.Shapes.TimeEvent.DefaultHeight;
+                default:
+                    return Constants.Drawables.Shapes.DefaultHeight;
+            }
+        }
+        private int GetDefaultWidth(EShape _toolboxValue)
+        {
+            switch (_toolboxValue)
+            {
+                case EShape.Action:
+                    return Constants.Drawables.Shapes.Action.DefaultWidth;
+                case EShape.ActivityFinal:
+                    return Constants.Drawables.Shapes.ActivityFinal.DefaultWidth;
+                case EShape.Decision:
+                    return Constants.Drawables.Shapes.Decision.DefaultWidth;
+                case EShape.FlowFinal:
+                    return Constants.Drawables.Shapes.FlowFinal.DefaultWidth;
+                case EShape.Fork:
+                    return Constants.Drawables.Shapes.Fork.DefaultWidth;
+                case EShape.Initial:
+                    return Constants.Drawables.Shapes.Initial.DefaultWidth;
+                case EShape.Join:
+                    return Constants.Drawables.Shapes.Join.DefaultWidth;
+                case EShape.Merge:
+                    return Constants.Drawables.Shapes.Merge.DefaultWidth;
+                case EShape.ReceiveSignal:
+                    return Constants.Drawables.Shapes.ReceiveSignal.DefaultWidth;
+                case EShape.SendSignal:
+                    return Constants.Drawables.Shapes.SendSignal.DefaultWidth;
+                case EShape.SyncBarHor:
+                    return Constants.Drawables.Shapes.SyncBarHor.DefaultWidth;
+                case EShape.SyncBarVert:
+                    return Constants.Drawables.Shapes.SyncBarVert.DefaultWidth;
+                case EShape.TimeEvent:
+                    return Constants.Drawables.Shapes.TimeEvent.DefaultWidth;
+                default:
+                    return Constants.Drawables.Shapes.DefaultWidth;
+            }
         }
     }
 

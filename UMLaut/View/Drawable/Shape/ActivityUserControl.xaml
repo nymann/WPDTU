@@ -5,8 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UMLaut.View.Drawable"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="600">
-    <Border BorderThickness="1" Height="50" Width="100" Grid.Row="0" Grid.ColumnSpan="2"
+             d:DesignHeight="600" d:DesignWidth="600"
+             Height="{Binding Height}"
+             Width="{Binding Width}">
+
+    <UserControl.Resources>
+
+    </UserControl.Resources>
+    
+    <Border BorderThickness="1" Grid.Row="0" Grid.ColumnSpan="2"
         CornerRadius="10,10,10,10" BorderBrush="Black" Background="#CDF4FF">
         <TextBlock Name="activityLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Label}"/>
     </Border>

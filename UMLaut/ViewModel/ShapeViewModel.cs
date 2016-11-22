@@ -17,7 +17,7 @@ namespace UMLaut.ViewModel
             Shape = shape;
         }
 
-        Guid IShape.Id
+        public Guid Id
         {
             get { return Shape.Id; }
         }
