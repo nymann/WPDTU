@@ -90,6 +90,7 @@
     <Compile Include="Services\Serialization\Deserializer.cs" />
     <Compile Include="Services\Serialization\Serializer.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\BooleanToVisibilityConverter .cs" />
     <Compile Include="ViewModel\LineViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ShapeViewModel.cs" />

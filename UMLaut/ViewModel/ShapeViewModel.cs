@@ -10,6 +10,17 @@ namespace UMLaut.ViewModel
 {
     public class ShapeViewModel : BaseViewModel, IShape
     {
+        private bool _isEditing = false;
+        public bool IsEditing
+        {
+            get { return _isEditing; }
+            set
+            {
+                _isEditing = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         internal UMLShape Shape { get; }
         public ShapeViewModel(UMLShape shape)

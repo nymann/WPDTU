@@ -356,11 +356,16 @@ namespace UMLaut.ViewModel
                 {
                     var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
                     SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
+                    if (!(SelectedElement == null)) { SelectedElement.IsEditing = false; }
                     //AddAdorner(source);
-                    //SelectElement(e.MouseDevice.Target, source);                              
+                    //SelectElement(e.MouseDevice.Target, source);       
+                    if (e.ClickCount.Equals(2)) // if (doubleclick)
+                    {
+                        SelectedElement.IsEditing = true;
+                    }
                 }
                 else
-                {
+                {   if (!(SelectedElement == null)) { SelectedElement.IsEditing = false; }
                     //RemoveAdorner(source);
                     SelectedElement = null;
                     return;
