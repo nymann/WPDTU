@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Forms;
@@ -17,6 +16,7 @@ using ICommand = System.Windows.Input.ICommand;
 using System.Collections.Generic;
 using UMLaut.Resources;
 using System.Windows.Documents;
+using GalaSoft.MvvmLight.CommandWpf;
 using UMLaut.Services.Adorners;
 using UMLaut.Model.Enum;
 
@@ -32,6 +32,7 @@ namespace UMLaut.ViewModel
 
         private UndoRedo.UndoRedo undoRedo;
 
+        private ShapeViewModel _cuttedElement;
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
         {
@@ -65,24 +66,26 @@ namespace UMLaut.ViewModel
             Lines = new ObservableCollection<LineViewModel>();
             Shapes = new ObservableCollection<ShapeViewModel>();
 
-            this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
-            this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
-            this.SaveFile = new RelayCommand<object>(this.PerformSaveFile);
-            this.SaveFileAs = new RelayCommand<object>(this.PerformSaveFileAs);
-            this.DuplicateShape = new RelayCommand<object>(this.PerformDuplicateShape);
-            this.DeleteShape = new RelayCommand<object>(this.PerformDeleteShape);
-            this.TextToShape = new RelayCommand<object>(this.PerformTextToShape);
-            this.ZoomIn = new RelayCommand<object>(this.PerformZoomIn);
-            this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
-            this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
-            this.Undo = new RelayCommand<object>(this.PerformUndo);
-            this.Redo = new RelayCommand<object>(this.PerformRedo);
+            this.LaunchNewInstance = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformLaunchNewInstance);
+            this.OpenFile = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformOpenFile);
+            this.SaveFile = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformSaveFile);
+            this.SaveFileAs = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformSaveFileAs);
+            this.DuplicateShape = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformDuplicateShape);
+            this.Cut = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformCut);
+            this.Insert = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformInsert);
+            this.DeleteShape = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformDeleteShape);
+            this.TextToShape = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformTextToShape);
+            this.ZoomIn = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformZoomIn);
+            this.ZoomOut = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformZoomOut);
+            this.ZoomToFit = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformZoomToFit);
+            this.Undo = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformUndo);
+            this.Redo = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformRedo);
 
 
-            this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
-            this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
+            this.CanvasMouseDown = new GalaSoft.MvvmLight.Command.RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
+            this.CanvasMouseMove = new GalaSoft.MvvmLight.Command.RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
 
-            this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
+            this.IsInitialNode = new GalaSoft.MvvmLight.Command.RelayCommand<object>(this.PerformIsInitialNode);
             //this.IsFinalNode = new RelayCommand<object>(this.PerformIsFinalNode);
             //this.IsMergeNode = new RelayCommand<object>(this.PerformIsMergelNode);
             //this.IsAction = new RelayCommand<object>(this.PerformIsAction);
@@ -93,8 +96,8 @@ namespace UMLaut.ViewModel
             //this.IsSendSignal = new RelayCommand<object>(this.PerformIsSendSignal);
             //this.IsReceiveSignal = new RelayCommand<object>(this.PerformIsReceiveSignal);
 
-            ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
-            LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
+            ShapeToolboxSelection = new GalaSoft.MvvmLight.Command.RelayCommand<EShape>(SetShapeToolboxSelection);
+            LineToolboxSelection = new GalaSoft.MvvmLight.Command.RelayCommand<ELine>(SetLineToolboxSelection);
 
 
             undoRedo = new UndoRedo.UndoRedo();
@@ -109,6 +112,8 @@ namespace UMLaut.ViewModel
         public ICommand SaveFile { get; set; }
         public ICommand SaveFileAs { get; set; }
         public ICommand DuplicateShape { get; set; }
+        public ICommand Cut { get; set; }
+        public ICommand Insert { get; set; }
         public ICommand DeleteShape { get; set; }
         public ICommand TextToShape { get; set; }
         public ICommand ZoomIn { get; set; }
@@ -207,7 +212,6 @@ namespace UMLaut.ViewModel
 
         }
 
-
         private void PerformSaveFileAs(object obj)
         {
             Serializer serializer = new Serializer();
@@ -218,20 +222,33 @@ namespace UMLaut.ViewModel
 
         }
 
+        private void PerformCut(object obj)
+        {
+            if (SelectedElement == null) return;
+            _cuttedElement = _selectedElement;
+            Shapes.Remove(_selectedElement);
+        }
+
+        private void PerformInsert(object obj)
+        {
+            Console.WriteLine("{0}", _cuttedElement.Shape.ToString());
+            if (_cuttedElement == null) return;
+            Shapes.Add(_cuttedElement);
+            _cuttedElement = null;
+        }
+
         private void PerformDuplicateShape(object obj)
         {
-            if(SelectedElement != null)
-            {
-                var duplicate = new ShapeViewModel(SelectedElement.Shape);
-                duplicate.X += Constants.DuplicateOffset;
-                duplicate.Y += Constants.DuplicateOffset;
+            if (SelectedElement == null) return;
+            var duplicate = new ShapeViewModel(SelectedElement.Shape);
+            duplicate.X += Constants.DuplicateOffset;
+            duplicate.Y += Constants.DuplicateOffset;
 
-                IUndoRedoCommand cmd = new DuplicateCommand(duplicate, this);
+            IUndoRedoCommand cmd = new DuplicateCommand(duplicate, this);
 
-                Shapes.Add(duplicate);
-                SelectedElement = duplicate;
-                undoRedo.InsertInUndoRedo(cmd);
-            }
+            Shapes.Add(duplicate);
+            SelectedElement = duplicate;
+            undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformDeleteShape(object obj)

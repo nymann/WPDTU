@@ -27,6 +27,7 @@
         <KeyBinding Command="{Binding Copy}" Modifiers="Ctrl" Key="C"/>
         <KeyBinding Command="{Binding Paste}" Modifiers="Ctrl" Key="V"/>
         <KeyBinding Command="{Binding Cut}" Modifiers="Ctrl" Key="X"/>
+        <KeyBinding Command="{Binding Insert}" Modifiers="Ctrl" Key="V"/>
         <KeyBinding Command="{Binding Undo}" Modifiers="Ctrl" Key="Z"/>
         <KeyBinding Command="{Binding Redo}" Modifiers="Ctrl+Shift" Key="Z"/>
         <KeyBinding Command="{Binding Redo}" Modifiers="Ctrl" Key="Y"/>
