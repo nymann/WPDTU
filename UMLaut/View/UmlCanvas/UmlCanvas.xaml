@@ -98,7 +98,7 @@
             </slc:LineDataTemplateSelector.DashedLineTemplate>
         </slc:LineDataTemplateSelector>
 
-        <DataTemplate DataType="{x:Type vm:ShapeViewModel}">
+        <!--<DataTemplate DataType="{x:Type vm:ShapeViewModel}">
             <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ShapeDataTemplateSelector}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDown" >
@@ -109,8 +109,46 @@
                         <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMove}"
                                 PassEventArgsToCommand="True" />
                     </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseUp" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMouseUp}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ContentPresenter>
+        </DataTemplate>-->
+        <DataTemplate DataType="{x:Type vm:ShapeViewModel}">
+            <Thumb>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="DragStarted" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeDragStart}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="DragDelta" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeDrag}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="DragCompleted" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeDragEnd}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseDoubleClick" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMouseDoubleClick}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Thumb.Template>
+                    <ControlTemplate>
+                        <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ShapeDataTemplateSelector}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDown" >
+                                    <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMouseDown}"
+                                PassEventArgsToCommand="True" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ContentPresenter>
+                    </ControlTemplate>
+                </Thumb.Template>
+            </Thumb>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type vm:LineViewModel}">

@@ -96,7 +96,7 @@
         <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding SelectedElement.Label}"
                  b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
         
-        <Label Grid.Column="1" Grid.Row="7" Content="{Binding CurrentPosition}"/>
+        <Label Grid.Column="1" Grid.Row="7" Content="{Binding CurrentCursorPosition}"/>
 
         <CheckBox  Grid.Column="1" Grid.Row="8" IsChecked="{Binding ShowGridLines}"/>
 
