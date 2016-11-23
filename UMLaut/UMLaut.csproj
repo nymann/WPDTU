@@ -90,6 +90,14 @@
     <Compile Include="Services\Converter\FirstDegreeFunctionConverter.cs" />
     <Compile Include="Services\Serialization\Deserializer.cs" />
     <Compile Include="Services\Serialization\Serializer.cs" />
+    <Compile Include="UndoRedo\AddShapeCommand.cs" />
+    <Compile Include="UndoRedo\CutCommand.cs" />
+    <Compile Include="UndoRedo\DeleteCommand.cs" />
+    <Compile Include="UndoRedo\DuplicateCommand.cs" />
+    <Compile Include="UndoRedo\IUndoRedoCommand.cs" />
+    <Compile Include="UndoRedo\MoveShapeCommand.cs" />
+    <Compile Include="UndoRedo\PasteCommand.cs" />
+    <Compile Include="UndoRedo\UndoRedo.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="Services\Converter\BooleanToVisibilityConverter .cs" />
     <Compile Include="ViewModel\LineViewModel.cs" />
