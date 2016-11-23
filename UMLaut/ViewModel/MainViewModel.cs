@@ -17,6 +17,7 @@ using UMLaut.Services.Adorners;
 using UMLaut.Model.Enum;
 using System.Linq;
 using System.Windows.Media;
+using UMLaut.UndoRedo;
 
 namespace UMLaut.ViewModel
 {
@@ -42,6 +43,17 @@ namespace UMLaut.ViewModel
             }
         }
 
+        private ShapeViewModel _storedElement;
+        public ShapeViewModel StoredElement
+        {
+            get { return _storedElement; }
+            set
+            {
+                _storedElement = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Point CurrentPosition
         {
             get { return _currentPosition; }
@@ -63,6 +75,9 @@ namespace UMLaut.ViewModel
             }
         }
         private UIElement SelectedUIElement { get; set; }
+
+        private UndoRedo.UndoRedo undoRedo;
+
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
@@ -75,16 +90,26 @@ namespace UMLaut.ViewModel
             Lines = new ObservableCollection<LineViewModel>();
             Shapes = new ObservableCollection<ShapeViewModel>();
 
+            #region Ribbon RelayCommands
+
             this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
             this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
             this.SaveFile = new RelayCommand<object>(this.PerformSaveFile);
             this.SaveFileAs = new RelayCommand<object>(this.PerformSaveFileAs);
+            this.Paste = new RelayCommand<object>(this.PerformPaste);
+            this.Copy = new RelayCommand<object>(this.PerformCopy);
+            this.Cut = new RelayCommand<object>(this.PerformCut);
+            this.Undo = new RelayCommand<object>(this.PerformUndo);
+            this.Redo = new RelayCommand<object>(this.PerformRedo);
             this.DuplicateShape = new RelayCommand<object>(this.PerformDuplicateShape);
             this.DeleteShape = new RelayCommand<object>(this.PerformDeleteShape);
             this.TextToShape = new RelayCommand<object>(this.PerformTextToShape);
             this.ZoomIn = new RelayCommand<object>(this.PerformZoomIn);
             this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
             this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
+
+            #endregion
+
 
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
             this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
@@ -98,7 +123,7 @@ namespace UMLaut.ViewModel
             ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
             LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
 
-
+            undoRedo = new UndoRedo.UndoRedo();
         }
         #endregion
 
@@ -109,6 +134,11 @@ namespace UMLaut.ViewModel
         public ICommand OpenFile { get; set; }
         public ICommand SaveFile { get; set; }
         public ICommand SaveFileAs { get; set; }
+        public ICommand Paste { get; set; }
+        public ICommand Copy { get; set; }
+        public ICommand Cut { get; set; }
+        public ICommand Undo { get; set; }
+        public ICommand Redo { get; set; }
         public ICommand DuplicateShape { get; set; }
         public ICommand DeleteShape { get; set; }
         public ICommand TextToShape { get; set; }
@@ -125,7 +155,6 @@ namespace UMLaut.ViewModel
         public ICommand ShapeMouseDown { get; set; }
         public ICommand ShapeMove { get; set; }
         #endregion
-
 
         #region Toolbox ICommands
         public ICommand ShapeToolboxSelection { get; set; }
@@ -214,7 +243,6 @@ namespace UMLaut.ViewModel
             }
         }
 
-
         private void PerformSaveFileAs(object obj)
         {
             Serializer serializer = new Serializer();
@@ -225,26 +253,74 @@ namespace UMLaut.ViewModel
 
         }
 
+        private void PerformPaste(object obj)
+        {
+            if (_storedElement == null) return;
+            Shapes.Add(_storedElement);
+            _storedElement = null;
+            IUndoRedoCommand cmd = new PasteCommand(this);
+            undoRedo.InsertInUndoRedo(cmd);
+        }
+
+        private void PerformCopy(object obj)
+        {
+            if (_selectedElement == null) return;
+            _storedElement = _selectedElement;
+        }
+
+        private void PerformCut(object obj)
+        {
+            if (SelectedElement == null) return;
+            _storedElement = _selectedElement;
+            Shapes.Remove(_selectedElement);
+            SelectedElement = null;
+            IUndoRedoCommand cmd = new CutCommand(this, _storedElement);
+            undoRedo.InsertInUndoRedo(cmd);
+        }
+
+        /// <summary>
+        /// Currently won't support multi-level undo (int levels = 1)
+        /// </summary>
+        private void PerformUndo(object obj)
+        {
+            undoRedo.Undo(1);
+        }
+
+        /// <summary>
+        /// Currently won't support multi-level redo (int levels = 1)
+        /// </summary>
+        private void PerformRedo(object obj)
+        {
+            undoRedo.Redo(1);
+        }
+
+
         private void PerformDuplicateShape(object obj)
         {
-            if(SelectedElement != null)
-            {
-                var duplicateModel = new UMLShape(SelectedElement.Shape.X, SelectedElement.Shape.Y, SelectedElement.Shape.Height, SelectedElement.Shape.Width, SelectedElement.Shape.Type);
-                var duplicate = new ShapeViewModel(duplicateModel);
-                duplicate.X += Constants.DuplicateOffset;
-                duplicate.Y += Constants.DuplicateOffset;
-                Shapes.Add(duplicate);
-            }
+            if (SelectedElement == null) return;
+
+            var duplicateModel = new UMLShape(SelectedElement.Shape.X, SelectedElement.Shape.Y, SelectedElement.Shape.Height, SelectedElement.Shape.Width, SelectedElement.Shape.Type);
+            var duplicate = new ShapeViewModel(duplicateModel);
+            duplicate.X += Constants.DuplicateOffset;
+            duplicate.Y += Constants.DuplicateOffset;
+
+            Shapes.Add(duplicate);
+
+            IUndoRedoCommand cmd = new DuplicateCommand(duplicate, this);
+            undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformDeleteShape(object obj)
         {
-            throw new NotImplementedException();
+            if (Shapes.Count <= 0 || _selectedElement == null) return;
+            IUndoRedoCommand cmd = new DeleteCommand(_selectedElement, this);
+            Shapes.Remove(_selectedElement);
+            undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformTextToShape(object obj)
         {
-            if (!(SelectedElement == null)) { SelectedElement.IsEditing = !SelectedElement.IsEditing; }
+            if (SelectedElement != null) { SelectedElement.IsEditing = !SelectedElement.IsEditing; }
         }
 
         private void PerformZoomIn(object obj)
@@ -403,9 +479,12 @@ namespace UMLaut.ViewModel
                         point = RelativeMousePosition(e);
                     }
 
-                    var model = new UMLShape(point.X, point.Y, GetDefaultHeight(_toolboxShapeValue), GetDefaultWidth(_toolboxShapeValue), _toolboxShapeValue);
-                    Shapes.Add(new ShapeViewModel(model));
 
+                    var model = new UMLShape(point.X, point.Y, GetDefaultHeight(_toolboxShapeValue), GetDefaultWidth(_toolboxShapeValue), _toolboxShapeValue);
+                    var shapeToAdd = new ShapeViewModel(model);
+                    Shapes.Add(shapeToAdd);
+                    IUndoRedoCommand cmd = new AddShapeCommand(shapeToAdd, this);
+                    undoRedo.InsertInUndoRedo(cmd);
                 }
                 else if (IsElementHit(source))
                 {
