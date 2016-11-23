@@ -24,13 +24,7 @@ namespace UMLaut.UndoRedo
         public void UnExecute()
         {
             // Redo
-
-            // TODO(Bug, talk to Kristian).
-            var duplicate = _selectedElement;
-            duplicate.X = _selectedElement.X + 30;
-            duplicate.Y = _selectedElement.Y + 30;
-
-            _mainViewModel.Shapes.Add(duplicate);
+            _mainViewModel.Shapes.Add(_selectedElement);
         }
     }
 }

@@ -301,9 +301,6 @@ namespace UMLaut.ViewModel
 
             var duplicateModel = new UMLShape(SelectedElement.Shape.X, SelectedElement.Shape.Y, SelectedElement.Shape.Height, SelectedElement.Shape.Width, SelectedElement.Shape.Type);
             var duplicate = new ShapeViewModel(duplicateModel);
-            duplicate.X += Constants.DuplicateOffset;
-            duplicate.Y += Constants.DuplicateOffset;
-
             Shapes.Add(duplicate);
 
             IUndoRedoCommand cmd = new DuplicateCommand(duplicate, this);
