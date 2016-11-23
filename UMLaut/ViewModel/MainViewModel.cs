@@ -636,9 +636,13 @@ namespace UMLaut.ViewModel
                     AdornerLayer.GetAdornerLayer(element).Remove(adorner);
                 }
             } 
-            catch(Exception)
+            catch(Exception ex)
             {
-                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+
+                // This isn't a code breaking exception, this would fx happen, if user add some shapes, select one -> delete, and then try to select a new one.
+                // Suggested solution is to print the error to the console instead of showing a messagebox.
+                //System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+                Console.WriteLine(ex.Message);
             }
 
         }
