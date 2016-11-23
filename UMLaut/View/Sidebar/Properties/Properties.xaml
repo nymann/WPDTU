@@ -40,6 +40,7 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -74,6 +75,8 @@
         
         <Label Content="Position"
                Grid.Column="0" Grid.Row="7" />
+        <Label Content="Vis gitterlinjer"
+               Grid.Column="0" Grid.Row="8" />
 
         <Label Content="{Binding SelectedElement.Type}"
                Grid.Column="1" Grid.Row="1" />
@@ -94,6 +97,8 @@
                  b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
         
         <Label Grid.Column="1" Grid.Row="7" Content="{Binding CurrentPosition}"/>
+
+        <CheckBox  Grid.Column="1" Grid.Row="8" IsChecked="{Binding ShowGridLines}"/>
 
     </Grid>
 </UserControl>

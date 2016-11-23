@@ -7,9 +7,10 @@
              xmlns:cmd="http://www.galasoft.ch/mvvmlight"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:vm="clr-namespace:UMLaut.ViewModel"
-             xmlns:drw="clr-namespace:UMLaut.View.Drawable"
              xmlns:slc="clr-namespace:UMLaut.View.Drawable.Selectors"
              xmlns:shape="clr-namespace:UMLaut.View.Drawable.Shape"
+             xmlns:line="clr-namespace:UMLaut.View.Drawable.Line"
+
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
 
@@ -87,12 +88,12 @@
         <slc:LineDataTemplateSelector x:Key="LineDataTemplateSelector">
             <slc:LineDataTemplateSelector.SolidLineTemplate>
                 <DataTemplate>
-                    <drw:LineUserControl/>
+                    <line:LineUserControl/>
                 </DataTemplate>
             </slc:LineDataTemplateSelector.SolidLineTemplate>
             <slc:LineDataTemplateSelector.DashedLineTemplate>
                 <DataTemplate>
-                    <drw:LineUserControl/>
+                    <line:DashedLineUserControl/>
                 </DataTemplate>
             </slc:LineDataTemplateSelector.DashedLineTemplate>
         </slc:LineDataTemplateSelector>
