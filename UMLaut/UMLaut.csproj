@@ -92,6 +92,7 @@
     <Compile Include="Services\Converter\LineMultiConverter.cs" />
     <Compile Include="Services\Serialization\Deserializer.cs" />
     <Compile Include="Services\Serialization\Serializer.cs" />
+    <Compile Include="UndoRedo\AddLineCommand.cs" />
     <Compile Include="UndoRedo\AddShapeCommand.cs" />
     <Compile Include="UndoRedo\CutCommand.cs" />
     <Compile Include="UndoRedo\DeleteCommand.cs" />

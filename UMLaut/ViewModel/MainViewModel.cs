@@ -530,6 +530,8 @@ namespace UMLaut.ViewModel
                 {
                     _tempLine.To = shape;
                     Lines.Add(_tempLine);
+                    IUndoRedoCommand cmd = new AddLineCommand(_tempLine, this);
+                    undoRedo.InsertInUndoRedo(cmd);
                     _tempLine = null;
                 }
                 else

@@ -4,25 +4,25 @@ namespace UMLaut.UndoRedo
 {
     public class AddLineCommand : IUndoRedoCommand
     {
-        private readonly LineViewModel _selectedElement;
-        private readonly MainViewModel _mainViewModel;
+        private LineViewModel _line;
+        private MainViewModel _mainViewModel;
 
-        public AddLineCommand(LineViewModel selectedElement, MainViewModel mainViewModel)
+        public AddLineCommand(LineViewModel line, MainViewModel mainViewModel)
         {
-            _selectedElement = selectedElement;
             _mainViewModel = mainViewModel;
+            _line = line;
         }
 
         public void Execute()
         {
-            // Undo
-            _mainViewModel.Lines.Remove(_selectedElement);
+            // undo
+            _mainViewModel.Lines.Remove(_line);
         }
 
         public void UnExecute()
         {
-            // Redo
-            _mainViewModel.Lines.Add(_selectedElement);
+            // redo
+            _mainViewModel.Lines.Add(_line);
         }
     }
 }
