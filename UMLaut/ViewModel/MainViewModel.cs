@@ -449,6 +449,7 @@ namespace UMLaut.ViewModel
                 {
                     ShapeViewModel shape = element.DataContext as ShapeViewModel;
                     _undoStartPosition = new Point(shape.X, shape.Y);
+
                 }
             }
         }
@@ -495,6 +496,10 @@ namespace UMLaut.ViewModel
                 {
                     ShapeViewModel shape = element.DataContext as ShapeViewModel;
                     _undoEndPositon = new Point(shape.X, shape.Y);
+
+                    IUndoRedoCommand cmd = new MoveShapeCommand(SelectedElement, _undoStartPosition, _undoEndPositon);
+
+                    undoRedo.InsertInUndoRedo(cmd);
                 }
             }
         }
