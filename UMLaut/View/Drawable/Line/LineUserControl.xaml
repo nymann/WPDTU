@@ -4,7 +4,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UMLaut.View.Drawable"
+             xmlns:conv ="clr-namespace:UMLaut.Services.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Line Stroke="Black" X1="{Binding From.X}" Y1="{Binding From.Y}" X2="{Binding To.X}" Y2="{Binding To.Y}" StrokeThickness="2"/>
+
+    <UserControl.Resources>
+        <conv:LineMultiConverter x:Key="LineMultiConverter" />
+    </UserControl.Resources>
+    <Line Stroke="Black"
+          StrokeThickness="2">
+        
+        <!-- Hackish solution to provide binding from shape to line in order to update the line position when shape changes. -->
+        <Line.X1>
+            <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="X">
+                <Binding Path="From.X"/>
+                <Binding Path="From"/>
+            </MultiBinding>
+        </Line.X1>
+        <Line.Y1>
+            <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="Y">
+                <Binding Path="From.Y"/>
+                <Binding Path="From"/>
+            </MultiBinding>
+        </Line.Y1>
+        <Line.X2>
+            <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="X">
+                <Binding Path="To.X"/>
+                <Binding Path="To"/>
+            </MultiBinding>
+        </Line.X2>
+        <Line.Y2>
+            <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="Y">
+                <Binding Path="To.Y"/>
+                <Binding Path="To"/>
+            </MultiBinding>
+        </Line.Y2>
+    </Line>
 </UserControl>

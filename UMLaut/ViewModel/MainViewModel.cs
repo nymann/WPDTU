@@ -25,7 +25,7 @@ namespace UMLaut.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        private bool _drawingMode;
+        private bool _shapeMode, _lineMode;
         private EShape _toolboxShapeValue;
         private ELine _toolboxLineValue;
 
@@ -35,6 +35,8 @@ namespace UMLaut.ViewModel
         // Points for moving shapes / undo-redo for moved shape
         private Point _undoStartPosition;
         private Point _undoEndPositon = new Point(0, 0);
+
+        private LineViewModel _tempLine;
 
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
@@ -403,7 +405,9 @@ namespace UMLaut.ViewModel
 
         public void PerformIsFreeHand(object obj)
         {
-            _drawingMode = false;
+            //_drawingMode = false;
+            _shapeMode = _lineMode = false;
+            _tempLine = null;
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Hand;
         }
 
@@ -413,7 +417,9 @@ namespace UMLaut.ViewModel
         /// <param name="shape"></param>
         public void SetShapeToolboxSelection(EShape shape)
         {
-            _drawingMode = true;
+            //_drawingMode = true;
+            _lineMode = false;
+            _shapeMode = true;
             _toolboxShapeValue = shape;
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
@@ -424,7 +430,9 @@ namespace UMLaut.ViewModel
         /// <param name="line"></param>
         public void SetLineToolboxSelection(ELine line)
         {
-            _drawingMode = true;
+            //_drawingMode = true;
+            _lineMode = true;
+            _shapeMode = false;
             _toolboxLineValue = line;
             Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
@@ -442,7 +450,7 @@ namespace UMLaut.ViewModel
         /// <param name="e">DragStartedEvent</param>
         private void PerformShapeDragStart(DragStartedEventArgs e)
         {
-            if (!_drawingMode)
+            if (!_shapeMode)
             {
                 FrameworkElement element = e.Source as FrameworkElement;
                 if (element != null)
@@ -460,7 +468,7 @@ namespace UMLaut.ViewModel
         /// <param name="e"></param>
         private void PerformShapeDrag(DragDeltaEventArgs e)
         {
-            if (!_drawingMode)
+            if (!_shapeMode)
             {
                 //FrameworkElement element = (FrameworkElement)e.Source;
                 FrameworkElement element = e.Source as FrameworkElement;
@@ -489,7 +497,7 @@ namespace UMLaut.ViewModel
         /// <param name="e">DragCompletedEvent</param>
         private void PerformShapeDragEnd(DragCompletedEventArgs e)
         {
-            if (!_drawingMode)
+            if (!_shapeMode)
             {
                 FrameworkElement element = e.Source as FrameworkElement;
                 if (element != null)
@@ -511,24 +519,44 @@ namespace UMLaut.ViewModel
         /// <param name="e">Click event</param>
         private void PerformShapeMouseDown(MouseButtonEventArgs e)
         {
-            if (!_drawingMode)
+            var source = e.Source as UIElement;
+            // Start the line mode.
+            if (_lineMode && source != null)
             {
-                //FrameworkElement movingElement = (FrameworkElement)e.MouseDevice.Target;
-                var source = e.Source as UIElement;
-
-                if (source != null)
+                var fElement = source as FrameworkElement;
+                ShapeViewModel shape = fElement.DataContext as ShapeViewModel;
+                // End point
+                if (_tempLine != null)
                 {
-                    // Deselect previous
-                    if (SelectedElement != null)
-                    {
-                        ClearSelection();
-                    }
-                    // Select new
-                    DoSelection(source);
+                    _tempLine.To = shape;
+                    Lines.Add(_tempLine);
+                    _tempLine = null;
                 }
+                else
+                {
+                    _tempLine = new LineViewModel(new UMLLine(shape, null, _toolboxLineValue));
+                }
+                // Skip the event call ladder.
+                e.Handled = true;
+            }
+            // Selection of a shape / drag event.
+            else if (!_shapeMode && source != null)
+            {
+                // Deselect previous
+                if (SelectedElement != null)
+                {
+                    ClearSelection();
+                }
+                // Select new
+                DoSelection(source);
             }  
         }
 
+        /// <summary>
+        /// PerformShapeMouseDoubleClick - Double click listener setting the text fields in the shapes to true when 
+        /// caught.
+        /// </summary>
+        /// <param name="e"></param>
         private void PerformShapeMouseDoubleClick(RoutedEventArgs e)
         {
             // Should never be the case because click is called before..
@@ -540,18 +568,17 @@ namespace UMLaut.ViewModel
         }
 
         /// <summary>
-        /// 
+        /// PerformCanvasMouseDown - Called when the canvas is clicked, will NOT be called when clicking a shape.
         /// </summary>
         /// <param name="e"></param>
         private void PerformCanvasMouseDown(MouseButtonEventArgs e)
         {
             try
             {
-                var source = e.Source as UIElement;
-
                 // TODO: The behavior is kinda fishy..
-                if (_drawingMode)
+                if (_shapeMode)
                 {
+                    var source = e.Source as UIElement;
                     Point point = source is Canvas ? e.GetPosition(source) : RelativeMousePosition(e);
                     var model = new UMLShape(point.X, point.Y, GetDefaultHeight(_toolboxShapeValue), GetDefaultWidth(_toolboxShapeValue), _toolboxShapeValue);
                     var shapeToAdd = new ShapeViewModel(model);
@@ -656,6 +683,7 @@ namespace UMLaut.ViewModel
             dynamic parent = VisualTreeHelper.GetParent(o);
             return parent.GetType().IsAssignableFrom(typeof(T)) ? parent : FindParentOfType<T>(parent);
         }
+
         #endregion
         #endregion
 
@@ -693,6 +721,7 @@ namespace UMLaut.ViewModel
 
         private void AddAdorner(UIElement element)
         {
+            //AdornerLayer.GetAdornerLayer(element).Add(new LineAdorner(element));
             AdornerLayer.GetAdornerLayer(element).Add(new BasicAdorner(element));
         }
 

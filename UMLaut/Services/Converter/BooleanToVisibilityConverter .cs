@@ -23,12 +23,14 @@
                 val = !val;
             }
 
-            if (val)
-            {
-                return Visibility.Visible;
-            }
+            return val ? Visibility.Visible : Visibility.Collapsed;
 
-            return Visibility.Collapsed;
+            //if (val)
+            //{
+            //    return Visibility.Visible;
+            //}
+
+            //return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
