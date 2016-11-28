@@ -10,13 +10,13 @@ namespace UMLaut.ViewModel
 {
     public class LineViewModel : BaseViewModel
     {
-        internal UMLLine Line { get; }
+        internal UMLLine Line { get; set; }
 
-        private ShapeViewModel _to;
-        private ShapeViewModel _from;
+        //private ShapeViewModel _to;
+        //private ShapeViewModel _from;
 
-        public Guid FromId => _from.Id;
-        public Guid ToId => _to.Id;
+        //public ShapeViewModel FromId => _from;
+        //public ShapeViewModel ToId => _to;
 
         public ELine Type => Line.Type;
 
@@ -28,13 +28,12 @@ namespace UMLaut.ViewModel
         public ShapeViewModel From {
             get
             {
-                return _from;
+                return Line.From;
             }
             set
             {
-                _from = value;
+                Line.From = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(FromId));
             }
         }
 
@@ -42,13 +41,12 @@ namespace UMLaut.ViewModel
         {
             get
             {
-                return _to;
+                return Line.To;
             }
             set
             {
-                _to = value;
+                Line.To = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(ToId));
             }
         }
 
