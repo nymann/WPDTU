@@ -345,9 +345,12 @@ namespace UMLaut.ViewModel
         private void PerformPaste(object obj)
         {
             if (_storedElement == null) return;
-            Shapes.Add(_storedElement);
-            _storedElement = null;
-            IUndoRedoCommand cmd = new PasteCommand(this);
+            //var temp = new ShapeViewModel(new UMLShape(_storedElement.X, _storedElement.Y, _storedElement.Height, _storedElement.Width, _storedElement.Shape.Type));
+            //Shapes.Add(temp);
+            //IUndoRedoCommand cmd = new PasteCommand(this, temp);
+            //undoRedo.InsertInUndoRedo(cmd);
+            Shapes.Add(StoredElement);
+            IUndoRedoCommand cmd = new PasteCommand(this, StoredElement);
             undoRedo.InsertInUndoRedo(cmd);
         }
 
@@ -359,7 +362,8 @@ namespace UMLaut.ViewModel
 
         private void PerformCut(object obj)
         {
-            if (SelectedElement == null) return;
+            Console.Write("PerformCut requested.");
+            if (_selectedElement == null) return;
             _storedElement = _selectedElement;
             Shapes.Remove(_selectedElement);
             SelectedElement = null;
