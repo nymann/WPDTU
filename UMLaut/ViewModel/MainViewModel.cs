@@ -80,6 +80,68 @@ namespace UMLaut.ViewModel
                 OnPropertyChanged();
             }
         }
+        private Boolean _zoomOutEnabled = true;
+        public Boolean ZoomOutEnabled
+        {
+               get { return _zoomOutEnabled; }
+            set
+            {
+                _zoomOutEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        private Boolean _undoEnabled = true;
+        public Boolean UndoEnabled
+        {
+            get { return _undoEnabled; }
+            set
+            {
+                _undoEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        private Boolean _redoEnabled = true;
+        public Boolean RedoEnabled
+        {
+            get { return _redoEnabled; }
+            set
+            {
+                _redoEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Boolean _duplicateShapeEnabled = false;
+        public Boolean DuplicateShapeEnabled
+        {
+            get { return _duplicateShapeEnabled; }
+            set
+            {
+                _duplicateShapeEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+        private Boolean _deleteShapeEnabled = false;
+        public Boolean DeleteShapeEnabled
+        {
+            get { return _deleteShapeEnabled; }
+            set
+            {
+                _deleteShapeEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Boolean _textToShapeEnabled = false;
+        public Boolean TextToShapeEnabled
+        {
+            get { return _textToShapeEnabled; }
+            set
+            {
+                _textToShapeEnabled = value;
+                OnPropertyChanged();
+            }
+        }
         private UIElement SelectedUIElement { get; set; }
 
         private UndoRedo.UndoRedo undoRedo;
@@ -398,19 +460,36 @@ namespace UMLaut.ViewModel
         private void PerformZoomIn(object obj)
         {
             ZoomPercentage += 0.1;
+            validateZoomOutEnabled();
         }
 
         private void PerformZoomOut(object obj)
         {
-            if (ZoomPercentage > 0.49)
+            if (ZoomOutEnabled)
             {
                 ZoomPercentage -= 0.1;
             }
+
+            validateZoomOutEnabled();
+
         }
 
         private void PerformZoomToFit(object obj)
         {
             ZoomPercentage = 1.0;
+            validateZoomOutEnabled();
+        }
+
+        private void validateZoomOutEnabled()
+        {
+            if (ZoomPercentage < 0.49)
+            {
+                ZoomOutEnabled = false;
+            }
+            else
+            {
+                ZoomOutEnabled = true;
+            }
         }
         #endregion
 
@@ -624,9 +703,13 @@ namespace UMLaut.ViewModel
                 SelectedUIElement = source;
                 SelectedElement = fElement.DataContext as ShapeViewModel;
                 AddAdorner(source);
+                setRibbonSelection(true);
+               
             }
         }
 
+
+       
         /// <summary>
         /// ClearSelection - Removes the adorner on the passed UI element
         /// </summary>
@@ -638,6 +721,17 @@ namespace UMLaut.ViewModel
   
             SelectedUIElement = null;
             SelectedElement = null;
+            setRibbonSelection(false);
+        }
+
+        /// <summary>
+        /// Set isEnabled of Ribbon buttons
+        /// </summary>
+        public void setRibbonSelection(Boolean b)
+        {
+            DuplicateShapeEnabled = b;
+            DeleteShapeEnabled = b;
+            TextToShapeEnabled = b;
         }
 
         /// <summary>

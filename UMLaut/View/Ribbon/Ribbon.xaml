@@ -54,21 +54,21 @@
                 </RibbonGroup>
 
                 <RibbonGroup Header="Funktioner">
-                    <RibbonButton Label="Fortryd"
+                    <RibbonButton Label="Fortryd" IsEnabled="{Binding UndoEnabled}"
                       SmallImageSource="/Resources/Images/undo-16.png" 
                       Command="{Binding Undo}"/>
-                    <RibbonButton Label="Genskab"
+                    <RibbonButton Label="Genskab" IsEnabled="{Binding RedoEnabled}"
                       SmallImageSource="/Resources/Images/redo-16.png" 
                       Command="{Binding Redo}"/>
-                    <RibbonButton Label="Dupliker figur"
+                    <RibbonButton Label="Dupliker figur" IsEnabled="{Binding DuplicateShapeEnabled}"
                       LargeImageSource="/Resources/Images/copy-32.png"
                       SmallImageSource="/Resources/Images/copy-16.png" 
                       Command="{Binding DuplicateShape}"/>
-                    <RibbonButton Label="Slet"
+                    <RibbonButton Label="Slet" IsEnabled="{Binding DeleteShapeEnabled}"
                       LargeImageSource="/Resources/Images/delete-32.png"
                       SmallImageSource="/Resources/Images/delete-16.png"
                       Command="{Binding DeleteShape}"/>
-                    <RibbonButton Label="Tekst i figur"
+                    <RibbonButton Label="Tekst i figur" IsEnabled="{Binding TextToShapeEnabled}"
                       LargeImageSource="/Resources/Images/comment-24.png"
                       SmallImageSource="/Resources/Images/comment-16.png"
                       Command="{Binding TextToShape}"/>
@@ -84,6 +84,7 @@
                       SmallImageSource="/Resources/Images/zoomin-16.png" 
                       Command="{Binding ZoomIn}"/>
                     <RibbonButton Label="Zoom ud"
+                      IsEnabled="{Binding ZoomOutEnabled}"
                       LargeImageSource="/Resources/Images/zoomout-32.png"
                       SmallImageSource="/Resources/Images/zoomout-16.png" 
                       Command="{Binding ZoomOut}"/>
