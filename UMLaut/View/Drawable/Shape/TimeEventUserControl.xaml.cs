@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace UMLaut.View.Drawable.Shape
 {
     /// <summary>
-    /// Interaction logic for FlowFinalUserControl.xaml
+    /// Interaction logic for TimeEventUserControl.xaml
     /// </summary>
-    public partial class FlowFinalUserControl : UserControl
+    public partial class TimeEventUserControl : UserControl
     {
-        public FlowFinalUserControl()
+        public TimeEventUserControl()
         {
             InitializeComponent();
         }

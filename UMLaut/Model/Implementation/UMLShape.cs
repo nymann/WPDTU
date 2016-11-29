@@ -29,10 +29,10 @@ namespace UMLaut.Model
         public UMLShape(double X, double Y, EShape Type)
         {
             _id = Guid.NewGuid();
-            _height = Constants.Drawables.Shapes.DefaultHeight; ;
-            _width = Constants.Drawables.Shapes.DefaultWidth; ;
-            _x = X;
-            _y = Y;
+            _height = Constants.Drawables.Shapes.DefaultHeight;
+            _width = Constants.Drawables.Shapes.DefaultWidth;
+            _x = X -  _width/ 2;
+            _y = Y - _height / 2;
             _type = Type;
         }
 
@@ -49,8 +49,8 @@ namespace UMLaut.Model
             _id = Guid.NewGuid();
             _height = Height;
             _width = Width;
-            _x = X;
-            _y = Y;
+            _x = X - _width / 2;
+            _y = Y -  _height/ 2;
             _type = Type;
         }
 

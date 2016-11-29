@@ -17,19 +17,26 @@ using UMLaut.Services.Adorners;
 using UMLaut.Model.Enum;
 using System.Linq;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using UMLaut.UndoRedo;
+using System.Windows.Controls.Primitives;
 
 namespace UMLaut.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        private bool _drawingMode;
+        private bool _shapeMode, _lineMode;
         private EShape _toolboxShapeValue;
         private ELine _toolboxLineValue;
 
         private Diagram _diagram = new Diagram();
-        private Point _currentPosition;
+        private Point _currentCursorPosition;
 
-        private Point _beforeMovePosition;
+        // Points for moving shapes / undo-redo for moved shape
+        private Point _undoStartPosition;
+        private Point _undoEndPositon = new Point(0, 0);
+
+        private LineViewModel _tempLine;
 
         private ShapeViewModel _selectedElement;
         public ShapeViewModel SelectedElement
@@ -42,12 +49,23 @@ namespace UMLaut.ViewModel
             }
         }
 
-        public Point CurrentPosition
+        private ShapeViewModel _storedElement;
+        public ShapeViewModel StoredElement
         {
-            get { return _currentPosition; }
+            get { return _storedElement; }
             set
             {
-                _currentPosition = value;
+                _storedElement = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Point CurrentCursorPosition
+        {
+            get { return _currentCursorPosition; }
+            set
+            {
+                _currentCursorPosition = value;
                 OnPropertyChanged();
             }
         }
@@ -63,6 +81,9 @@ namespace UMLaut.ViewModel
             }
         }
         private UIElement SelectedUIElement { get; set; }
+
+        private UndoRedo.UndoRedo undoRedo;
+
         #region Collections
         public ObservableCollection<LineViewModel> Lines {get; set;}
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
@@ -75,30 +96,45 @@ namespace UMLaut.ViewModel
             Lines = new ObservableCollection<LineViewModel>();
             Shapes = new ObservableCollection<ShapeViewModel>();
 
+            #region Ribbon RelayCommands
+
             this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
             this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
             this.SaveFile = new RelayCommand<object>(this.PerformSaveFile);
             this.SaveFileAs = new RelayCommand<object>(this.PerformSaveFileAs);
+            this.Paste = new RelayCommand<object>(this.PerformPaste);
+            this.Copy = new RelayCommand<object>(this.PerformCopy);
+            this.Cut = new RelayCommand<object>(this.PerformCut);
+            this.Undo = new RelayCommand<object>(this.PerformUndo);
+            this.Redo = new RelayCommand<object>(this.PerformRedo);
             this.DuplicateShape = new RelayCommand<object>(this.PerformDuplicateShape);
             this.DeleteShape = new RelayCommand<object>(this.PerformDeleteShape);
             this.TextToShape = new RelayCommand<object>(this.PerformTextToShape);
+            this.ExportDiagram = new RelayCommand<object>(this.PerformExportDiagram);
             this.ZoomIn = new RelayCommand<object>(this.PerformZoomIn);
             this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
             this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
+
+            #endregion
+
 
             this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
             this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
             this.CanvasMouseWheel = new RelayCommand<MouseWheelEventArgs>(this.PerformCanvasMouseWheel);
 
             ShapeMouseDown = new RelayCommand<MouseButtonEventArgs>(PerformShapeMouseDown);
-            ShapeMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(PerformShapeMove);
+            ShapeMouseDoubleClick = new RelayCommand<RoutedEventArgs>(PerformShapeMouseDoubleClick);
 
-            this.IsInitialNode = new RelayCommand<object>(this.PerformIsInitialNode);
+            ShapeDragStart = new RelayCommand<DragStartedEventArgs>(PerformShapeDragStart);
+            ShapeDrag = new RelayCommand<DragDeltaEventArgs>(PerformShapeDrag);
+            ShapeDragEnd = new RelayCommand<DragCompletedEventArgs>(PerformShapeDragEnd);
+
+            this.IsFreeHand = new RelayCommand<object>(this.PerformIsFreeHand);
 
             ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
             LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
 
-
+            undoRedo = new UndoRedo.UndoRedo();
         }
         #endregion
 
@@ -109,9 +145,16 @@ namespace UMLaut.ViewModel
         public ICommand OpenFile { get; set; }
         public ICommand SaveFile { get; set; }
         public ICommand SaveFileAs { get; set; }
+        public ICommand Paste { get; set; }
+        public ICommand Copy { get; set; }
+        public ICommand Cut { get; set; }
+        public ICommand Undo { get; set; }
+        public ICommand Redo { get; set; }
         public ICommand DuplicateShape { get; set; }
         public ICommand DeleteShape { get; set; }
         public ICommand TextToShape { get; set; }
+        public ICommand ExportDiagram { get; set; }
+
         public ICommand ZoomIn { get; set; }
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
@@ -123,14 +166,17 @@ namespace UMLaut.ViewModel
         public ICommand CanvasMouseWheel { get; set; }
 
         public ICommand ShapeMouseDown { get; set; }
-        public ICommand ShapeMove { get; set; }
+        public ICommand ShapeMouseDoubleClick { get; set; }
+        public ICommand ShapeDragStart { get; set; }
+        public ICommand ShapeDrag { get; set; }
+        public ICommand ShapeDragEnd { get; set; }
         #endregion
-
 
         #region Toolbox ICommands
         public ICommand ShapeToolboxSelection { get; set; }
         public ICommand LineToolboxSelection { get; set; }
 
+        public ICommand IsFreeHand { get; set; }
         public ICommand IsInitialNode { get; set; }
 
         #endregion
@@ -213,7 +259,6 @@ namespace UMLaut.ViewModel
             }
         }
 
-
         private void PerformSaveFileAs(object obj)
         {
             Serializer serializer = new Serializer();
@@ -224,26 +269,115 @@ namespace UMLaut.ViewModel
 
         }
 
+        private void PerformPaste(object obj)
+        {
+            if (_storedElement == null) return;
+            Shapes.Add(_storedElement);
+            _storedElement = null;
+            IUndoRedoCommand cmd = new PasteCommand(this);
+            undoRedo.InsertInUndoRedo(cmd);
+        }
+
+        private void PerformCopy(object obj)
+        {
+            if (_selectedElement == null) return;
+            _storedElement = _selectedElement;
+        }
+
+        private void PerformCut(object obj)
+        {
+            if (SelectedElement == null) return;
+            _storedElement = _selectedElement;
+            Shapes.Remove(_selectedElement);
+            SelectedElement = null;
+            IUndoRedoCommand cmd = new CutCommand(this, _storedElement);
+            undoRedo.InsertInUndoRedo(cmd);
+        }
+
+        /// <summary>
+        /// Currently won't support multi-level undo (int levels = 1)
+        /// </summary>
+        private void PerformUndo(object obj)
+        {
+            undoRedo.Undo(1);
+        }
+
+        /// <summary>
+        /// Currently won't support multi-level redo (int levels = 1)
+        /// </summary>
+        private void PerformRedo(object obj)
+        {
+            undoRedo.Redo(1);
+        }
+
+
         private void PerformDuplicateShape(object obj)
         {
-            if(SelectedElement != null)
-            {
-                var duplicateModel = new UMLShape(SelectedElement.Shape.X, SelectedElement.Shape.Y, SelectedElement.Shape.Height, SelectedElement.Shape.Width, SelectedElement.Shape.Type);
-                var duplicate = new ShapeViewModel(duplicateModel);
-                duplicate.X += Constants.DuplicateOffset;
-                duplicate.Y += Constants.DuplicateOffset;
-                Shapes.Add(duplicate);
-            }
+            if (SelectedElement == null) return;
+
+            var duplicateModel = new UMLShape(SelectedElement.Shape.X, SelectedElement.Shape.Y, SelectedElement.Shape.Height, SelectedElement.Shape.Width, SelectedElement.Shape.Type);
+            var duplicate = new ShapeViewModel(duplicateModel);
+            Shapes.Add(duplicate);
+
+            IUndoRedoCommand cmd = new DuplicateCommand(duplicate, this);
+            undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformDeleteShape(object obj)
         {
-            throw new NotImplementedException();
+            if (Shapes.Count <= 0 || _selectedElement == null) return;
+            IUndoRedoCommand cmd = new DeleteCommand(_selectedElement, this);
+            Shapes.Remove(_selectedElement);
+            undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformTextToShape(object obj)
         {
-            if (!(SelectedElement == null)) { SelectedElement.IsEditing = !SelectedElement.IsEditing; }
+            if (SelectedElement != null)
+            {
+                SelectedElement.IsEditing = !SelectedElement.IsEditing;
+            }
+        }
+        private void PerformExportDiagram(object parameter)
+        {
+            var canvas = parameter as Canvas;
+            if (canvas != null)
+            {
+                try
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.FileName = "*";
+                    saveFileDialog.DefaultExt = "png";
+                    saveFileDialog.Filter = "Portable Network Graphics|*.png";
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        var path = saveFileDialog.FileName;
+                        RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
+                              (int)canvas.RenderSize.Height, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+                        rtb.Render(canvas);
+
+                        var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
+
+                        BitmapEncoder pngEncoder = new PngBitmapEncoder();
+                        pngEncoder.Frames.Add(BitmapFrame.Create(crop));
+
+                        using (var fs = System.IO.File.OpenWrite(path))
+                        {
+                            pngEncoder.Save(fs);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+                }
+
+            }
+            else
+            {
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+            }
         }
 
         private void PerformZoomIn(object obj)
@@ -269,14 +403,25 @@ namespace UMLaut.ViewModel
     
         // TODO Should be done in one function insted of split onto two.
 
+        public void PerformIsFreeHand(object obj)
+        {
+            //_drawingMode = false;
+            _shapeMode = _lineMode = false;
+            _tempLine = null;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Hand;
+        }
+
         /// <summary>
         /// Set the shape selected in the toolbox
         /// </summary>
         /// <param name="shape"></param>
         public void SetShapeToolboxSelection(EShape shape)
         {
-            _drawingMode = true;
+            //_drawingMode = true;
+            _lineMode = false;
+            _shapeMode = true;
             _toolboxShapeValue = shape;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
         /// <summary>
@@ -285,143 +430,167 @@ namespace UMLaut.ViewModel
         /// <param name="line"></param>
         public void SetLineToolboxSelection(ELine line)
         {
-            _drawingMode = true;
+            //_drawingMode = true;
+            _lineMode = true;
+            _shapeMode = false;
             _toolboxLineValue = line;
+            Mouse.OverrideCursor = System.Windows.Input.Cursors.Arrow;
         }
 
-        //public void PerformFreeHand(object obj)
-        //{
-        //    _drawingMode = false;
-        //}
-
-        public void PerformIsInitialNode(object obj)
-        {
-            _drawingMode = false; // for testing - should be true
-            _toolboxShapeValue = Model.Enum.EShape.Initial;
-        }
         #endregion
 
         #region Properties commands
         #endregion
 
         #region Canvas commands
-        private void PerformShapeMouseDown(MouseButtonEventArgs e)
-        {
-            if (!_drawingMode)
-            {
-                FrameworkElement movingElement = (FrameworkElement)e.MouseDevice.Target;
-                if (movingElement != null)
-                {
-                    // Save the position of the mouse incase the event is a move
-                    _beforeMovePosition = RelativeMousePosition(e);
-                }
-            }  
-        }
 
-        private void PerformShapeMove(System.Windows.Input.MouseEventArgs e)
+        /// <summary>
+        /// PerformShapeDragStart - Stores the position of the element in case of an undo command
+        /// </summary>
+        /// <param name="e">DragStartedEvent</param>
+        private void PerformShapeDragStart(DragStartedEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && !_drawingMode)
+            if (!_shapeMode)
             {
-                // Get the element to move
-                FrameworkElement element = (FrameworkElement)e.MouseDevice.Target;
+                FrameworkElement element = e.Source as FrameworkElement;
                 if (element != null)
                 {
-                    // Retrieve the view model & canvas                 
-                    Canvas canvas = FindParentOfType<Canvas>(element);
-                    ShapeViewModel movingShape = element.DataContext as ShapeViewModel;
-
-                    Point canvasPosition = Mouse.GetPosition(canvas);
-                    var deltaX = canvasPosition.X - _beforeMovePosition.X;
-                    var deltaY = canvasPosition.Y - _beforeMovePosition.Y;
-
-                    if (movingShape.X + deltaX >= 0 && movingShape.X + deltaX <= canvas.RenderSize.Width - movingShape.Width)
-                    {
-                        
-                        movingShape.X += deltaX;
-                        _beforeMovePosition.X = canvasPosition.X;
-                    }
-
-                    if (movingShape.Y + deltaY >= 0 && movingShape.Y + deltaY <= canvas.RenderSize.Height - movingShape.Height)
-                    {
-                        movingShape.Y += deltaY;
-                        _beforeMovePosition.Y = canvasPosition.Y;
-                    }
-
-
-
-
-
-
-                    //movingShape.X += deltaX;
-                    //movingShape.Y += deltaY;
-                    //_beforeMovePosition = canvasPosition;
-
-                    //if (newX > 0 && newX < canvas.RenderSize.Width)
-                    //{
-                    //    movingShape.X += canvasPosition.X - _beforeMovePosition.X;
-                    //    _beforeMovePosition.X = newX;
-                    //}
-
-                    //if (newY > 0 && newY < canvas.RenderSize.Height)
-                    //{
-                    //    movingShape.Y += canvasPosition.Y - _beforeMovePosition.Y;
-                    //    _beforeMovePosition.Y = newY;
-                    //}
-
-
-                    // Fetch the new position on the canvas
-                    //Point relativePosition = RelativeMousePosition(e);
-                    //var deltaX = relativePosition.X - _beforeMovePosition.X;
-                    //var deltaY = relativePosition.Y - _beforeMovePosition.Y;
-                    //movingShape.X += deltaX;
-                    //movingShape.Y += deltaY;
-                    //_beforeMovePosition = relativePosition;
+                    ShapeViewModel shape = element.DataContext as ShapeViewModel;
+                    _undoStartPosition = new Point(shape.X, shape.Y);
 
                 }
             }
         }
 
         /// <summary>
-        /// 
+        /// PerformShapeDrag - Handles the change of the given shapes position.
+        /// </summary>
+        /// <param name="e"></param>
+        private void PerformShapeDrag(DragDeltaEventArgs e)
+        {
+            if (!_shapeMode)
+            {
+                //FrameworkElement element = (FrameworkElement)e.Source;
+                FrameworkElement element = e.Source as FrameworkElement;
+                if (element != null)
+                {
+                    ShapeViewModel shape = element.DataContext as ShapeViewModel;
+                    // Could be kept as an private attr, so the method is only called upon starting the drag?
+                    Canvas canvas = FindParentOfType<Canvas>(element);
+
+                    if (shape.X + e.HorizontalChange >= 0 && shape.X + e.HorizontalChange + shape.Width <= canvas.ActualWidth)
+                    {
+                        shape.X += e.HorizontalChange;
+                    }
+
+                    if (shape.Y + e.VerticalChange >= 0 && shape.Y + e.VerticalChange + shape.Height <= canvas.ActualHeight)
+                    {
+                        shape.Y += e.VerticalChange;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// PerformShapeDragEnd - Stores the ending position of the element in case of a undo command
+        /// </summary>
+        /// <param name="e">DragCompletedEvent</param>
+        private void PerformShapeDragEnd(DragCompletedEventArgs e)
+        {
+            if (!_shapeMode)
+            {
+                FrameworkElement element = e.Source as FrameworkElement;
+                if (element != null)
+                {
+                    ShapeViewModel shape = element.DataContext as ShapeViewModel;
+                    _undoEndPositon = new Point(shape.X, shape.Y);
+
+                    IUndoRedoCommand cmd = new MoveShapeCommand(SelectedElement, _undoStartPosition, _undoEndPositon);
+
+                    undoRedo.InsertInUndoRedo(cmd);
+                }
+            }
+        }
+
+        /// <summary>
+        /// PerformShapeMouseDown - Selects the shape associated with the recieved event and 
+        /// stores the starting position in-case a drag is initialized.
+        /// </summary>
+        /// <param name="e">Click event</param>
+        private void PerformShapeMouseDown(MouseButtonEventArgs e)
+        {
+            var source = e.Source as UIElement;
+            // Start the line mode.
+            if (_lineMode && source != null)
+            {
+                var fElement = source as FrameworkElement;
+                ShapeViewModel shape = fElement.DataContext as ShapeViewModel;
+                // End point
+                if (_tempLine != null)
+                {
+                    _tempLine.To = shape;
+                    Lines.Add(_tempLine);
+                    IUndoRedoCommand cmd = new AddLineCommand(_tempLine, this);
+                    undoRedo.InsertInUndoRedo(cmd);
+                    _tempLine = null;
+                }
+                else
+                {
+                    _tempLine = new LineViewModel(new UMLLine(shape, null, _toolboxLineValue));
+                }
+                // Skip the event call ladder.
+                e.Handled = true;
+            }
+            // Selection of a shape / drag event.
+            else if (!_shapeMode && source != null)
+            {
+                // Deselect previous
+                if (SelectedElement != null)
+                {
+                    ClearSelection();
+                }
+                // Select new
+                DoSelection(source);
+            }  
+        }
+
+        /// <summary>
+        /// PerformShapeMouseDoubleClick - Double click listener setting the text fields in the shapes to true when 
+        /// caught.
+        /// </summary>
+        /// <param name="e"></param>
+        private void PerformShapeMouseDoubleClick(RoutedEventArgs e)
+        {
+            // Should never be the case because click is called before..
+            if (SelectedElement != null)
+            {
+                SelectedElement.IsEditing = true;
+            }
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// PerformCanvasMouseDown - Called when the canvas is clicked, will NOT be called when clicking a shape.
         /// </summary>
         /// <param name="e"></param>
         private void PerformCanvasMouseDown(MouseButtonEventArgs e)
         {
             try
             {
-                var source = e.Source as UIElement;
-                var point = e.GetPosition(source); 
-
                 // TODO: The behavior is kinda fishy..
-                if (_drawingMode)
+                if (_shapeMode)
                 {
+                    var source = e.Source as UIElement;
+                    Point point = source is Canvas ? e.GetPosition(source) : RelativeMousePosition(e);
                     var model = new UMLShape(point.X, point.Y, GetDefaultHeight(_toolboxShapeValue), GetDefaultWidth(_toolboxShapeValue), _toolboxShapeValue);
-                    Shapes.Add(new ShapeViewModel(model));
-
+                    var shapeToAdd = new ShapeViewModel(model);
+                    Shapes.Add(shapeToAdd);
+                    IUndoRedoCommand cmd = new AddShapeCommand(shapeToAdd, this);
+                    undoRedo.InsertInUndoRedo(cmd);
                 }
-                else if (IsElementHit(source))
+                else if (SelectedElement != null)
                 {
-                    if(SelectedElement != null)
-                    {
-                        ClearSelection();
-                    }
-                    SelectedUIElement = source;
-                    var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
-                    SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
-                    if (!(SelectedElement == null)) { SelectedElement.IsEditing = false; }
-                    AddAdorner(source);
-                    //SelectElement(e.MouseDevice.Target, source);       
-                    if (e.ClickCount.Equals(2)) // if (doubleclick)
-                    {
-                        SelectedElement.IsEditing = true;
-                    }
-                }
-                else
-                {   if (!(SelectedElement == null)) { SelectedElement.IsEditing = false; }
-                    //RemoveAdorner(source);
-                    SelectedElement = null;
                     ClearSelection();
-                    return;
                 }
             }
             catch (Exception ex)
@@ -431,12 +600,27 @@ namespace UMLaut.ViewModel
             }
         }
 
+        private void DoSelection(UIElement source)
+        {
+            var fElement = source as FrameworkElement;
+            if (fElement != null)
+            {
+                // Save a reference to the adorned UIElement for removing later
+                SelectedUIElement = source;
+                SelectedElement = fElement.DataContext as ShapeViewModel;
+                AddAdorner(source);
+            }
+        }
+
+        /// <summary>
+        /// ClearSelection - Removes the adorner on the passed UI element
+        /// </summary>
+        /// <param name="source">Usercontrol as ui element</param>
         private void ClearSelection()
         {
-            if(SelectedUIElement != null)
-            {
-                RemoveAdorner(SelectedUIElement);
-            }
+            RemoveAdorner(SelectedUIElement);
+            SelectedElement.IsEditing = false;
+  
             SelectedUIElement = null;
             SelectedElement = null;
         }
@@ -450,11 +634,11 @@ namespace UMLaut.ViewModel
             var source = e.MouseDevice.Target as Canvas;
             if (source != null)
             {
-                CurrentPosition = e.GetPosition(source);
+                CurrentCursorPosition = e.GetPosition(source);
             }
             else
             {
-                CurrentPosition = RelativeMousePosition(e);
+                CurrentCursorPosition = RelativeMousePosition(e);
             }
         }
         /// <summary>
@@ -501,9 +685,9 @@ namespace UMLaut.ViewModel
             dynamic parent = VisualTreeHelper.GetParent(o);
             return parent.GetType().IsAssignableFrom(typeof(T)) ? parent : FindParentOfType<T>(parent);
         }
-        #endregion
-        #endregion
 
+        #endregion
+        #endregion
 
         private bool ShowSaveDialogAndSetDiagramFilePath(Diagram diagram)
         {
@@ -539,6 +723,7 @@ namespace UMLaut.ViewModel
 
         private void AddAdorner(UIElement element)
         {
+            //AdornerLayer.GetAdornerLayer(element).Add(new LineAdorner(element));
             AdornerLayer.GetAdornerLayer(element).Add(new BasicAdorner(element));
         }
 
@@ -552,9 +737,13 @@ namespace UMLaut.ViewModel
                     AdornerLayer.GetAdornerLayer(element).Remove(adorner);
                 }
             } 
-            catch(Exception)
+            catch(Exception ex)
             {
-                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+
+                // This isn't a code breaking exception, this would fx happen, if user add some shapes, select one -> delete, and then try to select a new one.
+                // Suggested solution is to print the error to the console instead of showing a messagebox.
+                //System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+                Console.WriteLine(ex.Message);
             }
 
         }

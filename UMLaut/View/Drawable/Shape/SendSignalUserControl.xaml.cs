@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace UMLaut.View.Drawable.Shape
 {
     /// <summary>
-    /// Interaction logic for FlowFinalUserControl.xaml
+    /// Interaction logic for SendSignalUserControl.xaml
     /// </summary>
-    public partial class FlowFinalUserControl : UserControl
+    public partial class SendSignalUserControl : UserControl
     {
-        public FlowFinalUserControl()
+        public SendSignalUserControl()
         {
             InitializeComponent();
         }

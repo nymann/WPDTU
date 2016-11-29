@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UMLaut.View.Drawable
+namespace UMLaut.View.Drawable.Line
 {
     /// <summary>
     /// Interaction logic for Line.xaml

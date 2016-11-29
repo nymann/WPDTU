@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace UMLaut.View.Drawable.Shape
 {
     /// <summary>
-    /// Interaction logic for FlowFinalUserControl.xaml
+    /// Interaction logic for SyncBarVertUserControl.xaml
     /// </summary>
-    public partial class FlowFinalUserControl : UserControl
+    public partial class SyncBarVertUserControl : UserControl
     {
-        public FlowFinalUserControl()
+        public SyncBarVertUserControl()
         {
             InitializeComponent();
         }

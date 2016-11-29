@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+
              mc:Ignorable="d" 
              d:DesignHeight="140" d:DesignWidth="1200">
-    
-      
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -17,6 +18,7 @@
         </Grid.ColumnDefinitions>
         <Ribbon Grid.Row="0"
             Grid.Column="0">
+            
 
             <RibbonTab Header="Hjem">
                 <RibbonGroup Header="Fil">
@@ -41,18 +43,23 @@
                 
                <RibbonGroup Header="Udklipsholder">
                     <RibbonButton Label="Sæt ind" 
-                     SmallImageSource="/Resources/Images/paste-16.png" />
+                     SmallImageSource="/Resources/Images/paste-16.png"
+                                  Command="{Binding Paste}"/>
                     <RibbonButton Label="Kopier" 
-                     SmallImageSource="/Resources/Images/copy-16.png" />
+                     SmallImageSource="/Resources/Images/copy-16.png"
+                                  Command="{Binding Copy}"/>
                     <RibbonButton Label="Klip" 
-                     SmallImageSource="/Resources/Images/cut-16.png"/>
+                     SmallImageSource="/Resources/Images/cut-16.png"
+                                  Command="{Binding Cut}"/>
                 </RibbonGroup>
 
                 <RibbonGroup Header="Funktioner">
                     <RibbonButton Label="Fortryd"
-                      SmallImageSource="/Resources/Images/undo-16.png" />
+                      SmallImageSource="/Resources/Images/undo-16.png" 
+                      Command="{Binding Undo}"/>
                     <RibbonButton Label="Genskab"
-                      SmallImageSource="/Resources/Images/redo-16.png" />
+                      SmallImageSource="/Resources/Images/redo-16.png" 
+                      Command="{Binding Redo}"/>
                     <RibbonButton Label="Dupliker figur"
                       LargeImageSource="/Resources/Images/copy-32.png"
                       SmallImageSource="/Resources/Images/copy-16.png" 
@@ -65,6 +72,10 @@
                       LargeImageSource="/Resources/Images/comment-24.png"
                       SmallImageSource="/Resources/Images/comment-16.png"
                       Command="{Binding TextToShape}"/>
+                    <RibbonButton Label="Eksportér diagram"
+                      LargeImageSource="/Resources/Images/export-64.png"
+                      Command="{Binding ExportDiagram}"
+                      CommandParameter="{Binding ElementName=Canvas, diag:PresentationTraceSources.TraceLevel=High}"/>
                 </RibbonGroup>
 
                 <RibbonGroup Header="Zoom">

@@ -10,36 +10,37 @@
              mc:Ignorable="d"
              d:DesignHeight="240" d:DesignWidth="300">
 
-    <Grid Background="#292929">
+    <Grid Background="#A8CEFD">
         <Grid.Resources>
             <Style TargetType="{x:Type Label}">
-                <Setter Property="BorderBrush" Value="#292929" />
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Background" Value="#252526"/>
+                <Setter Property="BorderBrush" Value="#313131" />
+                <Setter Property="BorderThickness" Value="0.7"/>
                 <Setter Property="FontFamily" Value="Lucida Sans Unicode"/>
-                <Setter Property="Foreground" Value="#f1f1f1"/>
-                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontWeight" Value="Light"/>
+                <Setter Property="Foreground" Value="#08191C"/>
+                <Setter Property="FontSize" Value="10"/>
             </Style>
             <Style TargetType="{x:Type TextBox}">
-                <Setter Property="BorderBrush" Value="#292929" />
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Background" Value="#252526"/>
+                <Setter Property="BorderBrush" Value="#313131" />
+                <Setter Property="BorderThickness" Value="0.5"/>
+                <Setter Property="Background" Value="#A8CEFD"/>
                 <Setter Property="FontFamily" Value="Lucida Sans Unicode"/>
-                <Setter Property="Foreground" Value="#f1f1f1"/>
-                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Foreground" Value="#08191C"/>
+                <Setter Property="FontWeight" Value="Light"/>
+                <Setter Property="FontSize" Value="10"/>
             </Style>           
         </Grid.Resources>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -49,7 +50,9 @@
         
         <Label Content="Egenskaber"
                HorizontalAlignment="Center"
-               Background="#292929"
+               BorderThickness="0"
+               FontSize="11"
+               FontWeight="Bold"
                Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2"/>
 
         <Label Content="Type"
@@ -72,12 +75,14 @@
         
         <Label Content="Position"
                Grid.Column="0" Grid.Row="7" />
+        <Label Content="Vis gitterlinjer"
+               Grid.Column="0" Grid.Row="8" />
 
         <Label Content="{Binding SelectedElement.Type}"
                Grid.Column="1" Grid.Row="1" />
 
-        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedElement.X}"/>
-        <!--b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>-->
+        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedElement.X}"
+                 b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
 
         <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedElement.Y}"
                  b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
@@ -91,7 +96,9 @@
         <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding SelectedElement.Label}"
                  b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
         
-        <Label Grid.Column="1" Grid.Row="7" Content="{Binding CurrentPosition}"/>
+        <Label Grid.Column="1" Grid.Row="7" Content="{Binding CurrentCursorPosition}"/>
+
+        <CheckBox  Grid.Column="1" Grid.Row="8" IsChecked="{Binding ShowGridLines}"/>
 
     </Grid>
 </UserControl>

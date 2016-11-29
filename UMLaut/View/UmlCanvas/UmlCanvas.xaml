@@ -7,8 +7,10 @@
              xmlns:cmd="http://www.galasoft.ch/mvvmlight"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:vm="clr-namespace:UMLaut.ViewModel"
-             xmlns:drw="clr-namespace:UMLaut.View.Drawable"
              xmlns:slc="clr-namespace:UMLaut.View.Drawable.Selectors"
+             xmlns:shape="clr-namespace:UMLaut.View.Drawable.Shape"
+             xmlns:line="clr-namespace:UMLaut.View.Drawable.Line"
+
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
 
@@ -18,57 +20,117 @@
         <slc:ShapeDataTemplateSelector x:Key="ShapeDataTemplateSelector">
             <slc:ShapeDataTemplateSelector.ActionTemplate>
                 <DataTemplate>
-                    <drw:ActivityUserControl/>
+                    <shape:ActivityUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.ActionTemplate>
             <slc:ShapeDataTemplateSelector.ActivityFinalTemplate>
                 <DataTemplate>
-                    <drw:ActivityFinalUserControl/>
+                    <shape:ActivityFinalUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.ActivityFinalTemplate>
             <slc:ShapeDataTemplateSelector.InitialTemplate>
                 <DataTemplate>
-                    <drw:InitialUserControl/>
+                    <shape:InitialUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.InitialTemplate>
             <slc:ShapeDataTemplateSelector.FlowFinalTemplate>
                 <DataTemplate>
-                    <drw:FlowFinalUserControl/>
+                    <shape:FlowFinalUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.FlowFinalTemplate>
             <slc:ShapeDataTemplateSelector.MergeTemplate>
                 <DataTemplate>
-                    <drw:MergeUserControl/>
+                    <shape:MergeUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.MergeTemplate>
             <slc:ShapeDataTemplateSelector.ForkTemplate>
                 <DataTemplate>
-                    <drw:ForkUserControl/>
+                    <shape:ForkUserControl/>
                 </DataTemplate>
             </slc:ShapeDataTemplateSelector.ForkTemplate>
+            <slc:ShapeDataTemplateSelector.SyncBarHorTemplate>
+                <DataTemplate>
+                    <shape:SyncBarHorUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.SyncBarHorTemplate>
+            <slc:ShapeDataTemplateSelector.SyncBarVertTemplate>
+                <DataTemplate>
+                    <shape:SyncBarVertUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.SyncBarVertTemplate>
+            <slc:ShapeDataTemplateSelector.TimeEventTemplate>
+                <DataTemplate>
+                    <shape:TimeEventUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.TimeEventTemplate>
+            <slc:ShapeDataTemplateSelector.JoinTemplate>
+                <DataTemplate>
+                    <shape:MergeUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.JoinTemplate>
+            <slc:ShapeDataTemplateSelector.DecisionTemplate>
+                <DataTemplate>
+                    <shape:MergeUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.DecisionTemplate>
+            <slc:ShapeDataTemplateSelector.SendSignalTemplate>
+                <DataTemplate>
+                    <shape:SendSignalUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.SendSignalTemplate>
+            <slc:ShapeDataTemplateSelector.ReceiveSignalTemplate>
+                <DataTemplate>
+                    <shape:ReceiveSignalUserControl/>
+                </DataTemplate>
+            </slc:ShapeDataTemplateSelector.ReceiveSignalTemplate>
         </slc:ShapeDataTemplateSelector>
 
         <slc:LineDataTemplateSelector x:Key="LineDataTemplateSelector">
             <slc:LineDataTemplateSelector.SolidLineTemplate>
                 <DataTemplate>
-                    <drw:LineUserControl/>
+                    <line:LineUserControl/>
                 </DataTemplate>
             </slc:LineDataTemplateSelector.SolidLineTemplate>
+            <slc:LineDataTemplateSelector.DashedLineTemplate>
+                <DataTemplate>
+                    <line:DashedLineUserControl/>
+                </DataTemplate>
+            </slc:LineDataTemplateSelector.DashedLineTemplate>
         </slc:LineDataTemplateSelector>
 
         <DataTemplate DataType="{x:Type vm:ShapeViewModel}">
-            <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ShapeDataTemplateSelector}">
+            <Thumb>
                 <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDown" >
-                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMouseDown}"
+                    <i:EventTrigger EventName="DragStarted" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeDragStart}"
                                 PassEventArgsToCommand="True" />
                     </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseMove" >
-                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMove}"
+                    <i:EventTrigger EventName="DragDelta" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeDrag}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="DragCompleted" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeDragEnd}"
+                                PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseDoubleClick" >
+                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMouseDoubleClick}"
                                 PassEventArgsToCommand="True" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-            </ContentPresenter>
+                <Thumb.Template>
+                    <ControlTemplate>
+                        <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ShapeDataTemplateSelector}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDown" >
+                                    <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMouseDown}"
+                                PassEventArgsToCommand="True" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ContentPresenter>
+                    </ControlTemplate>
+                </Thumb.Template>
+            </Thumb>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type vm:LineViewModel}">
@@ -90,7 +152,7 @@
 
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <Canvas>
+                <Canvas Name="Canvas">
                 <!--<Canvas Background="White">-->
                     <!-- Grid background. A little overwhelming -->
                     <Canvas.Background>
