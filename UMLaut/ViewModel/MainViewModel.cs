@@ -25,6 +25,9 @@ namespace UMLaut.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
+        // Inital node max.
+        private bool maxInitialNodes = false;
+
         private bool _shapeMode, _lineMode;
         private EShape _toolboxShapeValue;
         private ELine _toolboxLineValue;
@@ -678,9 +681,18 @@ namespace UMLaut.ViewModel
                     Point point = source is Canvas ? e.GetPosition(source) : RelativeMousePosition(e);
                     var model = new UMLShape(point.X, point.Y, GetDefaultHeight(_toolboxShapeValue), GetDefaultWidth(_toolboxShapeValue), _toolboxShapeValue);
                     var shapeToAdd = new ShapeViewModel(model);
-                    Shapes.Add(shapeToAdd);
-                    IUndoRedoCommand cmd = new AddShapeCommand(shapeToAdd, this);
-                    undoRedo.InsertInUndoRedo(cmd);
+
+                    // If we already have a initial node on canvas, don't allow another one.
+                    if (shapeToAdd.Type == EShape.Initial && DoesShapesContainInitialNode())
+                    {
+                        System.Windows.MessageBox.Show("Canvas can only contain one initial node.");
+                    }
+                    else
+                    {
+                        Shapes.Add(shapeToAdd);
+                        IUndoRedoCommand cmd = new AddShapeCommand(shapeToAdd, this);
+                        undoRedo.InsertInUndoRedo(cmd);
+                    }
                 }
                 else if (SelectedElement != null)
                 {
@@ -933,6 +945,19 @@ namespace UMLaut.ViewModel
                 default:
                     return Constants.Drawables.Shapes.DefaultWidth;
             }
+        }
+
+        private Boolean DoesShapesContainInitialNode()
+        {
+            foreach (ShapeViewModel shape in Shapes)
+            {
+                if (shape.Type == EShape.Initial)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 
