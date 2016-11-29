@@ -19,24 +19,32 @@
             <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="X">
                 <Binding Path="From.X"/>
                 <Binding Path="From"/>
+                <Binding Path="From.Width"/>
+                <Binding Path="From.Height"/>
             </MultiBinding>
         </Line.X1>
         <Line.Y1>
             <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="Y">
                 <Binding Path="From.Y"/>
                 <Binding Path="From"/>
+                <Binding Path="From.Width"/>
+                <Binding Path="From.Height"/>
             </MultiBinding>
         </Line.Y1>
         <Line.X2>
             <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="X">
                 <Binding Path="To.X"/>
                 <Binding Path="To"/>
+                <Binding Path="To.Width"/>
+                <Binding Path="To.Height"/>
             </MultiBinding>
         </Line.X2>
         <Line.Y2>
             <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="Y">
                 <Binding Path="To.Y"/>
                 <Binding Path="To"/>
+                <Binding Path="To.Width"/>
+                <Binding Path="To.Height"/>
             </MultiBinding>
         </Line.Y2>
     </Line>

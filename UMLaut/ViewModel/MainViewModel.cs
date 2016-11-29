@@ -253,19 +253,30 @@ namespace UMLaut.ViewModel
                     serializer.SerializeToFile(_diagram);
                 }
             }
-           catch (Exception)
+           catch (Exception e)
             {
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
             }
         }
 
         private void PerformSaveFileAs(object obj)
         {
-            Serializer serializer = new Serializer();
-            if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
+            try
             {
-                serializer.SerializeToFile(_diagram);
+                Serializer serializer = new Serializer();
+                if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
+                {
+                    serializer.SerializeToFile(_diagram);
+                }
             }
+            catch (Exception e)
+            {
+                System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+                Console.WriteLine(e);
+            }
+
 
         }
 
