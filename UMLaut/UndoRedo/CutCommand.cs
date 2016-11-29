@@ -12,6 +12,7 @@ namespace UMLaut.UndoRedo
         public CutCommand(MainViewModel mainViewModel, ShapeViewModel selectedElement)
         {
             _mainViewModel = mainViewModel;
+            _selectedElement = selectedElement;
         }
 
         public void Execute()
@@ -24,8 +25,8 @@ namespace UMLaut.UndoRedo
         public void UnExecute()
         {
             // Redo
-            _mainViewModel.StoredElement = _mainViewModel.Shapes.Last();
-            _mainViewModel.Shapes.Remove(_mainViewModel.Shapes.Last());
+            _mainViewModel.StoredElement = _selectedElement;
+            _mainViewModel.Shapes.Remove(_selectedElement);
 
         }
     }
