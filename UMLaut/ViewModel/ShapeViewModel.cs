@@ -23,6 +23,12 @@ namespace UMLaut.ViewModel
 
 
         public UMLShape Shape { get; set; }
+
+        private ShapeViewModel()
+        {
+
+        }
+        
         public ShapeViewModel(UMLShape shape)
         {
             Shape = shape;

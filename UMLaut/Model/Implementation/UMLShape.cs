@@ -57,7 +57,7 @@ namespace UMLaut.Model
         /// <summary>
         /// Id of the shape
         /// </summary>
-        public Guid Id { get; } = new Guid();
+        public Guid Id { get { return _id; } }
         /// <summary>
         /// X position of the shape
         /// </summary>
