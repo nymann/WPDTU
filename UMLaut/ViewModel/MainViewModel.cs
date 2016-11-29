@@ -345,13 +345,13 @@ namespace UMLaut.ViewModel
         private void PerformPaste(object obj)
         {
             if (_storedElement == null) return;
-            //var temp = new ShapeViewModel(new UMLShape(_storedElement.X, _storedElement.Y, _storedElement.Height, _storedElement.Width, _storedElement.Shape.Type));
-            //Shapes.Add(temp);
-            //IUndoRedoCommand cmd = new PasteCommand(this, temp);
-            //undoRedo.InsertInUndoRedo(cmd);
-            Shapes.Add(StoredElement);
-            IUndoRedoCommand cmd = new PasteCommand(this, StoredElement);
+            var temp = new ShapeViewModel(new UMLShape(_storedElement.X, _storedElement.Y, _storedElement.Height, _storedElement.Width, _storedElement.Shape.Type));
+            Shapes.Add(temp);
+            IUndoRedoCommand cmd = new PasteCommand(this, temp);
             undoRedo.InsertInUndoRedo(cmd);
+            /*Shapes.Add(_storedElement);
+            IUndoRedoCommand cmd = new PasteCommand(this, _storedElement);
+            undoRedo.InsertInUndoRedo(cmd);*/
         }
 
         private void PerformCopy(object obj)

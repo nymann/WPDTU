@@ -25,7 +25,7 @@ namespace UMLaut.UndoRedo
         {
             // Redo
             _mainViewModel.Shapes.Add(_shape);
-            _mainViewModel.StoredElement = null;
+            //_mainViewModel.StoredElement = null;
         }
     }
 }
