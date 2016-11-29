@@ -24,6 +24,7 @@ namespace UMLaut
         public MainWindow()
         {
             InitializeComponent();
+            this.Title = "UMLaut";
         }
     }
 }
