@@ -98,24 +98,6 @@
             </slc:LineDataTemplateSelector.DashedLineTemplate>
         </slc:LineDataTemplateSelector>
 
-        <!--<DataTemplate DataType="{x:Type vm:ShapeViewModel}">
-            <ContentPresenter Content="{Binding}" ContentTemplateSelector="{StaticResource ShapeDataTemplateSelector}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDown" >
-                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMouseDown}"
-                                PassEventArgsToCommand="True" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseMove" >
-                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMove}"
-                                PassEventArgsToCommand="True" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseUp" >
-                        <cmd:EventToCommand Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.ShapeMouseUp}"
-                                PassEventArgsToCommand="True" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </ContentPresenter>
-        </DataTemplate>-->
         <DataTemplate DataType="{x:Type vm:ShapeViewModel}">
             <Thumb>
                 <i:Interaction.Triggers>
