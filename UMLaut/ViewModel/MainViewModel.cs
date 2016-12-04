@@ -20,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using UMLaut.UndoRedo;
 using System.Windows.Controls.Primitives;
+using System.Threading;
 
 namespace UMLaut.ViewModel
 {
@@ -302,23 +303,30 @@ namespace UMLaut.ViewModel
         {
             try
             {
-                Serializer serializer = new Serializer();
 
                 if (String.IsNullOrEmpty(_diagram.FilePath))
                 {
                     if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
                     {
                         UpdateDiagramFromApplicationCurrentState();
-                        serializer.SerializeToFile(_diagram);
+                        new Thread(() =>
+                        {
+                            Serializer serializer = new Serializer();
+                            serializer.SerializeToFile(_diagram);
+                        }).Start();
                     }
                 }
                 else
                 {
                     UpdateDiagramFromApplicationCurrentState();
-                    serializer.SerializeToFile(_diagram);
+                    new Thread(() =>
+                    {
+                        Serializer serializer = new Serializer();
+                        serializer.SerializeToFile(_diagram);
+                    }).Start();
                 }
             }
-           catch (Exception e)
+            catch (Exception e)
             {
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
                 Console.WriteLine(e.Message);
@@ -330,10 +338,13 @@ namespace UMLaut.ViewModel
         {
             try
             {
-                Serializer serializer = new Serializer();
                 if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
                 {
-                    serializer.SerializeToFile(_diagram);
+                    new Thread(() => 
+                    {
+                        Serializer serializer = new Serializer();
+                        serializer.SerializeToFile(_diagram);
+                    }).Start();
                 }
             }
             catch (Exception e)
@@ -341,8 +352,6 @@ namespace UMLaut.ViewModel
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
                 Console.WriteLine(e);
             }
-
-
         }
 
         private void PerformPaste(object obj)
