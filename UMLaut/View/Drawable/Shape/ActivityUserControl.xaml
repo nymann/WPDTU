@@ -14,11 +14,11 @@
         <!--<TextBlock Name="activityLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Label}"/>
         -->
         <Grid VerticalAlignment="Center">
-            <TextBlock Name="activityLabel" Text="{Binding Label}"  Background="#CDF4FF"
+            <TextBlock Name="activityLabel" Text="{Binding Label}"  Background="#CDF4FF" TextWrapping="Wrap"
             Visibility="{Binding IsEditing, Converter={StaticResource FalseToVisibleConverter}}"
             VerticalAlignment="Center" 
             HorizontalAlignment="Center" />
-            <TextBox Text="{Binding Label}"  Background="#CDF4FF"
+            <TextBox Text="{Binding Label}"  Background="#CDF4FF" AcceptsReturn="True" TextWrapping="Wrap"
             Visibility="{Binding IsEditing, Converter={StaticResource TrueToVisibleConverter}}"
             VerticalAlignment="Center" 
             HorizontalContentAlignment="Center" />

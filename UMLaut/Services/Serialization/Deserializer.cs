@@ -12,7 +12,12 @@ namespace UMLaut.Services
     class Deserializer
     {
 
-        public Diagram DeserializeFromFile(string path)
+        public Task<Diagram> AsyncDeserializeFromFile(string path)
+        {
+            return Task.Run(() => DeserializeFromFile(path));
+        }
+
+        private Diagram DeserializeFromFile(string path)
         {
             using (FileStream stream = File.OpenRead(path))
             {

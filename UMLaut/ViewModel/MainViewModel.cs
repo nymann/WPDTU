@@ -267,7 +267,7 @@ namespace UMLaut.ViewModel
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     var path = openFileDialog.FileName;
-                    _diagram = deserializer.DeserializeFromFile(path);
+                    _diagram = deserializer.AsyncDeserializeFromFile(path).Result;
                     ResetApplicationState();
                     UpdateApplicationStateFromDiagram();
                 }
@@ -309,13 +309,13 @@ namespace UMLaut.ViewModel
                     if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
                     {
                         UpdateDiagramFromApplicationCurrentState();
-                        serializer.SerializeToFile(_diagram);
+                        serializer.AsyncSerializeToFile(_diagram);
                     }
                 }
                 else
                 {
                     UpdateDiagramFromApplicationCurrentState();
-                    serializer.SerializeToFile(_diagram);
+                    serializer.AsyncSerializeToFile(_diagram);
                 }
             }
            catch (Exception e)
@@ -333,7 +333,7 @@ namespace UMLaut.ViewModel
                 Serializer serializer = new Serializer();
                 if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
                 {
-                    serializer.SerializeToFile(_diagram);
+                    serializer.AsyncSerializeToFile(_diagram);
                 }
             }
             catch (Exception e)

@@ -12,8 +12,12 @@ namespace UMLaut.Services
 {
     public class Serializer
     {
+        public async void AsyncSerializeToFile(Diagram diagram)
+        {
+            await Task.Run(() => SerializeToFile(diagram));
+        }
 
-        public void SerializeToFile(Diagram diagram)
+        private void SerializeToFile(Diagram diagram)
         {
             using (FileStream stream = File.Create(diagram.FilePath))
             {
