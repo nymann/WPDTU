@@ -1,4 +1,5 @@
-﻿using UMLaut.ViewModel;
+﻿using System.Linq;
+using UMLaut.ViewModel;
 
 namespace UMLaut.UndoRedo
 {
@@ -16,7 +17,7 @@ namespace UMLaut.UndoRedo
         public void Execute()
         {
             // undo
-            _mainViewModel.Shapes.Remove(_selectedElement);
+            _mainViewModel.Shapes.Remove(_mainViewModel.Shapes.Last());
         }
 
         public void UnExecute()
