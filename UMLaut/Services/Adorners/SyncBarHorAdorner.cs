@@ -77,8 +77,8 @@ namespace UMLaut.Services.Adorners
             topMiddle.Arrange(new Rect(ActualWidth / 2 - Constants.CornerBoxSize / 2, -Constants.CornerBoxSize, Constants.CornerBoxSize, Constants.CornerBoxSize));
             topLeft.Arrange(new Rect(ActualWidth * 1 / 4 - Constants.CornerBoxSize / 2, -Constants.CornerBoxSize, Constants.CornerBoxSize, Constants.CornerBoxSize));
             topRight.Arrange(new Rect(ActualWidth * 3 / 4 - Constants.CornerBoxSize / 2, -Constants.CornerBoxSize, Constants.CornerBoxSize, Constants.CornerBoxSize));
-            bottomLeft.Arrange(new Rect(ActualWidth / 2 - Constants.CornerBoxSize / 2, ActualHeight, Constants.CornerBoxSize, Constants.CornerBoxSize));
-            bottomMiddle.Arrange(new Rect(ActualWidth * 1 / 4 - Constants.CornerBoxSize / 2, ActualHeight, Constants.CornerBoxSize, Constants.CornerBoxSize));
+            bottomMiddle.Arrange(new Rect(ActualWidth / 2 - Constants.CornerBoxSize / 2, ActualHeight, Constants.CornerBoxSize, Constants.CornerBoxSize));
+            bottomLeft.Arrange(new Rect(ActualWidth * 1 / 4 - Constants.CornerBoxSize / 2, ActualHeight, Constants.CornerBoxSize, Constants.CornerBoxSize));
             bottomRight.Arrange(new Rect(ActualWidth * 3 / 4 - Constants.CornerBoxSize / 2, ActualHeight, Constants.CornerBoxSize, Constants.CornerBoxSize));
 
             // Return the final size.
