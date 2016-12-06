@@ -844,6 +844,15 @@ namespace UMLaut.ViewModel
 
         private void AddAdorner(UIElement element)
         {
+
+            var fElement = element as FrameworkElement;
+            SelectedElement = fElement.DataContext as ShapeViewModel;
+            if (SelectedElement.Type == EShape.SyncBarHor)
+            {
+                AdornerLayer.GetAdornerLayer(element).Add(new SyncBarHorAdorner(element));
+                return;
+            }
+
             //AdornerLayer.GetAdornerLayer(element).Add(new LineAdorner(element));
             AdornerLayer.GetAdornerLayer(element).Add(new BasicAdorner(element));
         }
