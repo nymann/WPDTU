@@ -37,6 +37,7 @@ namespace UMLaut.ViewModel
             }
         }
 
+
         public ShapeViewModel To
         {
             get
@@ -58,6 +59,50 @@ namespace UMLaut.ViewModel
             set
             {
                 Line.Label = value;
+                OnPropertyChanged();
+            }
+
+
+        }
+
+        private double _fromOffsetX, _fromOffsetY, _toOffsetX, _toOffsetY;
+
+        public double FromOffsetX
+        {
+            get { return _fromOffsetX; }
+            set
+            {
+                _fromOffsetX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double FromOffsetY
+        {
+            get { return _fromOffsetY; }
+            set
+            {
+                _fromOffsetY = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double ToOffsetX
+        {
+            get { return _toOffsetX; }
+            set
+            {
+                _toOffsetX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double ToOffsetY
+        {
+            get { return _toOffsetY; }
+            set
+            {
+                _toOffsetY = value;
                 OnPropertyChanged();
             }
         }

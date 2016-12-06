@@ -626,6 +626,8 @@ namespace UMLaut.ViewModel
                 if (_tempLine != null)
                 {
                     _tempLine.To = shape;
+                    _tempLine.ToOffsetX = shape.OffsetX;
+                    _tempLine.ToOffsetY = shape.OffsetY;
                     Lines.Add(_tempLine);
                     IUndoRedoCommand cmd = new AddLineCommand(_tempLine, this);
                     undoRedo.InsertInUndoRedo(cmd);
@@ -634,6 +636,8 @@ namespace UMLaut.ViewModel
                 else
                 {
                     _tempLine = new LineViewModel(new UMLLine(shape, null, _toolboxLineValue));
+                    _tempLine.FromOffsetX = shape.OffsetX;
+                    _tempLine.FromOffsetY = shape.OffsetY;
                 }
                 // Skip the event call ladder.
                 e.Handled = true;
