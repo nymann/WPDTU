@@ -851,6 +851,10 @@ namespace UMLaut.ViewModel
             {
                 AdornerLayer.GetAdornerLayer(element).Add(new SyncBarHorAdorner(element));
                 return;
+            } else if (SelectedElement.Type == EShape.Merge)
+            {
+                AdornerLayer.GetAdornerLayer(element).Add(new MergeAdorner(element));
+                return;
             }
 
             //AdornerLayer.GetAdornerLayer(element).Add(new LineAdorner(element));
@@ -864,6 +868,7 @@ namespace UMLaut.ViewModel
                 Adorner[] adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
                 foreach(Adorner adorner in adorners)
                 {
+                    
                     AdornerLayer.GetAdornerLayer(element).Remove(adorner);
                 }
             } 

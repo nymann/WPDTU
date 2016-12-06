@@ -11,12 +11,34 @@ namespace UMLaut.ViewModel
     public class ShapeViewModel : BaseViewModel
     {
         private bool _isEditing = false;
+        private double _offsetX;
+        private double _offsetY;
         public bool IsEditing
         {
             get { return _isEditing; }
             set
             {
                 _isEditing = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double OffsetX
+        {
+            get { return _offsetX; }
+            set
+            {
+                _offsetX = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double OffsetY
+        {
+            get { return _offsetY; }
+            set
+            {
+                _offsetY = value;
                 OnPropertyChanged();
             }
         }

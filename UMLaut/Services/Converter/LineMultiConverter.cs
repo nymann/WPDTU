@@ -25,7 +25,7 @@ namespace UMLaut.Services.Converter
             var dir = parameter as string;
             var shape = values[1] as ShapeViewModel;
 
-            return dir.Equals("X") ? shape.X + shape.Width / 2 : shape.Y + shape.Height / 2;
+            return dir.Equals("X") ? shape.X + shape.OffsetX + shape.Width / 2 : shape.Y + shape.OffsetY + shape.Height / 2;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
