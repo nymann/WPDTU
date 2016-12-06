@@ -87,6 +87,8 @@
     <Compile Include="Model\Implementation\UMLShape.cs" />
     <Compile Include="Resources\Constants.cs" />
     <Compile Include="Services\Adorners\BasicAdorner.cs" />
+    <Compile Include="Services\Adorners\MergeAdorner.cs" />
+    <Compile Include="Services\Adorners\SyncBarHorAdorner.cs" />
     <Compile Include="Services\Adorners\LineAdorner.cs" />
     <Compile Include="Services\Converter\FirstDegreeFunctionConverter.cs" />
     <Compile Include="Services\Converter\LineMultiConverter.cs" />

@@ -27,10 +27,10 @@ namespace UMLaut.Services.Adorners
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            drawingContext.DrawRectangle(Constants.CornerBoxColor, null, new Rect(0, 0, Constants.CornerBoxSize, Constants.CornerBoxSize));
-            drawingContext.DrawRectangle(Constants.CornerBoxColor, null, new Rect(0, ActualHeight - Constants.CornerBoxSize, Constants.CornerBoxSize, Constants.CornerBoxSize));
-            drawingContext.DrawRectangle(Constants.CornerBoxColor, null, new Rect(ActualWidth - Constants.CornerBoxSize, 0, Constants.CornerBoxSize, Constants.CornerBoxSize));
-            drawingContext.DrawRectangle(Constants.CornerBoxColor, null, new Rect(ActualWidth - Constants.CornerBoxSize, ActualHeight - Constants.CornerBoxSize, Constants.CornerBoxSize, Constants.CornerBoxSize));
+            drawingContext.DrawRectangle(Constants.CornerBoxColor, null, new Rect(ActualWidth, ActualHeight/2 - Constants.CornerBoxSize / 2, Constants.CornerBoxSize, Constants.CornerBoxSize));
+            drawingContext.DrawRectangle(Constants.CornerBoxColor, null, new Rect(-Constants.CornerBoxSize, ActualHeight/2 - Constants.CornerBoxSize/2, Constants.CornerBoxSize, Constants.CornerBoxSize));
+            drawingContext.DrawRectangle(Constants.CornerBoxColor, null, new Rect(ActualWidth/2 - Constants.CornerBoxSize/2, -Constants.CornerBoxSize, Constants.CornerBoxSize, Constants.CornerBoxSize));
+            drawingContext.DrawRectangle(Constants.CornerBoxColor, null, new Rect(ActualWidth/2 - Constants.CornerBoxSize/2, ActualHeight , Constants.CornerBoxSize, Constants.CornerBoxSize));
         }
 
     }

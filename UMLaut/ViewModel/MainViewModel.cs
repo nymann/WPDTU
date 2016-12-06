@@ -626,6 +626,8 @@ namespace UMLaut.ViewModel
                 if (_tempLine != null)
                 {
                     _tempLine.To = shape;
+                    _tempLine.ToOffsetX = shape.OffsetX;
+                    _tempLine.ToOffsetY = shape.OffsetY;
                     Lines.Add(_tempLine);
                     IUndoRedoCommand cmd = new AddLineCommand(_tempLine, this);
                     undoRedo.InsertInUndoRedo(cmd);
@@ -634,6 +636,8 @@ namespace UMLaut.ViewModel
                 else
                 {
                     _tempLine = new LineViewModel(new UMLLine(shape, null, _toolboxLineValue));
+                    _tempLine.FromOffsetX = shape.OffsetX;
+                    _tempLine.FromOffsetY = shape.OffsetY;
                 }
                 // Skip the event call ladder.
                 e.Handled = true;
@@ -844,6 +848,19 @@ namespace UMLaut.ViewModel
 
         private void AddAdorner(UIElement element)
         {
+
+            var fElement = element as FrameworkElement;
+            SelectedElement = fElement.DataContext as ShapeViewModel;
+            if (SelectedElement.Type == EShape.SyncBarHor)
+            {
+                AdornerLayer.GetAdornerLayer(element).Add(new SyncBarHorAdorner(element));
+                return;
+            } else if (SelectedElement.Type == EShape.Merge)
+            {
+                AdornerLayer.GetAdornerLayer(element).Add(new MergeAdorner(element));
+                return;
+            }
+
             //AdornerLayer.GetAdornerLayer(element).Add(new LineAdorner(element));
             AdornerLayer.GetAdornerLayer(element).Add(new BasicAdorner(element));
         }
@@ -855,6 +872,7 @@ namespace UMLaut.ViewModel
                 Adorner[] adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
                 foreach(Adorner adorner in adorners)
                 {
+                    
                     AdornerLayer.GetAdornerLayer(element).Remove(adorner);
                 }
             } 

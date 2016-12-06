@@ -10,7 +10,7 @@ namespace UMLaut.Resources
     public static class Constants
     {
         public static int DuplicateOffset => 30;
-        public static int CornerBoxSize => 7;
+        public static int CornerBoxSize => 10;
         public static SolidColorBrush CornerBoxColor => Brushes.DarkCyan;
 
         public static class Messages
@@ -52,8 +52,8 @@ namespace UMLaut.Resources
                 }
                 public static class Merge
                 {
-                    public static int DefaultHeight => 75;
-                    public static int DefaultWidth => 75;
+                    public static int DefaultHeight => 50;
+                    public static int DefaultWidth => 50;
                 }
                 public static class Fork
                 {
