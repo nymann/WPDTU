@@ -625,7 +625,8 @@ namespace UMLaut.ViewModel
                 // End point
                 if (_tempLine != null)
                 {
-                    _tempLine.To = shape;
+                    _tempLine.To = shape.Id;
+                    _tempLine.ToShape = shape;
                     _tempLine.ToOffsetX = shape.OffsetX;
                     _tempLine.ToOffsetY = shape.OffsetY;
                     Lines.Add(_tempLine);
@@ -635,7 +636,8 @@ namespace UMLaut.ViewModel
                 }
                 else
                 {
-                    _tempLine = new LineViewModel(new UMLLine(shape, null, _toolboxLineValue));
+                    _tempLine = new LineViewModel(new UMLLine(shape.Id, _toolboxLineValue));
+                    _tempLine.FromShape = shape;
                     _tempLine.FromOffsetX = shape.OffsetX;
                     _tempLine.FromOffsetY = shape.OffsetY;
                 }

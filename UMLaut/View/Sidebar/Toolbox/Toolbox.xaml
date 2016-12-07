@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UMLaut.View.Sidebar.Toolbox"
-             xmlns:enum="clr-namespace:UMLaut.Model.Enum"
+             xmlns:enum="clr-namespace:UMLaut.Model.Enum;assembly=UMLaut.Model"
 
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="250">

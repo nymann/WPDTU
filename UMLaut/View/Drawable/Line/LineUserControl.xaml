@@ -17,32 +17,32 @@
         <!-- Hackish solution to provide binding from shape to line in order to update the line position when shape changes. -->
         <Line.X1>
             <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="X">
-                <Binding Path="From.X"/>
-                <Binding Path="From"/>
+                <Binding Path="FromShape.X"/>
+                <Binding Path="FromShape"/>
                 <Binding Path="FromOffsetX"/>
                 <Binding Path="FromOffsetY"/>
             </MultiBinding>
         </Line.X1>
         <Line.Y1>
             <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="Y">
-                <Binding Path="From.Y"/>
-                <Binding Path="From"/>
+                <Binding Path="FromShape.Y"/>
+                <Binding Path="FromShape"/>
                 <Binding Path="FromOffsetX"/>
                 <Binding Path="FromOffsetY"/>
             </MultiBinding>
         </Line.Y1>
         <Line.X2>
             <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="X">
-                <Binding Path="To.X"/>
-                <Binding Path="To"/>
+                <Binding Path="ToShape.X"/>
+                <Binding Path="ToShape"/>
                 <Binding Path="ToOffsetX"/>
                 <Binding Path="ToOffsetY"/>
             </MultiBinding>
         </Line.X2>
         <Line.Y2>
             <MultiBinding Converter="{StaticResource LineMultiConverter}" ConverterParameter="Y">
-                <Binding Path="To.Y"/>
-                <Binding Path="To"/>
+                <Binding Path="ToShape.Y"/>
+                <Binding Path="ToShape"/>
                 <Binding Path="ToOffsetX"/>
                 <Binding Path="ToOffsetY"/>
             </MultiBinding>
