@@ -347,7 +347,7 @@ namespace UMLaut.ViewModel
 
         private void PerformPaste(object obj)
         {
-            if (_storedElement == null) return;
+            if (_storedElement == null || (_storedElement.Type == EShape.Initial && DoesShapesContainInitialNode())) return;
             var temp = new ShapeViewModel(new UMLShape(_storedElement.X, _storedElement.Y, _storedElement.Height, _storedElement.Width, _storedElement.Shape.Type));
             Shapes.Add(temp);
             IUndoRedoCommand cmd = new PasteCommand(this, temp);
@@ -393,7 +393,7 @@ namespace UMLaut.ViewModel
 
         private void PerformDuplicateShape(object obj)
         {
-            if (SelectedElement == null) return;
+            if (SelectedElement == null || SelectedElement.Type == EShape.Initial) return;
 
             var duplicateModel = new UMLShape(SelectedElement.Shape.X, SelectedElement.Shape.Y, SelectedElement.Shape.Height, SelectedElement.Shape.Width, SelectedElement.Shape.Type);
             var duplicate = new ShapeViewModel(duplicateModel);
