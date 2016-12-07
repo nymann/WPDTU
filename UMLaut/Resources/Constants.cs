@@ -12,6 +12,7 @@ namespace UMLaut.Resources
         public static int DuplicateOffset => 30;
         public static int CornerBoxSize => 10;
         public static SolidColorBrush CornerBoxColor => Brushes.DarkCyan;
+        public static SolidColorBrush CornerBoxColorFocus => Brushes.Cyan;
 
         public static class Messages
         {

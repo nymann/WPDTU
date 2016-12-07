@@ -864,7 +864,10 @@ namespace UMLaut.ViewModel
             }
 
             //AdornerLayer.GetAdornerLayer(element).Add(new LineAdorner(element));
-            AdornerLayer.GetAdornerLayer(element).Add(new BasicAdorner(element));
+
+
+            //AdornerLayer.GetAdornerLayer(element).Add(new BasicAdorner(element));
+            AdornerLayer.GetAdornerLayer(element).Add(new MergeAdorner(element)); // temporary, until basic adorner has been expanded
         }
 
         private void RemoveAdorner(UIElement element)

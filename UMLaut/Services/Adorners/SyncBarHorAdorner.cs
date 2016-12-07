@@ -34,40 +34,70 @@ namespace UMLaut.Services.Adorners
             BuildConnectionPoint(ref bottomRight);
 
             // eventhandlers
-            topLeft.MouseRightButtonDown += new MouseButtonEventHandler(HandleLeft);
-            topMiddle.MouseRightButtonDown += new MouseButtonEventHandler(HandleMiddle);
-            topRight.MouseRightButtonDown += new MouseButtonEventHandler(HandleRight);
+            topLeft.MouseRightButtonDown += new MouseButtonEventHandler(HandleTopLeft);
+            topMiddle.MouseRightButtonDown += new MouseButtonEventHandler(HandleTopMiddle);
+            topRight.MouseRightButtonDown += new MouseButtonEventHandler(HandleTopRight);
 
-            bottomLeft.MouseRightButtonDown += new MouseButtonEventHandler(HandleLeft);
-            bottomMiddle.MouseRightButtonDown += new MouseButtonEventHandler(HandleMiddle);
-            bottomRight.MouseRightButtonDown += new MouseButtonEventHandler(HandleRight);
+            bottomLeft.MouseRightButtonDown += new MouseButtonEventHandler(HandleBottomLeft);
+            bottomMiddle.MouseRightButtonDown += new MouseButtonEventHandler(HandleBottomMiddle);
+            bottomRight.MouseRightButtonDown += new MouseButtonEventHandler(HandleBottomRight);
 
 
         }
-     
-        void HandleLeft(object sender, MouseButtonEventArgs args)
+
+        void HandleTopLeft(object sender, MouseButtonEventArgs args)
         {
             var ele = AdornedElement as FrameworkElement;
             ShapeViewModel shape = ele.DataContext as ShapeViewModel;
             shape.OffsetX = -shape.Width / 4;
-            shape.OffsetY = 0;
+            shape.OffsetY = -shape.Height / 2;
 
+            SetFocus(ref topLeft);
         }
-        void HandleMiddle(object sender, MouseButtonEventArgs args)
+        void HandleTopMiddle(object sender, MouseButtonEventArgs args)
         {
             var ele = AdornedElement as FrameworkElement;
             ShapeViewModel shape = ele.DataContext as ShapeViewModel;
             shape.OffsetX = 0;
-            shape.OffsetY = 0;
+            shape.OffsetY = -shape.Height / 2;
 
+            SetFocus(ref topMiddle);
         }
-        void HandleRight(object sender, MouseButtonEventArgs args)
+        void HandleTopRight(object sender, MouseButtonEventArgs args)
         {
             var ele = AdornedElement as FrameworkElement;
             ShapeViewModel shape = ele.DataContext as ShapeViewModel;
             shape.OffsetX = shape.Width / 4;
-            shape.OffsetY = 0;
+            shape.OffsetY = -shape.Height / 2;
 
+            SetFocus(ref topRight);
+        }
+        void HandleBottomLeft(object sender, MouseButtonEventArgs args)
+        {
+            var ele = AdornedElement as FrameworkElement;
+            ShapeViewModel shape = ele.DataContext as ShapeViewModel;
+            shape.OffsetX = -shape.Width / 4;
+            shape.OffsetY = shape.Height / 2;
+
+            SetFocus(ref bottomLeft);
+        }
+        void HandleBottomMiddle(object sender, MouseButtonEventArgs args)
+        {
+            var ele = AdornedElement as FrameworkElement;
+            ShapeViewModel shape = ele.DataContext as ShapeViewModel;
+            shape.OffsetX = 0;
+            shape.OffsetY = shape.Height / 2;
+
+            SetFocus(ref bottomMiddle);
+        }
+        void HandleBottomRight(object sender, MouseButtonEventArgs args)
+        {
+            var ele = AdornedElement as FrameworkElement;
+            ShapeViewModel shape = ele.DataContext as ShapeViewModel;
+            shape.OffsetX = shape.Width / 4;
+            shape.OffsetY = shape.Height / 2;
+
+            SetFocus(ref bottomRight);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -83,6 +113,17 @@ namespace UMLaut.Services.Adorners
 
             // Return the final size.
             return finalSize;
+        }
+        void SetFocus(ref Thumb focus)
+        {
+            topRight.Background = Constants.CornerBoxColor;
+            topLeft.Background = Constants.CornerBoxColor;
+            topMiddle.Background = Constants.CornerBoxColor;
+            bottomLeft.Background = Constants.CornerBoxColor;
+            bottomRight.Background = Constants.CornerBoxColor;
+            bottomMiddle.Background = Constants.CornerBoxColor;
+
+            focus.Background = Constants.CornerBoxColorFocus;
         }
 
         void BuildConnectionPoint(ref Thumb point)
