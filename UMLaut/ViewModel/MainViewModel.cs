@@ -41,13 +41,24 @@ namespace UMLaut.ViewModel
 
         private LineViewModel _tempLine;
 
-        private ShapeViewModel _selectedElement;
-        public ShapeViewModel SelectedElement
+        private List<ShapeViewModel> _selectedElement = new List<ShapeViewModel>();
+        private List<UIElement> _selectedUIElement = new List<UIElement>();
+
+        public List<ShapeViewModel> SelectedElement
         {
             get { return _selectedElement; }
             set
             {
                 _selectedElement = value;
+                OnPropertyChanged();
+            }
+        }
+        public List<UIElement> SelectedUIElement
+        {
+            get { return _selectedUIElement; }
+            set
+            {
+                _selectedUIElement = value;
                 OnPropertyChanged();
             }
         }
@@ -145,7 +156,6 @@ namespace UMLaut.ViewModel
                 OnPropertyChanged();
             }
         }
-        private UIElement SelectedUIElement { get; set; }
 
         private UndoRedo.UndoRedo undoRedo;
 
@@ -360,15 +370,15 @@ namespace UMLaut.ViewModel
         private void PerformCopy(object obj)
         {
             if (_selectedElement == null) return;
-            _storedElement = _selectedElement;
+            _storedElement = _selectedElement[_selectedElement.Count -1];
         }
 
         private void PerformCut(object obj)
         {
             Console.Write("PerformCut requested.");
             if (_selectedElement == null) return;
-            _storedElement = _selectedElement;
-            Shapes.Remove(_selectedElement);
+            _storedElement = _selectedElement[_selectedElement.Count - 1];
+            Shapes.Remove(_selectedElement[_selectedElement.Count - 1]);
             SelectedElement = null;
             IUndoRedoCommand cmd = new CutCommand(this, _storedElement);
             undoRedo.InsertInUndoRedo(cmd);
@@ -393,9 +403,9 @@ namespace UMLaut.ViewModel
 
         private void PerformDuplicateShape(object obj)
         {
-            if (SelectedElement == null || SelectedElement.Type == EShape.Initial) return;
+            if (SelectedElement == null || SelectedElement[SelectedElement.Count - 1].Type == EShape.Initial) return;
 
-            var duplicateModel = new UMLShape(SelectedElement.Shape.X, SelectedElement.Shape.Y, SelectedElement.Shape.Height, SelectedElement.Shape.Width, SelectedElement.Shape.Type);
+            var duplicateModel = new UMLShape(SelectedElement[SelectedElement.Count - 1].Shape.X, SelectedElement[SelectedElement.Count - 1].Shape.Y, SelectedElement[SelectedElement.Count - 1].Shape.Height, SelectedElement[SelectedElement.Count - 1].Shape.Width, SelectedElement[SelectedElement.Count - 1].Shape.Type);
             var duplicate = new ShapeViewModel(duplicateModel);
             Shapes.Add(duplicate);
 
@@ -406,8 +416,8 @@ namespace UMLaut.ViewModel
         private void PerformDeleteShape(object obj)
         {
             if (Shapes.Count <= 0 || _selectedElement == null) return;
-            IUndoRedoCommand cmd = new DeleteCommand(_selectedElement, this);
-            Shapes.Remove(_selectedElement);
+            IUndoRedoCommand cmd = new DeleteCommand(SelectedElement[SelectedElement.Count - 1], this);
+            Shapes.Remove(SelectedElement[SelectedElement.Count - 1]);
             undoRedo.InsertInUndoRedo(cmd);
         }
 
@@ -415,7 +425,7 @@ namespace UMLaut.ViewModel
         {
             if (SelectedElement != null)
             {
-                SelectedElement.IsEditing = !SelectedElement.IsEditing;
+                SelectedElement[SelectedElement.Count - 1].IsEditing = !SelectedElement[SelectedElement.Count - 1].IsEditing;
             }
         }
         private void PerformExportDiagram(object parameter)
@@ -602,7 +612,7 @@ namespace UMLaut.ViewModel
                     ShapeViewModel shape = element.DataContext as ShapeViewModel;
                     _undoEndPositon = new Point(shape.X, shape.Y);
 
-                    IUndoRedoCommand cmd = new MoveShapeCommand(SelectedElement, _undoStartPosition, _undoEndPositon);
+                    IUndoRedoCommand cmd = new MoveShapeCommand(SelectedElement[SelectedElement.Count - 1], _undoStartPosition, _undoEndPositon);
 
                     undoRedo.InsertInUndoRedo(cmd);
                 }
@@ -650,7 +660,7 @@ namespace UMLaut.ViewModel
                 // Deselect previous
                 if (SelectedElement != null)
                 {
-                    ClearSelection();
+                    //ClearSelection();
                 }
                 // Select new
                 DoSelection(source);
@@ -667,7 +677,7 @@ namespace UMLaut.ViewModel
             // Should never be the case because click is called before..
             if (SelectedElement != null)
             {
-                SelectedElement.IsEditing = true;
+                SelectedElement[SelectedElement.Count - 1].IsEditing = true;
             }
             e.Handled = true;
         }
@@ -718,8 +728,8 @@ namespace UMLaut.ViewModel
             if (fElement != null)
             {
                 // Save a reference to the adorned UIElement for removing later
-                SelectedUIElement = source;
-                SelectedElement = fElement.DataContext as ShapeViewModel;
+                SelectedUIElement.Add(source);
+                SelectedElement.Add(fElement.DataContext as ShapeViewModel);
                 AddAdorner(source);
                 setRibbonSelection(true);
                
@@ -735,10 +745,14 @@ namespace UMLaut.ViewModel
         private void ClearSelection()
         {
             RemoveAdorner(SelectedUIElement);
-            SelectedElement.IsEditing = false;
-  
-            SelectedUIElement = null;
-            SelectedElement = null;
+            foreach (var element in SelectedElement)
+            {
+                element.IsEditing = false;
+
+            }
+
+            SelectedUIElement = new List<UIElement>();
+            SelectedElement = new List<ShapeViewModel>();
             setRibbonSelection(false);
         }
 
@@ -834,7 +848,7 @@ namespace UMLaut.ViewModel
         private void SelectElement(IInputElement target, UIElement element)
         {
             var shapeVisualElement = (FrameworkElement)target;
-            SelectedElement = shapeVisualElement.DataContext as ShapeViewModel;
+            SelectedElement.Add(shapeVisualElement.DataContext as ShapeViewModel);
             AddAdorner(element);
         }
 
@@ -852,12 +866,12 @@ namespace UMLaut.ViewModel
         {
 
             var fElement = element as FrameworkElement;
-            SelectedElement = fElement.DataContext as ShapeViewModel;
-            if (SelectedElement.Type == EShape.SyncBarHor)
+            SelectedElement.Add(fElement.DataContext as ShapeViewModel);
+            if (SelectedElement[SelectedElement.Count-1].Type == EShape.SyncBarHor)
             {
                 AdornerLayer.GetAdornerLayer(element).Add(new SyncBarHorAdorner(element));
                 return;
-            } else if (SelectedElement.Type == EShape.Merge)
+            } else if (SelectedElement[SelectedElement.Count - 1].Type == EShape.Merge)
             {
                 AdornerLayer.GetAdornerLayer(element).Add(new MergeAdorner(element));
                 return;
@@ -870,24 +884,29 @@ namespace UMLaut.ViewModel
             AdornerLayer.GetAdornerLayer(element).Add(new MergeAdorner(element)); // temporary, until basic adorner has been expanded
         }
 
-        private void RemoveAdorner(UIElement element)
+        private void RemoveAdorner(List<UIElement> elements)
         {
-            try
-            {
-                Adorner[] adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
-                foreach(Adorner adorner in adorners)
-                {
-                    
-                    AdornerLayer.GetAdornerLayer(element).Remove(adorner);
-                }
-            } 
-            catch(Exception ex)
+            foreach (UIElement element in elements)
             {
 
-                // This isn't a code breaking exception, this would fx happen, if user add some shapes, select one -> delete, and then try to select a new one.
-                // Suggested solution is to print the error to the console instead of showing a messagebox.
-                //System.Windows.MessageBox.Show(Constants.Messages.GenericError);
-                Console.WriteLine(ex.Message);
+
+                try
+                {
+                    Adorner[] adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
+                    foreach (Adorner adorner in adorners)
+                    {
+
+                        AdornerLayer.GetAdornerLayer(element).Remove(adorner);
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    // This isn't a code breaking exception, this would fx happen, if user add some shapes, select one -> delete, and then try to select a new one.
+                    // Suggested solution is to print the error to the console instead of showing a messagebox.
+                    //System.Windows.MessageBox.Show(Constants.Messages.GenericError);
+                    Console.WriteLine(ex.Message);
+                }
             }
 
         }
