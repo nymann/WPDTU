@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using UMLaut.Model.Enum;
 using UMLaut.Model.Interface;
-using UMLaut.ViewModel;
 
 namespace UMLaut.Model.Implementation
 {
@@ -15,11 +14,17 @@ namespace UMLaut.Model.Implementation
         {
 
         }
-        public UMLLine(ShapeViewModel From, ShapeViewModel To)
+        public UMLLine(Guid From, Guid To)
         {
             Type = ELine.Solid;
             this.From = From;
             this.To = To;
+        }
+
+        public UMLLine(Guid From, ELine type)
+        {
+            this.Type = Type;
+            this.From = From;
         }
 
         /// <summary>
@@ -28,7 +33,7 @@ namespace UMLaut.Model.Implementation
         /// <param name="FromId"></param>
         /// <param name="ToId"></param>
         /// <param name="Type"></param>
-        public UMLLine(ShapeViewModel From, ShapeViewModel To, ELine Type)
+        public UMLLine(Guid From, Guid To, ELine Type)
         {
             this.Type = Type;
             this.From = From;
@@ -37,11 +42,11 @@ namespace UMLaut.Model.Implementation
         /// <summary>
         /// Id of the starting shape
         /// </summary>
-        public ShapeViewModel From { get; set; }
+        public Guid From { get; set; }
         /// <summary>
         /// Id of the end shape
         /// </summary>
-        public ShapeViewModel To { get; set; }
+        public Guid To { get; set; }
         /// <summary>
         /// Label of the line
         /// </summary>

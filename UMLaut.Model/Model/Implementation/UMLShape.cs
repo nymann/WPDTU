@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using UMLaut.Model.Enum;
-using UMLaut.Resources;
 
 namespace UMLaut.Model
 {
@@ -29,8 +28,8 @@ namespace UMLaut.Model
         public UMLShape(double X, double Y, EShape Type)
         {
             _id = Guid.NewGuid();
-            _height = Constants.Drawables.Shapes.DefaultHeight;
-            _width = Constants.Drawables.Shapes.DefaultWidth;
+            _height = 50;
+            _width = 50;
             _x = X -  _width/ 2;
             _y = Y - _height / 2;
             _type = Type;

@@ -78,13 +78,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\Enum\ELine.cs" />
-    <Compile Include="Model\Enum\EShape.cs" />
-    <Compile Include="Model\Implementation\Diagram.cs" />
-    <Compile Include="Model\Implementation\UMLLine.cs" />
-    <Compile Include="Model\Interface\ILine.cs" />
-    <Compile Include="Model\Interface\IShape.cs" />
-    <Compile Include="Model\Implementation\UMLShape.cs" />
     <Compile Include="Resources\Constants.cs" />
     <Compile Include="Services\Adorners\BasicAdorner.cs" />
     <Compile Include="Services\Adorners\MergeAdorner.cs" />
@@ -386,6 +379,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Images\export-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UMLaut.Model\UMLaut.Model.csproj">
+      <Project>{adf108b3-1754-4ab9-bbd8-5bffe82299c8}</Project>
+      <Name>UMLaut.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
