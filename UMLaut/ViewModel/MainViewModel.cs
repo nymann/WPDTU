@@ -375,7 +375,6 @@ namespace UMLaut.ViewModel
 
         private void PerformCut(object obj)
         {
-            Console.Write("PerformCut requested.");
             if (_selectedElement == null) return;
             _storedElement = _selectedElement[_selectedElement.Count - 1];
             Shapes.Remove(_selectedElement[_selectedElement.Count - 1]);
