@@ -21,7 +21,7 @@ namespace UMLaut.Model.Implementation
             this.To = To;
         }
 
-        public UMLLine(Guid From, ELine type)
+        public UMLLine(Guid From, ELine Type)
         {
             this.Type = Type;
             this.From = From;
