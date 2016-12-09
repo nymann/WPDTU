@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -11,10 +12,10 @@ namespace UMLaut.UndoRedo
 {
     public class DeleteCommand : IUndoRedoCommand
     {
-        private ShapeViewModel _selectedElement;
+        private List<ShapeViewModel> _selectedElement = new List<ShapeViewModel>();
         private MainViewModel _mainViewModel;
 
-        public DeleteCommand(ShapeViewModel selectedElement, MainViewModel mainViewModel)
+        public DeleteCommand(List<ShapeViewModel> selectedElement, MainViewModel mainViewModel)
         {
             _selectedElement = selectedElement;
             _mainViewModel = mainViewModel;
@@ -22,16 +23,18 @@ namespace UMLaut.UndoRedo
 
         public void Execute()
         {
-            Console.WriteLine(@"Undoing.");
-            //Console.WriteLine("\nShapes.Count == {0}", _mainViewModel.Shapes.Count);
-            _mainViewModel.Shapes.Add(_selectedElement);
-            //Console.WriteLine("Shapes.Count == {0}\n", _mainViewModel.Shapes.Count);
+            foreach (var shape in _selectedElement)
+            {
+                _mainViewModel.Shapes.Add(shape);
+            }
         }
 
         public void UnExecute()
         {
-            Console.WriteLine(@"Redoing.");
-            _mainViewModel.Shapes.Remove(_selectedElement);
+            foreach (var shape in _selectedElement)
+            {
+                _mainViewModel.Shapes.Remove(shape);
+            }
         }
     }
 }

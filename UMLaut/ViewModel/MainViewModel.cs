@@ -63,8 +63,8 @@ namespace UMLaut.ViewModel
             }
         }
 
-        private ShapeViewModel _storedElement;
-        public ShapeViewModel StoredElement
+        private List<ShapeViewModel> _storedElement = new List<ShapeViewModel>();
+        public List<ShapeViewModel> StoredElement
         {
             get { return _storedElement; }
             set
@@ -357,10 +357,17 @@ namespace UMLaut.ViewModel
 
         private void PerformPaste(object obj)
         {
-            if (_storedElement == null || (_storedElement.Type == EShape.Initial && DoesShapesContainInitialNode())) return;
-            var temp = new ShapeViewModel(new UMLShape(_storedElement.X, _storedElement.Y, _storedElement.Height, _storedElement.Width, _storedElement.Shape.Type));
-            Shapes.Add(temp);
-            IUndoRedoCommand cmd = new PasteCommand(this, temp);
+            List<ShapeViewModel> temps = new List<ShapeViewModel>();
+
+            if (_storedElement.Count == 0 ) return;
+            foreach (var shape in StoredElement)
+            {
+                if (shape.Type == EShape.Initial && DoesShapesContainInitialNode()) return;
+
+                var temp = new ShapeViewModel(new UMLShape(shape.X, shape.Y, shape.Height, shape.Width, shape.Shape.Type));
+                Shapes.Add(temp);
+            }
+            IUndoRedoCommand cmd = new PasteCommand(this, temps);
             undoRedo.InsertInUndoRedo(cmd);
             /*Shapes.Add(_storedElement);
             IUndoRedoCommand cmd = new PasteCommand(this, _storedElement);
@@ -369,16 +376,19 @@ namespace UMLaut.ViewModel
 
         private void PerformCopy(object obj)
         {
-            if (_selectedElement == null) return;
-            _storedElement = _selectedElement[_selectedElement.Count -1];
+            if (SelectedElement.Count == 0) return;
+            StoredElement = SelectedElement;
         }
 
         private void PerformCut(object obj)
         {
             if (_selectedElement == null) return;
-            _storedElement = _selectedElement[_selectedElement.Count - 1];
-            Shapes.Remove(_selectedElement[_selectedElement.Count - 1]);
-            SelectedElement = null;
+            StoredElement = SelectedElement;
+            foreach (var shape in SelectedElement)
+            {
+                Shapes.Remove(shape);
+            }
+            SelectedElement = new List<ShapeViewModel>();
             IUndoRedoCommand cmd = new CutCommand(this, _storedElement);
             undoRedo.InsertInUndoRedo(cmd);
         }
@@ -402,21 +412,33 @@ namespace UMLaut.ViewModel
 
         private void PerformDuplicateShape(object obj)
         {
-            if (SelectedElement == null || SelectedElement[SelectedElement.Count - 1].Type == EShape.Initial) return;
+            if (SelectedElement.Count == 0 ) return;
 
-            var duplicateModel = new UMLShape(SelectedElement[SelectedElement.Count - 1].Shape.X, SelectedElement[SelectedElement.Count - 1].Shape.Y, SelectedElement[SelectedElement.Count - 1].Shape.Height, SelectedElement[SelectedElement.Count - 1].Shape.Width, SelectedElement[SelectedElement.Count - 1].Shape.Type);
-            var duplicate = new ShapeViewModel(duplicateModel);
-            Shapes.Add(duplicate);
+            List<ShapeViewModel> duplicates = new List<ShapeViewModel>();
+            foreach (var shape in SelectedElement)
+            {
+                var duplicateModel = new UMLShape(shape.Shape.X, shape.Shape.Y, shape.Shape.Height, shape.Shape.Width, shape.Shape.Type);
+                var duplicate = new ShapeViewModel(duplicateModel);
+                if (duplicate.Type == EShape.Initial) return;
+                duplicates.Add(duplicate);
+            }
+            foreach (var shape in duplicates)
+            {
+                Shapes.Add(shape);
+            }
 
-            IUndoRedoCommand cmd = new DuplicateCommand(duplicate, this);
+            IUndoRedoCommand cmd = new DuplicateCommand(duplicates, this);
             undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformDeleteShape(object obj)
         {
-            if (Shapes.Count <= 0 || _selectedElement == null) return;
-            IUndoRedoCommand cmd = new DeleteCommand(SelectedElement[SelectedElement.Count - 1], this);
-            Shapes.Remove(SelectedElement[SelectedElement.Count - 1]);
+            if (Shapes.Count <= 0 || SelectedElement == null) return;
+            foreach (ShapeViewModel shape in SelectedElement)
+            {
+                Shapes.Remove(shape);
+            }
+            IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, this);
             undoRedo.InsertInUndoRedo(cmd);
         }
 
@@ -865,7 +887,7 @@ namespace UMLaut.ViewModel
         {
 
             var fElement = element as FrameworkElement;
-            SelectedElement.Add(fElement.DataContext as ShapeViewModel);
+            //SelectedElement.Add(fElement.DataContext as ShapeViewModel);
             if (SelectedElement[SelectedElement.Count-1].Type == EShape.SyncBarHor)
             {
                 AdornerLayer.GetAdornerLayer(element).Add(new SyncBarHorAdorner(element));

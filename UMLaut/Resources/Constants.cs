@@ -28,8 +28,8 @@ namespace UMLaut.Resources
 
                 public static class Action
                 {
-                    public static int DefaultHeight => 50;
-                    public static int DefaultWidth => 100;
+                    public static int DefaultHeight => 75;
+                    public static int DefaultWidth => 150;
                 }
                 public static class Initial
                 {
