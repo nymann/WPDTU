@@ -442,7 +442,16 @@ namespace UMLaut.ViewModel
         {
             if ((Shapes.Count <= 0) || (SelectedElement == null)) return;
             foreach (var shape in SelectedElement)
+            {
+                var linesToRemove = new List<LineViewModel>(); 
                 Shapes.Remove(shape);
+                foreach (var line in Lines)
+                    if ((line.ToShape == shape) || (line.FromShape == shape))
+                        linesToRemove.Add(line);
+
+                foreach (var lineToRemove in linesToRemove)
+                    Lines.Remove(lineToRemove);
+            }
             IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, this);
             undoRedo.InsertInUndoRedo(cmd);
         }
