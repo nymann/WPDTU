@@ -380,9 +380,6 @@ namespace UMLaut.ViewModel
             }
             IUndoRedoCommand cmd = new PasteCommand(this, temps);
             undoRedo.InsertInUndoRedo(cmd);
-            /*Shapes.Add(_storedElement);
-            IUndoRedoCommand cmd = new PasteCommand(this, _storedElement);
-            undoRedo.InsertInUndoRedo(cmd);*/
         }
 
         private void PerformCopy(object obj)

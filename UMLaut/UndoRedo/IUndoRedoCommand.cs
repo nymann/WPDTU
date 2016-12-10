@@ -2,7 +2,7 @@
 {
     public interface IUndoRedoCommand
     {
-        void Execute();
-        void UnExecute();
+        void Undo();
+        void Redo();
     }
 }

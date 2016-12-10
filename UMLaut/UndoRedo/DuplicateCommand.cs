@@ -16,7 +16,7 @@ namespace UMLaut.UndoRedo
             _mainViewModel = mainViewModel;
         }
 
-        public void Execute()
+        public void Undo()
         {
             // Undo
             foreach (var shape in _selectedElement)
@@ -25,7 +25,7 @@ namespace UMLaut.UndoRedo
             }
         }
 
-        public void UnExecute()
+        public void Redo()
         {
             // Redo
             foreach (var shape in _selectedElement)

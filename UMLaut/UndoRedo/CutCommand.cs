@@ -16,7 +16,7 @@ namespace UMLaut.UndoRedo
             _storedElement = storedElement;
         }
 
-        public void Execute()
+        public void Undo()
         {
             // Undo
             foreach (var shape in _storedElement)
@@ -27,7 +27,7 @@ namespace UMLaut.UndoRedo
             _mainViewModel.StoredElement = new List<ShapeViewModel>();
         }
 
-        public void UnExecute()
+        public void Redo()
         {
             // Redo
 

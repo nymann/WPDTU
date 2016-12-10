@@ -13,13 +13,13 @@ namespace UMLaut.UndoRedo
             _line = line;
         }
 
-        public void Execute()
+        public void Undo()
         {
             // undo
             _mainViewModel.Lines.Remove(_line);
         }
 
-        public void UnExecute()
+        public void Redo()
         {
             // redo
             _mainViewModel.Lines.Add(_line);

@@ -17,14 +17,14 @@ namespace UMLaut.UndoRedo
             _newPosition = newPosition;
         }
 
-        public void Execute()
+        public void Undo()
         {
             // undo
             _movedShape.X = _oldPosition.X;
             _movedShape.Y = _oldPosition.Y;
         }
 
-        public void UnExecute()
+        public void Redo()
         {
             _movedShape.X = _newPosition.X;
             _movedShape.Y = _newPosition.Y;

@@ -7,7 +7,6 @@ namespace UMLaut.UndoRedo
     {
         private readonly Stack<IUndoRedoCommand> _undoCommands = new Stack<IUndoRedoCommand>();
         private readonly Stack<IUndoRedoCommand> _redoCommands = new Stack<IUndoRedoCommand>();
-
         public EventHandler EnableUndoRedo;
 
         /// <summary>
@@ -20,7 +19,7 @@ namespace UMLaut.UndoRedo
             {
                 if (_redoCommands.Count == 0) continue;
                 var command = _redoCommands.Pop();
-                command.UnExecute();
+                command.Redo();
                 _undoCommands.Push(command);
             }
             // If the UndoRedo feature is enabled, disable it.
@@ -37,7 +36,7 @@ namespace UMLaut.UndoRedo
             {
                 if (_undoCommands.Count == 0) continue;
                 var command = _undoCommands.Pop();
-                command.Execute();
+                command.Undo();
                 _redoCommands.Push(command);
             }
             // If the UndoRedo feature is enabled, disable it.

@@ -15,7 +15,7 @@ namespace UMLaut.UndoRedo
             _shapes = shapes;
         }
 
-        public void Execute()
+        public void Undo()
         {
             // Undo
             
@@ -25,7 +25,7 @@ namespace UMLaut.UndoRedo
             }
         }
 
-        public void UnExecute()
+        public void Redo()
         {
             // Redo
             foreach (var shape in _shapes)
