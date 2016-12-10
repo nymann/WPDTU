@@ -18,11 +18,9 @@ namespace UMLaut.UndoRedo
         public void Execute()
         {
             // Undo
-            _mainViewModel.StoredElement = _shapes;
+            
             foreach (var shape in _shapes)
             {
-
-
                 _mainViewModel.Shapes.Remove(shape);
             }
         }

@@ -25,9 +25,6 @@ namespace UMLaut.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
-        // Inital node max.
-        private bool maxInitialNodes = false;
-
         private bool _shapeMode, _lineMode;
         private EShape _toolboxShapeValue;
         private ELine _toolboxLineValue;
@@ -53,6 +50,7 @@ namespace UMLaut.ViewModel
                 OnPropertyChanged();
             }
         }
+
         public List<UIElement> SelectedUIElement
         {
             get { return _selectedUIElement; }
@@ -64,6 +62,7 @@ namespace UMLaut.ViewModel
         }
 
         private List<ShapeViewModel> _storedElement = new List<ShapeViewModel>();
+
         public List<ShapeViewModel> StoredElement
         {
             get { return _storedElement; }
@@ -85,6 +84,7 @@ namespace UMLaut.ViewModel
         }
 
         private double _zoomPercentage = 1;
+
         public double ZoomPercentage
         {
             get { return _zoomPercentage; }
@@ -94,18 +94,22 @@ namespace UMLaut.ViewModel
                 OnPropertyChanged();
             }
         }
-        private Boolean _zoomOutEnabled = true;
-        public Boolean ZoomOutEnabled
+
+        private bool _zoomOutEnabled = true;
+
+        public bool ZoomOutEnabled
         {
-               get { return _zoomOutEnabled; }
+            get { return _zoomOutEnabled; }
             set
             {
                 _zoomOutEnabled = value;
                 OnPropertyChanged();
             }
         }
-        private Boolean _undoEnabled = true;
-        public Boolean UndoEnabled
+
+        private bool _undoEnabled = true;
+
+        public bool UndoEnabled
         {
             get { return _undoEnabled; }
             set
@@ -114,8 +118,10 @@ namespace UMLaut.ViewModel
                 OnPropertyChanged();
             }
         }
-        private Boolean _redoEnabled = true;
-        public Boolean RedoEnabled
+
+        private bool _redoEnabled = true;
+
+        public bool RedoEnabled
         {
             get { return _redoEnabled; }
             set
@@ -125,8 +131,9 @@ namespace UMLaut.ViewModel
             }
         }
 
-        private Boolean _duplicateShapeEnabled = false;
-        public Boolean DuplicateShapeEnabled
+        private bool _duplicateShapeEnabled = false;
+
+        public bool DuplicateShapeEnabled
         {
             get { return _duplicateShapeEnabled; }
             set
@@ -135,8 +142,10 @@ namespace UMLaut.ViewModel
                 OnPropertyChanged();
             }
         }
-        private Boolean _deleteShapeEnabled = false;
-        public Boolean DeleteShapeEnabled
+
+        private bool _deleteShapeEnabled = false;
+
+        public bool DeleteShapeEnabled
         {
             get { return _deleteShapeEnabled; }
             set
@@ -146,8 +155,9 @@ namespace UMLaut.ViewModel
             }
         }
 
-        private Boolean _textToShapeEnabled = false;
-        public Boolean TextToShapeEnabled
+        private bool _textToShapeEnabled = false;
+
+        public bool TextToShapeEnabled
         {
             get { return _textToShapeEnabled; }
             set
@@ -160,10 +170,12 @@ namespace UMLaut.ViewModel
         private UndoRedo.UndoRedo undoRedo;
 
         #region Collections
-        public ObservableCollection<LineViewModel> Lines {get; set;}
+
+        public ObservableCollection<LineViewModel> Lines { get; set; }
         public ObservableCollection<ShapeViewModel> Shapes { get; set; }
+
         #endregion
-    
+
         #region Constructor
 
         public MainViewModel()
@@ -173,29 +185,28 @@ namespace UMLaut.ViewModel
 
             #region Ribbon RelayCommands
 
-            this.LaunchNewInstance = new RelayCommand<object>(this.PerformLaunchNewInstance);
-            this.OpenFile = new RelayCommand<object>(this.PerformOpenFile);
-            this.SaveFile = new RelayCommand<object>(this.PerformSaveFile);
-            this.SaveFileAs = new RelayCommand<object>(this.PerformSaveFileAs);
-            this.Paste = new RelayCommand<object>(this.PerformPaste);
-            this.Copy = new RelayCommand<object>(this.PerformCopy);
-            this.Cut = new RelayCommand<object>(this.PerformCut);
-            this.Undo = new RelayCommand<object>(this.PerformUndo);
-            this.Redo = new RelayCommand<object>(this.PerformRedo);
-            this.DuplicateShape = new RelayCommand<object>(this.PerformDuplicateShape);
-            this.DeleteShape = new RelayCommand<object>(this.PerformDeleteShape);
-            this.TextToShape = new RelayCommand<object>(this.PerformTextToShape);
-            this.ExportDiagram = new RelayCommand<object>(this.PerformExportDiagram);
-            this.ZoomIn = new RelayCommand<object>(this.PerformZoomIn);
-            this.ZoomOut = new RelayCommand<object>(this.PerformZoomOut);
-            this.ZoomToFit = new RelayCommand<object>(this.PerformZoomToFit);
+            LaunchNewInstance = new RelayCommand<object>(PerformLaunchNewInstance);
+            OpenFile = new RelayCommand<object>(PerformOpenFile);
+            SaveFile = new RelayCommand<object>(PerformSaveFile);
+            SaveFileAs = new RelayCommand<object>(PerformSaveFileAs);
+            Paste = new RelayCommand<object>(PerformPaste);
+            Copy = new RelayCommand<object>(PerformCopy);
+            Cut = new RelayCommand<object>(PerformCut);
+            Undo = new RelayCommand<object>(PerformUndo);
+            Redo = new RelayCommand<object>(PerformRedo);
+            DuplicateShape = new RelayCommand<object>(PerformDuplicateShape);
+            DeleteShape = new RelayCommand<object>(PerformDeleteShape);
+            TextToShape = new RelayCommand<object>(PerformTextToShape);
+            ExportDiagram = new RelayCommand<object>(PerformExportDiagram);
+            ZoomIn = new RelayCommand<object>(PerformZoomIn);
+            ZoomOut = new RelayCommand<object>(PerformZoomOut);
+            ZoomToFit = new RelayCommand<object>(PerformZoomToFit);
 
             #endregion
 
-
-            this.CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(this.PerformCanvasMouseDown);
-            this.CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(this.PerformCanvasMouseMove);
-            this.CanvasMouseWheel = new RelayCommand<MouseWheelEventArgs>(this.PerformCanvasMouseWheel);
+            CanvasMouseDown = new RelayCommand<MouseButtonEventArgs>(PerformCanvasMouseDown);
+            CanvasMouseMove = new RelayCommand<System.Windows.Input.MouseEventArgs>(PerformCanvasMouseMove);
+            CanvasMouseWheel = new RelayCommand<MouseWheelEventArgs>(PerformCanvasMouseWheel);
 
             ShapeMouseDown = new RelayCommand<MouseButtonEventArgs>(PerformShapeMouseDown);
             ShapeMouseDoubleClick = new RelayCommand<RoutedEventArgs>(PerformShapeMouseDoubleClick);
@@ -204,18 +215,20 @@ namespace UMLaut.ViewModel
             ShapeDrag = new RelayCommand<DragDeltaEventArgs>(PerformShapeDrag);
             ShapeDragEnd = new RelayCommand<DragCompletedEventArgs>(PerformShapeDragEnd);
 
-            this.IsFreeHand = new RelayCommand<object>(this.PerformIsFreeHand);
+            IsFreeHand = new RelayCommand<object>(PerformIsFreeHand);
 
             ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
             LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
 
             undoRedo = new UndoRedo.UndoRedo();
         }
+
         #endregion
 
         #region ICommands
 
         #region Ribbon ICommands
+
         public ICommand LaunchNewInstance { get; set; }
         public ICommand OpenFile { get; set; }
         public ICommand SaveFile { get; set; }
@@ -233,9 +246,11 @@ namespace UMLaut.ViewModel
         public ICommand ZoomIn { get; set; }
         public ICommand ZoomOut { get; set; }
         public ICommand ZoomToFit { get; set; }
+
         #endregion
 
         #region Canvas ICommands
+
         public ICommand CanvasMouseDown { get; set; }
         public ICommand CanvasMouseMove { get; set; }
         public ICommand CanvasMouseWheel { get; set; }
@@ -245,9 +260,11 @@ namespace UMLaut.ViewModel
         public ICommand ShapeDragStart { get; set; }
         public ICommand ShapeDrag { get; set; }
         public ICommand ShapeDragEnd { get; set; }
+
         #endregion
 
         #region Toolbox ICommands
+
         public ICommand ShapeToolboxSelection { get; set; }
         public ICommand LineToolboxSelection { get; set; }
 
@@ -259,6 +276,7 @@ namespace UMLaut.ViewModel
         #endregion
 
         #region Commands
+
         #region Ribbon commands
 
         private void PerformLaunchNewInstance(object obj)
@@ -269,8 +287,8 @@ namespace UMLaut.ViewModel
 
         private void PerformOpenFile(object obj)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            Deserializer deserializer = new Deserializer();
+            var openFileDialog = new OpenFileDialog();
+            var deserializer = new Deserializer();
 
             try
             {
@@ -286,7 +304,6 @@ namespace UMLaut.ViewModel
             {
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
             }
-
         }
 
         private void ResetApplicationState()
@@ -297,24 +314,19 @@ namespace UMLaut.ViewModel
 
         private void UpdateApplicationStateFromDiagram()
         {
-            foreach(UMLShape umlShape in _diagram.Shapes)
-            {
+            foreach (var umlShape in _diagram.Shapes)
                 Shapes.Add(new ShapeViewModel(umlShape));
-            }
-            foreach(UMLLine umlLine in _diagram.Lines)
-            {
+            foreach (var umlLine in _diagram.Lines)
                 Lines.Add(new LineViewModel(umlLine));
-            }
-
         }
 
         private void PerformSaveFile(object obj)
         {
             try
             {
-                Serializer serializer = new Serializer();
+                var serializer = new Serializer();
 
-                if (String.IsNullOrEmpty(_diagram.FilePath))
+                if (string.IsNullOrEmpty(_diagram.FilePath))
                 {
                     if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
                     {
@@ -328,7 +340,7 @@ namespace UMLaut.ViewModel
                     serializer.AsyncSerializeToFile(_diagram);
                 }
             }
-           catch (Exception e)
+            catch (Exception e)
             {
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
                 Console.WriteLine(e.Message);
@@ -340,32 +352,31 @@ namespace UMLaut.ViewModel
         {
             try
             {
-                Serializer serializer = new Serializer();
+                var serializer = new Serializer();
                 if (ShowSaveDialogAndSetDiagramFilePath(_diagram))
-                {
                     serializer.AsyncSerializeToFile(_diagram);
-                }
             }
             catch (Exception e)
             {
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
                 Console.WriteLine(e);
             }
-
-
         }
 
         private void PerformPaste(object obj)
         {
-            List<ShapeViewModel> temps = new List<ShapeViewModel>();
+            var temps = new List<ShapeViewModel>();
+            var doesShapesContainIntialNode = DoesShapesContainInitialNode();
 
-            if (_storedElement.Count == 0 ) return;
+            if (_storedElement.Count == 0) return;
             foreach (var shape in StoredElement)
             {
-                if (shape.Type == EShape.Initial && DoesShapesContainInitialNode()) return;
+                if ((shape.Type == EShape.Initial) && doesShapesContainIntialNode) return;
 
-                var temp = new ShapeViewModel(new UMLShape(shape.X, shape.Y, shape.Height, shape.Width, shape.Shape.Type));
+                var temp =
+                    new ShapeViewModel(new UMLShape(shape.X, shape.Y, shape.Height, shape.Width, shape.Shape.Type));
                 Shapes.Add(temp);
+                temps.Add(temp);
             }
             IUndoRedoCommand cmd = new PasteCommand(this, temps);
             undoRedo.InsertInUndoRedo(cmd);
@@ -384,12 +395,12 @@ namespace UMLaut.ViewModel
         {
             if (_selectedElement == null) return;
             StoredElement = SelectedElement;
+
             foreach (var shape in SelectedElement)
-            {
                 Shapes.Remove(shape);
-            }
             SelectedElement = new List<ShapeViewModel>();
-            IUndoRedoCommand cmd = new CutCommand(this, _storedElement);
+
+            IUndoRedoCommand cmd = new CutCommand(this, StoredElement);
             undoRedo.InsertInUndoRedo(cmd);
         }
 
@@ -412,20 +423,19 @@ namespace UMLaut.ViewModel
 
         private void PerformDuplicateShape(object obj)
         {
-            if (SelectedElement.Count == 0 ) return;
+            if (SelectedElement.Count == 0) return;
 
-            List<ShapeViewModel> duplicates = new List<ShapeViewModel>();
+            var duplicates = new List<ShapeViewModel>();
             foreach (var shape in SelectedElement)
             {
-                var duplicateModel = new UMLShape(shape.Shape.X, shape.Shape.Y, shape.Shape.Height, shape.Shape.Width, shape.Shape.Type);
+                var duplicateModel = new UMLShape(shape.Shape.X, shape.Shape.Y, shape.Shape.Height, shape.Shape.Width,
+                    shape.Shape.Type);
                 var duplicate = new ShapeViewModel(duplicateModel);
                 if (duplicate.Type == EShape.Initial) return;
                 duplicates.Add(duplicate);
             }
             foreach (var shape in duplicates)
-            {
                 Shapes.Add(shape);
-            }
 
             IUndoRedoCommand cmd = new DuplicateCommand(duplicates, this);
             undoRedo.InsertInUndoRedo(cmd);
@@ -433,11 +443,9 @@ namespace UMLaut.ViewModel
 
         private void PerformDeleteShape(object obj)
         {
-            if (Shapes.Count <= 0 || SelectedElement == null) return;
-            foreach (ShapeViewModel shape in SelectedElement)
-            {
+            if ((Shapes.Count <= 0) || (SelectedElement == null)) return;
+            foreach (var shape in SelectedElement)
                 Shapes.Remove(shape);
-            }
             IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, this);
             undoRedo.InsertInUndoRedo(cmd);
         }
@@ -445,18 +453,17 @@ namespace UMLaut.ViewModel
         private void PerformTextToShape(object obj)
         {
             if (SelectedElement != null)
-            {
-                SelectedElement[SelectedElement.Count - 1].IsEditing = !SelectedElement[SelectedElement.Count - 1].IsEditing;
-            }
+                SelectedElement[SelectedElement.Count - 1].IsEditing =
+                    !SelectedElement[SelectedElement.Count - 1].IsEditing;
         }
+
         private void PerformExportDiagram(object parameter)
         {
             var canvas = parameter as Canvas;
             if (canvas != null)
-            {
                 try
                 {
-                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    var saveFileDialog = new SaveFileDialog();
                     saveFileDialog.FileName = "*";
                     saveFileDialog.DefaultExt = "png";
                     saveFileDialog.Filter = "Portable Network Graphics|*.png";
@@ -464,8 +471,8 @@ namespace UMLaut.ViewModel
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         var path = saveFileDialog.FileName;
-                        RenderTargetBitmap rtb = new RenderTargetBitmap((int)canvas.RenderSize.Width,
-                              (int)canvas.RenderSize.Height, 96d, 96d, System.Windows.Media.PixelFormats.Default);
+                        var rtb = new RenderTargetBitmap((int) canvas.RenderSize.Width,
+                            (int) canvas.RenderSize.Height, 96d, 96d, PixelFormats.Default);
                         rtb.Render(canvas);
 
                         var crop = new CroppedBitmap(rtb, new Int32Rect(50, 50, 250, 250));
@@ -483,12 +490,8 @@ namespace UMLaut.ViewModel
                 {
                     System.Windows.MessageBox.Show(Constants.Messages.GenericError);
                 }
-
-            }
             else
-            {
                 System.Windows.MessageBox.Show(Constants.Messages.GenericError);
-            }
         }
 
         private void PerformZoomIn(object obj)
@@ -500,12 +503,9 @@ namespace UMLaut.ViewModel
         private void PerformZoomOut(object obj)
         {
             if (ZoomOutEnabled)
-            {
                 ZoomPercentage -= 0.1;
-            }
 
             validateZoomOutEnabled();
-
         }
 
         private void PerformZoomToFit(object obj)
@@ -517,18 +517,15 @@ namespace UMLaut.ViewModel
         private void validateZoomOutEnabled()
         {
             if (ZoomPercentage < 0.49)
-            {
                 ZoomOutEnabled = false;
-            }
             else
-            {
                 ZoomOutEnabled = true;
-            }
         }
+
         #endregion
 
         #region Toolbox commands
-    
+
         // TODO Should be done in one function insted of split onto two.
 
         public void PerformIsFreeHand(object obj)
@@ -568,6 +565,7 @@ namespace UMLaut.ViewModel
         #endregion
 
         #region Properties commands
+
         #endregion
 
         #region Canvas commands
@@ -578,16 +576,11 @@ namespace UMLaut.ViewModel
         /// <param name="e">DragStartedEvent</param>
         private void PerformShapeDragStart(DragStartedEventArgs e)
         {
-            if (!_shapeMode)
-            {
-                FrameworkElement element = e.Source as FrameworkElement;
-                if (element != null)
-                {
-                    ShapeViewModel shape = element.DataContext as ShapeViewModel;
-                    _undoStartPosition = new Point(shape.X, shape.Y);
-
-                }
-            }
+            if (_shapeMode) return;
+            var element = e.Source as FrameworkElement;
+            if (element == null) return;
+            var shape = element.DataContext as ShapeViewModel;
+            _undoStartPosition = new Point(shape.X, shape.Y);
         }
 
         /// <summary>
@@ -596,27 +589,21 @@ namespace UMLaut.ViewModel
         /// <param name="e"></param>
         private void PerformShapeDrag(DragDeltaEventArgs e)
         {
-            if (!_shapeMode)
-            {
-                //FrameworkElement element = (FrameworkElement)e.Source;
-                FrameworkElement element = e.Source as FrameworkElement;
-                if (element != null)
-                {
-                    ShapeViewModel shape = element.DataContext as ShapeViewModel;
-                    // Could be kept as an private attr, so the method is only called upon starting the drag?
-                    Canvas canvas = FindParentOfType<Canvas>(element);
+            if (_shapeMode) return;
+            //FrameworkElement element = (FrameworkElement)e.Source;
+            var element = e.Source as FrameworkElement;
+            if (element == null) return;
+            var shape = element.DataContext as ShapeViewModel;
+            // Could be kept as an private attr, so the method is only called upon starting the drag?
+            var canvas = FindParentOfType<Canvas>(element);
 
-                    if (shape.X + e.HorizontalChange >= 0 && shape.X + e.HorizontalChange + shape.Width <= canvas.ActualWidth)
-                    {
-                        shape.X += e.HorizontalChange;
-                    }
+            if ((shape.X + e.HorizontalChange >= 0) &&
+                (shape.X + e.HorizontalChange + shape.Width <= canvas.ActualWidth))
+                shape.X += e.HorizontalChange;
 
-                    if (shape.Y + e.VerticalChange >= 0 && shape.Y + e.VerticalChange + shape.Height <= canvas.ActualHeight)
-                    {
-                        shape.Y += e.VerticalChange;
-                    }
-                }
-            }
+            if ((shape.Y + e.VerticalChange >= 0) &&
+                (shape.Y + e.VerticalChange + shape.Height <= canvas.ActualHeight))
+                shape.Y += e.VerticalChange;
         }
 
         /// <summary>
@@ -625,19 +612,16 @@ namespace UMLaut.ViewModel
         /// <param name="e">DragCompletedEvent</param>
         private void PerformShapeDragEnd(DragCompletedEventArgs e)
         {
-            if (!_shapeMode)
-            {
-                FrameworkElement element = e.Source as FrameworkElement;
-                if (element != null)
-                {
-                    ShapeViewModel shape = element.DataContext as ShapeViewModel;
-                    _undoEndPositon = new Point(shape.X, shape.Y);
+            if (_shapeMode) return;
+            var element = e.Source as FrameworkElement;
+            if (element == null) return;
+            var shape = element.DataContext as ShapeViewModel;
+            _undoEndPositon = new Point(shape.X, shape.Y);
 
-                    IUndoRedoCommand cmd = new MoveShapeCommand(SelectedElement[SelectedElement.Count - 1], _undoStartPosition, _undoEndPositon);
+            IUndoRedoCommand cmd = new MoveShapeCommand(SelectedElement[SelectedElement.Count - 1],
+                _undoStartPosition, _undoEndPositon);
 
-                    undoRedo.InsertInUndoRedo(cmd);
-                }
-            }
+            undoRedo.InsertInUndoRedo(cmd);
         }
 
         /// <summary>
@@ -649,10 +633,10 @@ namespace UMLaut.ViewModel
         {
             var source = e.Source as UIElement;
             // Start the line mode.
-            if (_lineMode && source != null)
+            if (_lineMode && (source != null))
             {
                 var fElement = source as FrameworkElement;
-                ShapeViewModel shape = fElement.DataContext as ShapeViewModel;
+                var shape = fElement.DataContext as ShapeViewModel;
                 // End point
                 if (_tempLine != null)
                 {
@@ -676,7 +660,7 @@ namespace UMLaut.ViewModel
                 e.Handled = true;
             }
             // Selection of a shape / drag event.
-            else if (!_shapeMode && source != null)
+            else if (!_shapeMode && (source != null))
             {
                 // Deselect previous
                 if (SelectedElement != null)
@@ -685,7 +669,7 @@ namespace UMLaut.ViewModel
                 }
                 // Select new
                 DoSelection(source);
-            }  
+            }
         }
 
         /// <summary>
@@ -697,9 +681,7 @@ namespace UMLaut.ViewModel
         {
             // Should never be the case because click is called before..
             if (SelectedElement != null)
-            {
                 SelectedElement[SelectedElement.Count - 1].IsEditing = true;
-            }
             e.Handled = true;
         }
 
@@ -715,12 +697,13 @@ namespace UMLaut.ViewModel
                 if (_shapeMode)
                 {
                     var source = e.Source as UIElement;
-                    Point point = source is Canvas ? e.GetPosition(source) : RelativeMousePosition(e);
-                    var model = new UMLShape(point.X, point.Y, GetDefaultHeight(_toolboxShapeValue), GetDefaultWidth(_toolboxShapeValue), _toolboxShapeValue);
+                    var point = source is Canvas ? e.GetPosition(source) : RelativeMousePosition(e);
+                    var model = new UMLShape(point.X, point.Y, GetDefaultHeight(_toolboxShapeValue),
+                        GetDefaultWidth(_toolboxShapeValue), _toolboxShapeValue);
                     var shapeToAdd = new ShapeViewModel(model);
 
                     // If we already have a initial node on canvas, don't allow another one.
-                    if (shapeToAdd.Type == EShape.Initial && DoesShapesContainInitialNode())
+                    if ((shapeToAdd.Type == EShape.Initial) && DoesShapesContainInitialNode())
                     {
                         System.Windows.MessageBox.Show("Canvas can only contain one initial node.");
                     }
@@ -753,12 +736,10 @@ namespace UMLaut.ViewModel
                 SelectedElement.Add(fElement.DataContext as ShapeViewModel);
                 AddAdorner(source);
                 setRibbonSelection(true);
-               
             }
         }
 
 
-       
         /// <summary>
         /// ClearSelection - Removes the adorner on the passed UI element
         /// </summary>
@@ -767,10 +748,7 @@ namespace UMLaut.ViewModel
         {
             RemoveAdorner(SelectedUIElement);
             foreach (var element in SelectedElement)
-            {
                 element.IsEditing = false;
-
-            }
 
             SelectedUIElement = new List<UIElement>();
             SelectedElement = new List<ShapeViewModel>();
@@ -780,7 +758,7 @@ namespace UMLaut.ViewModel
         /// <summary>
         /// Set isEnabled of Ribbon buttons
         /// </summary>
-        public void setRibbonSelection(Boolean b)
+        public void setRibbonSelection(bool b)
         {
             DuplicateShapeEnabled = b;
             DeleteShapeEnabled = b;
@@ -795,14 +773,11 @@ namespace UMLaut.ViewModel
         {
             var source = e.MouseDevice.Target as Canvas;
             if (source != null)
-            {
                 CurrentCursorPosition = e.GetPosition(source);
-            }
             else
-            {
                 CurrentCursorPosition = RelativeMousePosition(e);
-            }
         }
+
         /// <summary>
         /// RelativeMousePosition - Finds the position of the mouse on the canvas
         /// </summary>
@@ -810,7 +785,7 @@ namespace UMLaut.ViewModel
         /// <returns>Point of the mouse relative to the canvas</returns>
         private Point RelativeMousePosition(System.Windows.Input.MouseEventArgs e)
         {
-            var shapeVisualElement = (FrameworkElement)e.MouseDevice.Target;
+            var shapeVisualElement = (FrameworkElement) e.MouseDevice.Target;
             var canvas = FindParentOfType<Canvas>(shapeVisualElement);
             return Mouse.GetPosition(canvas);
         }
@@ -822,20 +797,17 @@ namespace UMLaut.ViewModel
             if (e.Delta > 0)
             {
                 if (ZoomPercentage > 10)
-                {
                     return;
-                }
                 ZoomPercentage += 0.1;
             }
             else
             {
                 if (ZoomPercentage < 0.49)
-                {
                     return;
-                }
                 ZoomPercentage -= 0.1;
             }
         }
+
         /// <summary>
         /// FindParentOfType - Finds the parent of the passed object recursivly
         /// </summary>
@@ -849,11 +821,12 @@ namespace UMLaut.ViewModel
         }
 
         #endregion
+
         #endregion
 
         private bool ShowSaveDialogAndSetDiagramFilePath(Diagram diagram)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            var saveFileDialog = new SaveFileDialog();
             saveFileDialog.FileName = "*";
             saveFileDialog.DefaultExt = "ult";
             saveFileDialog.Filter = "UMLaut Diagram|*.ult";
@@ -868,31 +841,30 @@ namespace UMLaut.ViewModel
 
         private void SelectElement(IInputElement target, UIElement element)
         {
-            var shapeVisualElement = (FrameworkElement)target;
+            var shapeVisualElement = (FrameworkElement) target;
             SelectedElement.Add(shapeVisualElement.DataContext as ShapeViewModel);
             AddAdorner(element);
         }
 
         private void DeselectElement(UIElement element)
         {
-            
         }
 
         private bool IsElementHit(UIElement source)
         {
-            return !(source is Canvas) || source == null;
+            return !(source is Canvas) || (source == null);
         }
 
         private void AddAdorner(UIElement element)
         {
-
             var fElement = element as FrameworkElement;
             //SelectedElement.Add(fElement.DataContext as ShapeViewModel);
-            if (SelectedElement[SelectedElement.Count-1].Type == EShape.SyncBarHor)
+            if (SelectedElement[SelectedElement.Count - 1].Type == EShape.SyncBarHor)
             {
                 AdornerLayer.GetAdornerLayer(element).Add(new SyncBarHorAdorner(element));
                 return;
-            } else if (SelectedElement[SelectedElement.Count - 1].Type == EShape.Merge)
+            }
+            else if (SelectedElement[SelectedElement.Count - 1].Type == EShape.Merge)
             {
                 AdornerLayer.GetAdornerLayer(element).Add(new MergeAdorner(element));
                 return;
@@ -902,40 +874,32 @@ namespace UMLaut.ViewModel
 
 
             //AdornerLayer.GetAdornerLayer(element).Add(new BasicAdorner(element));
-            AdornerLayer.GetAdornerLayer(element).Add(new MergeAdorner(element)); // temporary, until basic adorner has been expanded
+            AdornerLayer.GetAdornerLayer(element).Add(new MergeAdorner(element));
+            // temporary, until basic adorner has been expanded
         }
 
         private void RemoveAdorner(List<UIElement> elements)
         {
-            foreach (UIElement element in elements)
-            {
-
-
+            foreach (var element in elements)
                 try
                 {
-                    Adorner[] adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
-                    foreach (Adorner adorner in adorners)
-                    {
-
+                    var adorners = AdornerLayer.GetAdornerLayer(element).GetAdorners(element);
+                    foreach (var adorner in adorners)
                         AdornerLayer.GetAdornerLayer(element).Remove(adorner);
-                    }
                 }
                 catch (Exception ex)
                 {
-
                     // This isn't a code breaking exception, this would fx happen, if user add some shapes, select one -> delete, and then try to select a new one.
                     // Suggested solution is to print the error to the console instead of showing a messagebox.
                     //System.Windows.MessageBox.Show(Constants.Messages.GenericError);
                     Console.WriteLine(ex.Message);
                 }
-            }
-
         }
 
         private void UpdateDiagramFromApplicationCurrentState()
         {
-            List<UMLLine> umlLines = Lines.Select(x => x.Line).ToList();
-            List<UMLShape> umlShapes = Shapes.Select(x => x.Shape).ToList();
+            var umlLines = Lines.Select(x => x.Line).ToList();
+            var umlShapes = Shapes.Select(x => x.Shape).ToList();
 
             _diagram.Lines = umlLines;
             _diagram.Shapes = umlShapes;
@@ -975,6 +939,7 @@ namespace UMLaut.ViewModel
                     return Constants.Drawables.Shapes.DefaultHeight;
             }
         }
+
         private int GetDefaultWidth(EShape _toolboxValue)
         {
             switch (_toolboxValue)
@@ -1010,19 +975,9 @@ namespace UMLaut.ViewModel
             }
         }
 
-        private Boolean DoesShapesContainInitialNode()
+        private bool DoesShapesContainInitialNode()
         {
-            foreach (ShapeViewModel shape in Shapes)
-            {
-                if (shape.Type == EShape.Initial)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return Shapes.Any(shape => shape.Type == EShape.Initial);
         }
     }
-
-
 }
