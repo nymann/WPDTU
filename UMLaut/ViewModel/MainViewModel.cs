@@ -615,6 +615,10 @@ namespace UMLaut.ViewModel
             var shape = element.DataContext as ShapeViewModel;
             _undoEndPositon = new Point(shape.X, shape.Y);
 
+            // If we selected a shape, but we didn't move it, then we shouldn't insert it in undoRedo.
+            if (!(Math.Abs(_undoEndPositon.X - _undoStartPosition.X) > 1) ||
+                !(Math.Abs(_undoEndPositon.Y - _undoStartPosition.Y) > 1)) return;
+
             IUndoRedoCommand cmd = new MoveShapeCommand(SelectedElement[SelectedElement.Count - 1],
                 _undoStartPosition, _undoEndPositon);
 
