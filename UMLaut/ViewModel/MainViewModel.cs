@@ -441,18 +441,21 @@ namespace UMLaut.ViewModel
         private void PerformDeleteShape(object obj)
         {
             if ((Shapes.Count <= 0) || (SelectedElement == null)) return;
+            List<LineViewModel> AllLinesToRemove = new List<LineViewModel>();
+
             foreach (var shape in SelectedElement)
             {
-                var linesToRemove = new List<LineViewModel>(); 
                 Shapes.Remove(shape);
-                foreach (var line in Lines)
-                    if ((line.ToShape == shape) || (line.FromShape == shape))
-                        linesToRemove.Add(line);
+                var linesToRemove = Lines.Where(line => (line.ToShape == shape) || (line.FromShape == shape)).ToList();
 
-                foreach (var lineToRemove in linesToRemove)
+                foreach (var lineToRemove in linesToRemove) { 
                     Lines.Remove(lineToRemove);
+                    AllLinesToRemove.Add(lineToRemove);
+                }
+
             }
-            IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, this);
+
+            IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, AllLinesToRemove, this);
             undoRedo.InsertInUndoRedo(cmd);
         }
 
