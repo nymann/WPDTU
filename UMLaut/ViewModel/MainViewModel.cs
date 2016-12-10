@@ -36,9 +36,19 @@ namespace UMLaut.ViewModel
 
         private LineViewModel _tempLine;
 
+        private ShapeViewModel _selectedElement;
         private List<ShapeViewModel> _selectedElements = new List<ShapeViewModel>();
         private List<UIElement> _selectedUiElement = new List<UIElement>();
 
+        public ShapeViewModel SelectedElement
+        {
+            get { return _selectedElement; }
+            set
+            {
+                _selectedElement = value;
+                OnPropertyChanged();
+            }
+        }
         public List<ShapeViewModel> SelectedElements
         {
             get { return _selectedElements; }
@@ -756,6 +766,7 @@ namespace UMLaut.ViewModel
                 // Save a reference to the adorned UIElement for removing later
                 SelectedUiElement.Add(source);
                 SelectedElements.Add(fElement.DataContext as ShapeViewModel);
+                SelectedElement = fElement.DataContext as ShapeViewModel;
                 AddAdorner(source);
                 setRibbonSelection(true);
             }
@@ -774,6 +785,7 @@ namespace UMLaut.ViewModel
 
             SelectedUiElement = new List<UIElement>();
             SelectedElements = new List<ShapeViewModel>();
+            SelectedElement = null;
             setRibbonSelection(false);
         }
 
@@ -857,23 +869,7 @@ namespace UMLaut.ViewModel
             }
             return false;
         }
-
-        private void SelectElement(IInputElement target, UIElement element)
-        {
-            var shapeVisualElement = (FrameworkElement) target;
-            SelectedElements.Add(shapeVisualElement.DataContext as ShapeViewModel);
-            AddAdorner(element);
-        }
-
-        private void DeselectElement(UIElement element)
-        {
-        }
-
-        private bool IsElementHit(UIElement source)
-        {
-            return !(source is Canvas);
-        }
-
+        
         private void AddAdorner(UIElement element)
         {
             var fElement = element as FrameworkElement;
