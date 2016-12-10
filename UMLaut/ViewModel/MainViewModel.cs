@@ -36,15 +36,15 @@ namespace UMLaut.ViewModel
 
         private LineViewModel _tempLine;
 
-        private List<ShapeViewModel> _selectedElement = new List<ShapeViewModel>();
+        private List<ShapeViewModel> _selectedElements = new List<ShapeViewModel>();
         private List<UIElement> _selectedUiElement = new List<UIElement>();
 
-        public List<ShapeViewModel> SelectedElement
+        public List<ShapeViewModel> SelectedElements
         {
-            get { return _selectedElement; }
+            get { return _selectedElements; }
             set
             {
-                _selectedElement = value;
+                _selectedElements = value;
                 OnPropertyChanged();
             }
         }
@@ -59,14 +59,14 @@ namespace UMLaut.ViewModel
             }
         }
 
-        private List<ShapeViewModel> _storedElement = new List<ShapeViewModel>();
+        private List<ShapeViewModel> _storedElements = new List<ShapeViewModel>();
 
-        public List<ShapeViewModel> StoredElement
+        public List<ShapeViewModel> StoredElements
         {
-            get { return _storedElement; }
+            get { return _storedElements; }
             set
             {
-                _storedElement = value;
+                _storedElements = value;
                 OnPropertyChanged();
             }
         }
@@ -366,8 +366,8 @@ namespace UMLaut.ViewModel
             var temps = new List<ShapeViewModel>();
             var doesShapesContainIntialNode = DoesShapesContainInitialNode();
 
-            if (_storedElement.Count == 0) return;
-            foreach (var shape in StoredElement)
+            if (_storedElements.Count == 0) return;
+            foreach (var shape in StoredElements)
             {
                 if ((shape.Type == EShape.Initial) && doesShapesContainIntialNode) return;
 
@@ -382,21 +382,32 @@ namespace UMLaut.ViewModel
 
         private void PerformCopy(object obj)
         {
-            if (SelectedElement.Count == 0) return;
-            StoredElement = SelectedElement;
+            if (SelectedElements.Count == 0) return;
+            StoredElements = SelectedElements;
         }
 
         private void PerformCut(object obj)
         {
-            if (_selectedElement == null) return;
-            StoredElement = SelectedElement;
+            if ((Shapes.Count <= 0) || (SelectedElements == null)) return;
+            var allLinesToRemove = new List<LineViewModel>();
+            StoredElements = SelectedElements;
 
-            foreach (var shape in SelectedElement)
+            foreach (var shape in SelectedElements)
+            {
                 Shapes.Remove(shape);
-            SelectedElement = new List<ShapeViewModel>();
+                var linesToRemove = Lines.Where(line => (line.ToShape == shape) || (line.FromShape == shape)).ToList();
 
-            IUndoRedoCommand cmd = new CutCommand(this, StoredElement);
+                foreach (var lineToRemove in linesToRemove)
+                {
+                    Lines.Remove(lineToRemove);
+                    allLinesToRemove.Add(lineToRemove);
+                }
+
+            }
+            SelectedElements = new List<ShapeViewModel>();
+            IUndoRedoCommand cmd = new CutCommand(this, StoredElements, allLinesToRemove);
             _undoRedo.InsertInUndoRedo(cmd);
+
         }
 
         /// <summary>
@@ -418,10 +429,10 @@ namespace UMLaut.ViewModel
 
         private void PerformDuplicateShape(object obj)
         {
-            if (SelectedElement.Count == 0) return;
+            if (SelectedElements.Count == 0) return;
 
             var duplicates = new List<ShapeViewModel>();
-            foreach (var shape in SelectedElement)
+            foreach (var shape in SelectedElements)
             {
                 var duplicateModel = new UMLShape(shape.Shape.X, shape.Shape.Y, shape.Shape.Height, shape.Shape.Width,
                     shape.Shape.Type);
@@ -438,10 +449,10 @@ namespace UMLaut.ViewModel
 
         private void PerformDeleteShape(object obj)
         {
-            if ((Shapes.Count <= 0) || (SelectedElement == null)) return;
+            if ((Shapes.Count <= 0) || (SelectedElements == null)) return;
             var allLinesToRemove = new List<LineViewModel>();
 
-            foreach (var shape in SelectedElement)
+            foreach (var shape in SelectedElements)
             {
                 Shapes.Remove(shape);
                 var linesToRemove = Lines.Where(line => (line.ToShape == shape) || (line.FromShape == shape)).ToList();
@@ -453,15 +464,15 @@ namespace UMLaut.ViewModel
 
             }
 
-            IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, allLinesToRemove, this);
+            IUndoRedoCommand cmd = new DeleteCommand(SelectedElements, allLinesToRemove, this);
             _undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformTextToShape(object obj)
         {
-            if (SelectedElement != null)
-                SelectedElement[SelectedElement.Count - 1].IsEditing =
-                    !SelectedElement[SelectedElement.Count - 1].IsEditing;
+            if (SelectedElements != null)
+                SelectedElements[SelectedElements.Count - 1].IsEditing =
+                    !SelectedElements[SelectedElements.Count - 1].IsEditing;
         }
 
         private void PerformExportDiagram(object parameter)
@@ -629,7 +640,7 @@ namespace UMLaut.ViewModel
             if (!(Math.Abs(_undoEndPositon.X - _undoStartPosition.X) > 1) ||
                 !(Math.Abs(_undoEndPositon.Y - _undoStartPosition.Y) > 1)) return;
 
-            IUndoRedoCommand cmd = new MoveShapeCommand(SelectedElement[SelectedElement.Count - 1],
+            IUndoRedoCommand cmd = new MoveShapeCommand(SelectedElements[SelectedElements.Count - 1],
                 _undoStartPosition, _undoEndPositon);
 
             _undoRedo.InsertInUndoRedo(cmd);
@@ -674,7 +685,7 @@ namespace UMLaut.ViewModel
             else if (!_shapeMode && (source != null))
             {
                 // Deselect previous
-                if (SelectedElement != null)
+                if (SelectedElements != null)
                 {
                     //ClearSelection();
                 }
@@ -691,8 +702,8 @@ namespace UMLaut.ViewModel
         private void PerformShapeMouseDoubleClick(RoutedEventArgs e)
         {
             // Should never be the case because click is called before..
-            if (SelectedElement != null)
-                SelectedElement[SelectedElement.Count - 1].IsEditing = true;
+            if (SelectedElements != null)
+                SelectedElements[SelectedElements.Count - 1].IsEditing = true;
             e.Handled = true;
         }
 
@@ -725,7 +736,7 @@ namespace UMLaut.ViewModel
                         _undoRedo.InsertInUndoRedo(cmd);
                     }
                 }
-                else if (SelectedElement != null)
+                else if (SelectedElements != null)
                 {
                     ClearSelection();
                 }
@@ -744,7 +755,7 @@ namespace UMLaut.ViewModel
             {
                 // Save a reference to the adorned UIElement for removing later
                 SelectedUiElement.Add(source);
-                SelectedElement.Add(fElement.DataContext as ShapeViewModel);
+                SelectedElements.Add(fElement.DataContext as ShapeViewModel);
                 AddAdorner(source);
                 setRibbonSelection(true);
             }
@@ -758,11 +769,11 @@ namespace UMLaut.ViewModel
         private void ClearSelection()
         {
             RemoveAdorner(SelectedUiElement);
-            foreach (var element in SelectedElement)
+            foreach (var element in SelectedElements)
                 element.IsEditing = false;
 
             SelectedUiElement = new List<UIElement>();
-            SelectedElement = new List<ShapeViewModel>();
+            SelectedElements = new List<ShapeViewModel>();
             setRibbonSelection(false);
         }
 
@@ -850,7 +861,7 @@ namespace UMLaut.ViewModel
         private void SelectElement(IInputElement target, UIElement element)
         {
             var shapeVisualElement = (FrameworkElement) target;
-            SelectedElement.Add(shapeVisualElement.DataContext as ShapeViewModel);
+            SelectedElements.Add(shapeVisualElement.DataContext as ShapeViewModel);
             AddAdorner(element);
         }
 
@@ -866,13 +877,13 @@ namespace UMLaut.ViewModel
         private void AddAdorner(UIElement element)
         {
             var fElement = element as FrameworkElement;
-            //SelectedElement.Add(fElement.DataContext as ShapeViewModel);
-            if (SelectedElement[SelectedElement.Count - 1].Type == EShape.SyncBarHor)
+            //SelectedElements.Add(fElement.DataContext as ShapeViewModel);
+            if (SelectedElements[SelectedElements.Count - 1].Type == EShape.SyncBarHor)
             {
                 AdornerLayer.GetAdornerLayer(element).Add(new SyncBarHorAdorner(element));
                 return;
             }
-            else if (SelectedElement[SelectedElement.Count - 1].Type == EShape.Merge)
+            else if (SelectedElements[SelectedElements.Count - 1].Type == EShape.Merge)
             {
                 AdornerLayer.GetAdornerLayer(element).Add(new MergeAdorner(element));
                 return;
