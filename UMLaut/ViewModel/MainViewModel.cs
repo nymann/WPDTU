@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Controls;
 using UMLaut.Model.Implementation;
@@ -39,7 +37,7 @@ namespace UMLaut.ViewModel
         private LineViewModel _tempLine;
 
         private List<ShapeViewModel> _selectedElement = new List<ShapeViewModel>();
-        private List<UIElement> _selectedUIElement = new List<UIElement>();
+        private List<UIElement> _selectedUiElement = new List<UIElement>();
 
         public List<ShapeViewModel> SelectedElement
         {
@@ -51,12 +49,12 @@ namespace UMLaut.ViewModel
             }
         }
 
-        public List<UIElement> SelectedUIElement
+        public List<UIElement> SelectedUiElement
         {
-            get { return _selectedUIElement; }
+            get { return _selectedUiElement; }
             set
             {
-                _selectedUIElement = value;
+                _selectedUiElement = value;
                 OnPropertyChanged();
             }
         }
@@ -131,7 +129,7 @@ namespace UMLaut.ViewModel
             }
         }
 
-        private bool _duplicateShapeEnabled = false;
+        private bool _duplicateShapeEnabled;
 
         public bool DuplicateShapeEnabled
         {
@@ -167,7 +165,7 @@ namespace UMLaut.ViewModel
             }
         }
 
-        private UndoRedo.UndoRedo undoRedo;
+        private readonly UndoRedo.UndoRedo _undoRedo;
 
         #region Collections
 
@@ -220,7 +218,7 @@ namespace UMLaut.ViewModel
             ShapeToolboxSelection = new RelayCommand<EShape>(SetShapeToolboxSelection);
             LineToolboxSelection = new RelayCommand<ELine>(SetLineToolboxSelection);
 
-            undoRedo = new UndoRedo.UndoRedo();
+            _undoRedo = new UndoRedo.UndoRedo();
         }
 
         #endregion
@@ -379,7 +377,7 @@ namespace UMLaut.ViewModel
                 temps.Add(temp);
             }
             IUndoRedoCommand cmd = new PasteCommand(this, temps);
-            undoRedo.InsertInUndoRedo(cmd);
+            _undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformCopy(object obj)
@@ -398,7 +396,7 @@ namespace UMLaut.ViewModel
             SelectedElement = new List<ShapeViewModel>();
 
             IUndoRedoCommand cmd = new CutCommand(this, StoredElement);
-            undoRedo.InsertInUndoRedo(cmd);
+            _undoRedo.InsertInUndoRedo(cmd);
         }
 
         /// <summary>
@@ -406,7 +404,7 @@ namespace UMLaut.ViewModel
         /// </summary>
         private void PerformUndo(object obj)
         {
-            undoRedo.Undo(1);
+            _undoRedo.Undo(1);
         }
 
         /// <summary>
@@ -414,7 +412,7 @@ namespace UMLaut.ViewModel
         /// </summary>
         private void PerformRedo(object obj)
         {
-            undoRedo.Redo(1);
+            _undoRedo.Redo(1);
         }
 
 
@@ -435,13 +433,13 @@ namespace UMLaut.ViewModel
                 Shapes.Add(shape);
 
             IUndoRedoCommand cmd = new DuplicateCommand(duplicates, this);
-            undoRedo.InsertInUndoRedo(cmd);
+            _undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformDeleteShape(object obj)
         {
             if ((Shapes.Count <= 0) || (SelectedElement == null)) return;
-            List<LineViewModel> AllLinesToRemove = new List<LineViewModel>();
+            var allLinesToRemove = new List<LineViewModel>();
 
             foreach (var shape in SelectedElement)
             {
@@ -450,13 +448,13 @@ namespace UMLaut.ViewModel
 
                 foreach (var lineToRemove in linesToRemove) { 
                     Lines.Remove(lineToRemove);
-                    AllLinesToRemove.Add(lineToRemove);
+                    allLinesToRemove.Add(lineToRemove);
                 }
 
             }
 
-            IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, AllLinesToRemove, this);
-            undoRedo.InsertInUndoRedo(cmd);
+            IUndoRedoCommand cmd = new DeleteCommand(SelectedElement, allLinesToRemove, this);
+            _undoRedo.InsertInUndoRedo(cmd);
         }
 
         private void PerformTextToShape(object obj)
@@ -634,7 +632,7 @@ namespace UMLaut.ViewModel
             IUndoRedoCommand cmd = new MoveShapeCommand(SelectedElement[SelectedElement.Count - 1],
                 _undoStartPosition, _undoEndPositon);
 
-            undoRedo.InsertInUndoRedo(cmd);
+            _undoRedo.InsertInUndoRedo(cmd);
         }
 
         /// <summary>
@@ -659,7 +657,7 @@ namespace UMLaut.ViewModel
                     _tempLine.ToOffsetY = shape.OffsetY;
                     Lines.Add(_tempLine);
                     IUndoRedoCommand cmd = new AddLineCommand(_tempLine, this);
-                    undoRedo.InsertInUndoRedo(cmd);
+                    _undoRedo.InsertInUndoRedo(cmd);
                     _tempLine = null;
                 }
                 else
@@ -724,7 +722,7 @@ namespace UMLaut.ViewModel
                     {
                         Shapes.Add(shapeToAdd);
                         IUndoRedoCommand cmd = new AddShapeCommand(shapeToAdd, this);
-                        undoRedo.InsertInUndoRedo(cmd);
+                        _undoRedo.InsertInUndoRedo(cmd);
                     }
                 }
                 else if (SelectedElement != null)
@@ -745,7 +743,7 @@ namespace UMLaut.ViewModel
             if (fElement != null)
             {
                 // Save a reference to the adorned UIElement for removing later
-                SelectedUIElement.Add(source);
+                SelectedUiElement.Add(source);
                 SelectedElement.Add(fElement.DataContext as ShapeViewModel);
                 AddAdorner(source);
                 setRibbonSelection(true);
@@ -759,11 +757,11 @@ namespace UMLaut.ViewModel
         /// <param name="source">Usercontrol as ui element</param>
         private void ClearSelection()
         {
-            RemoveAdorner(SelectedUIElement);
+            RemoveAdorner(SelectedUiElement);
             foreach (var element in SelectedElement)
                 element.IsEditing = false;
 
-            SelectedUIElement = new List<UIElement>();
+            SelectedUiElement = new List<UIElement>();
             SelectedElement = new List<ShapeViewModel>();
             setRibbonSelection(false);
         }
@@ -785,10 +783,7 @@ namespace UMLaut.ViewModel
         private void PerformCanvasMouseMove(System.Windows.Input.MouseEventArgs e)
         {
             var source = e.MouseDevice.Target as Canvas;
-            if (source != null)
-                CurrentCursorPosition = e.GetPosition(source);
-            else
-                CurrentCursorPosition = RelativeMousePosition(e);
+            CurrentCursorPosition = source != null ? e.GetPosition(source) : RelativeMousePosition(e);
         }
 
         /// <summary>
@@ -865,7 +860,7 @@ namespace UMLaut.ViewModel
 
         private bool IsElementHit(UIElement source)
         {
-            return !(source is Canvas) || (source == null);
+            return !(source is Canvas);
         }
 
         private void AddAdorner(UIElement element)
@@ -918,9 +913,9 @@ namespace UMLaut.ViewModel
             _diagram.Shapes = umlShapes;
         }
 
-        private int GetDefaultHeight(EShape _toolboxValue)
+        private int GetDefaultHeight(EShape toolboxValue)
         {
-            switch (_toolboxValue)
+            switch (toolboxValue)
             {
                 case EShape.Action:
                     return Constants.Drawables.Shapes.Action.DefaultHeight;
