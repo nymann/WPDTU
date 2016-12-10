@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using UMLaut.Resources;
+﻿using System.Collections.Generic;
 using UMLaut.ViewModel;
 
 namespace UMLaut.UndoRedo
 {
     public class DuplicateCommand : IUndoRedoCommand
     {
-        private List<ShapeViewModel> _selectedElement = new List<ShapeViewModel>();
-        private MainViewModel _mainViewModel;
+        private readonly List<ShapeViewModel> _selectedElement;
+        private readonly MainViewModel _mainViewModel;
 
         public DuplicateCommand(List<ShapeViewModel> selectedElement, MainViewModel mainViewModel)
         {
@@ -18,21 +16,14 @@ namespace UMLaut.UndoRedo
 
         public void Undo()
         {
-            // Undo
             foreach (var shape in _selectedElement)
-            {
                 _mainViewModel.Shapes.Remove(shape);
-            }
         }
 
         public void Redo()
         {
-            // Redo
             foreach (var shape in _selectedElement)
-            {
                 _mainViewModel.Shapes.Add(shape);
-
-            }
         }
     }
 }

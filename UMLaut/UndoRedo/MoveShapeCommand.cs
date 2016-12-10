@@ -1,12 +1,11 @@
-﻿
-using System.Windows;
+﻿using System.Windows;
 using UMLaut.ViewModel;
 
 namespace UMLaut.UndoRedo
 {
     public class MoveShapeCommand : IUndoRedoCommand
     {
-        private ShapeViewModel _movedShape;
+        private readonly ShapeViewModel _movedShape;
         private Point _oldPosition;
         private Point _newPosition;
 
@@ -19,7 +18,6 @@ namespace UMLaut.UndoRedo
 
         public void Undo()
         {
-            // undo
             _movedShape.X = _oldPosition.X;
             _movedShape.Y = _oldPosition.Y;
         }

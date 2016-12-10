@@ -16,13 +16,11 @@ namespace UMLaut.UndoRedo
 
         public void Undo()
         {
-            // undo
             _mainViewModel.Shapes.Remove(_mainViewModel.Shapes.Last());
         }
 
         public void Redo()
         {
-            // redo
             _mainViewModel.Shapes.Add(_selectedElement);
         }
     }

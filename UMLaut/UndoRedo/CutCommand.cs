@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UMLaut.ViewModel;
 
 namespace UMLaut.UndoRedo
 {
     public class CutCommand : IUndoRedoCommand
     {
-        private MainViewModel _mainViewModel;
-        private List<ShapeViewModel> _storedElement;
+        private readonly MainViewModel _mainViewModel;
+        private readonly List<ShapeViewModel> _storedElement;
 
         public CutCommand(MainViewModel mainViewModel, List<ShapeViewModel> storedElement)
         {
@@ -19,9 +17,7 @@ namespace UMLaut.UndoRedo
         public void Undo()
         {
             foreach (var shape in _storedElement)
-            {
                 _mainViewModel.Shapes.Add(shape);
-            }
             _mainViewModel.StoredElement = new List<ShapeViewModel>();
         }
 
@@ -29,9 +25,7 @@ namespace UMLaut.UndoRedo
         {
             _mainViewModel.StoredElement = _storedElement;
             foreach (var shape in _storedElement)
-            {
                 _mainViewModel.Shapes.Remove(shape);
-            }
         }
     }
 }
