@@ -32,15 +32,14 @@
         </Grid.Resources>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
-            <RowDefinition Height="25" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -72,11 +71,9 @@
         
         <Label Content="Tekst"
                Grid.Column="0" Grid.Row="6" />
-        
+
         <Label Content="Position"
                Grid.Column="0" Grid.Row="7" />
-        <Label Content="Vis gitterlinjer"
-               Grid.Column="0" Grid.Row="8" />
 
         <Label Content="{Binding SelectedElement.Type}"
                Grid.Column="1" Grid.Row="1" />
@@ -95,10 +92,8 @@
 
         <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding SelectedElement.Label}"
                  b:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"/>
-        
-        <Label Grid.Column="1" Grid.Row="7" Content="{Binding CurrentCursorPosition}"/>
 
-        <CheckBox  Grid.Column="1" Grid.Row="8" IsChecked="{Binding ShowGridLines}"/>
+        <Label Grid.Column="1" Grid.Row="7" Content="{Binding CurrentCursorPosition}"/>
 
     </Grid>
 </UserControl>

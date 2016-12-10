@@ -12,7 +12,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="225" />
+            <RowDefinition Height="215" />
         </Grid.RowDefinitions>
 
         <toolbox:Toolbox Grid.Row="0"/>
