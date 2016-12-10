@@ -8,7 +8,7 @@ namespace UMLaut.UndoRedo
     public class CutCommand : IUndoRedoCommand
     {
         private MainViewModel _mainViewModel;
-        private List<ShapeViewModel> _storedElement = new List<ShapeViewModel>();
+        private List<ShapeViewModel> _storedElement;
 
         public CutCommand(MainViewModel mainViewModel, List<ShapeViewModel> storedElement)
         {
@@ -18,25 +18,20 @@ namespace UMLaut.UndoRedo
 
         public void Undo()
         {
-            // Undo
             foreach (var shape in _storedElement)
             {
                 _mainViewModel.Shapes.Add(shape);
-
             }
             _mainViewModel.StoredElement = new List<ShapeViewModel>();
         }
 
         public void Redo()
         {
-            // Redo
-
             _mainViewModel.StoredElement = _storedElement;
             foreach (var shape in _storedElement)
             {
                 _mainViewModel.Shapes.Remove(shape);
             }
-
         }
     }
 }
