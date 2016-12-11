@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,8 @@ namespace UMLaut.Services.Converter
             double offsetX = (double)values[2];
             double offsetY = (double)values[3];
 
+            Debug.Assert(dir != null, "dir != null");
+            Debug.Assert(shape != null, "shape != null");
             return dir.Equals("X") ? shape.X + offsetX + shape.Width / 2 : shape.Y + offsetY + shape.Height / 2;
         }
 

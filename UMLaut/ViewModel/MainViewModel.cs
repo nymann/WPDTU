@@ -480,7 +480,7 @@ namespace UMLaut.ViewModel
 
         private void PerformTextToShape(object obj)
         {
-            if (SelectedElements != null)
+            if (SelectedElements[SelectedElements.Count -1] != null)
                 SelectedElements[SelectedElements.Count - 1].IsEditing =
                     !SelectedElements[SelectedElements.Count - 1].IsEditing;
         }
@@ -712,7 +712,7 @@ namespace UMLaut.ViewModel
         private void PerformShapeMouseDoubleClick(RoutedEventArgs e)
         {
             // Should never be the case because click is called before..
-            if (SelectedElements != null)
+            if (SelectedElements.Count > 0)
                 SelectedElements[SelectedElements.Count - 1].IsEditing = true;
             e.Handled = true;
         }
